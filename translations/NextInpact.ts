@@ -2,20 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
-    <name>CoverPage</name>
+    <name>ArticleList</name>
     <message>
-        <source>My Cover</source>
+        <source>about</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SecondPage</name>
+    <name>CoverPage</name>
     <message>
-        <source>Nested Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Item</source>
+        <source>Unread</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -27,21 +31,6 @@
     </message>
     <message>
         <source>blablabla</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>articles</name>
-    <message>
-        <source>about</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
