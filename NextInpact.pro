@@ -24,9 +24,15 @@ OTHER_FILES += qml/NextInpact.qml \
     translations/*.ts \
     NextInpact.desktop \
     qml/pages/about.qml \
-    qml/pages/articles.qml \
     qml/pages/detail.qml \
-    qml/pages/comments.qml
+    qml/pages/comments.qml \
+    qml/models/ArticleItem.qml \
+    qml/pages/ArticleDelegate.qml \
+    res/comments.png \
+    res/img1.jpg \
+    res/img2.jpg \
+    res/img3.jpg \
+    qml/pages/ArticleList.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line
