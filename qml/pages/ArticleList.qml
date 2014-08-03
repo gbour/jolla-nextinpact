@@ -93,6 +93,11 @@ Page {
             model.append({})
             model.append({'section': '2d section'})
             */
+            console.log("ArticleList load complete");
+
+            // initialize JS context
+            appwin.context.init();
+            console.log("context state=" + appwin.context.state['key1']);
         }
 
     }

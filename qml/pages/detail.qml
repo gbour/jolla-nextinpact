@@ -34,9 +34,12 @@ Page {
         }
     }
 
-    /*
+
     Component.onCompleted: {
         detailview.loadHtml("<html><body><h1>Yeah!!!</h1></body></html> <b>ploploplop</b>")
+
+        // context is persistent between pages
+        console.log("context state=" + appwin.context2.state['key1']);
     }
-    */
+
 }

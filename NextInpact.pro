@@ -32,7 +32,8 @@ OTHER_FILES += qml/NextInpact.qml \
     res/img1.jpg \
     res/img2.jpg \
     res/img3.jpg \
-    qml/pages/ArticleList.qml
+    qml/pages/ArticleList.qml \
+    qml/logic/context.js
 
 # to disable building translations every time, comment out the
 # following CONFIG line
