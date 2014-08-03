@@ -33,7 +33,9 @@ OTHER_FILES += qml/NextInpact.qml \
     res/img2.jpg \
     res/img3.jpg \
     qml/pages/ArticleList.qml \
-    qml/logic/context.js
+    qml/logic/context.js \
+    qml/lib/htmlparser2.js \
+    qml/logic/scraper.js
 
 # to disable building translations every time, comment out the
 # following CONFIG line
