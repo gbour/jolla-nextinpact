@@ -1,6 +1,6 @@
 
 .import '../lib/htmlparser2.js' as HtmlParser
-
+.import '../lib/iso8859-15.js' as Iso
 
 var STATE_ARTICLE = 1 //
 var STATE_H1      = 2      //
@@ -100,7 +100,7 @@ Article.prototype = {
                         article.timestamp = text;
                     } else if(state[0] == STATE_SUBTITLE) {
                         // remove '- ' at start
-                        article.subtitle = text.substr(2);
+                        article.subtitle = Iso.map(text.substr(2));
                     } else if(state[0] == STATE_COMMENTS) {
                         article.comments = text;
                     }
