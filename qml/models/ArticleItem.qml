@@ -27,4 +27,17 @@ ListModel {
         timestamp: "00:00"
         comments: 0
     }
+*/
+    function init() {
+        console.log("ArticleModel::init")
+//      append({'title': 'added via javascript'})
+
+        context.refresh(function(articles) {
+            for (var idx in articles) {
+                var art = articles[idx];
+
+                append(art)
+            }
+        });
+    }
 }
