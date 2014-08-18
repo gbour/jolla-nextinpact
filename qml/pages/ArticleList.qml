@@ -98,6 +98,9 @@ Page {
             // initialize JS context
             appwin.context.init();
             console.log("context state=" + appwin.context.state['key1']);
+
+            //appwin.context.refresh();
+            model.init();
         }
 
     }
