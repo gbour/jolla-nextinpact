@@ -51,7 +51,12 @@ Page {
             menu: contextMenu
 
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("detail.qml"), {}, PageStackAction.Animated)
+                console.log("clicked on " + model.link);
+                var params = {
+                    url: model.link
+                }
+
+                pageStack.push(Qt.resolvedUrl("detail.qml"), params, PageStackAction.Animated)
             }
 
             Component {

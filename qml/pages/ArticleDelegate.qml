@@ -6,6 +6,7 @@ ListItem {
     width: parent.width - 2*Theme.paddingSmall
     height: childrenRect.height * 1.7
 
+    property string link;
 
     Image {
         id: icon

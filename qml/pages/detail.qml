@@ -6,6 +6,9 @@ import Sailfish.Silica 1.0
 Page {
     id: detail
 
+    // url is provided when clicking list item in articles list view
+    property alias url: detailview.url;
+
     onStatusChanged: {
         if (status == PageStatus.Active) {
             pageStack.pushAttached(Qt.resolvedUrl("comments.qml"), {})
@@ -21,7 +24,7 @@ Page {
         }
 
 
-        url: "http://m.nextinpact.com/news/88991-freebox-player-free-lance-sdk-applicatif-base-sur-qml.htm" //http://linuxfr.org"
+        url: ""
         //forwardNavigation: false
 
         //html: "<html><body><title>Yeah!!!</title></body></html>"
@@ -36,10 +39,11 @@ Page {
 
 
     Component.onCompleted: {
-        detailview.loadHtml("<html><body><h1>Yeah!!!</h1></body></html> <b>ploploplop</b>")
+        //detailview.loadHtml("<html><body><h1>Yeah!!!</h1></body></html> <b>ploploplop</b>")
 
         // context is persistent between pages
-        console.log("context state=" + appwin.context2.state['key1']);
+        //console.log("context state=" + appwin.context2.state['key1']);
+        console.log('URL=' + detailview.url + ',' + detail.url);
     }
 
 }
