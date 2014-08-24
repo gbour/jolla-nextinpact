@@ -54,7 +54,7 @@ Article.prototype = {
 
                     } else if(state[0] == STATE_H1 && tag == 'a') {
                         state.unshift(STATE_A);
-                        article.link = attrs.href.value;
+                        article.link = 'http://m.nextinpact.com/'+attrs.href.value;
 
                     } else if(state[0] == STATE_ARTICLE && tag == 'img' &&
                               attrs.class.value == 'ded-image') {
