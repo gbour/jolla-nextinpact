@@ -2,7 +2,8 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 ListModel {
-
+    id: model
+/*
     ListElement {
         icon: 'qrc:/res/img1.jpg'
         title: "foo"
@@ -33,6 +34,9 @@ ListModel {
 //      append({'title': 'added via javascript'})
 
         context.refresh(function(articles) {
+            // remove all articles
+            clear();
+
             for (var idx in articles) {
                 var art = articles[idx];
 
