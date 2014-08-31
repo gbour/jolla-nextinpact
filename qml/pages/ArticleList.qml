@@ -81,8 +81,6 @@ Page {
         */
         model: ArticleItem {}
         delegate: ArticleDelegate {
-            menu: contextMenu
-
             onClicked: {
                 console.log("clicked on " + model.link);
                 var params = {
@@ -92,25 +90,6 @@ Page {
                 pageStack.push(Qt.resolvedUrl("detail.qml"), params, PageStackAction.Animated)
             }
 
-            Component {
-                id: contextMenu
-                ContextMenu {
-                    MenuItem {
-                        text: 'I like it'
-                    }
-                    MenuItem {
-                        text: 'Mark as read'
-                    }
-                    MenuItem {
-                        text: 'Share'
-                    }
-                    MenuItem {
-                        text: 'Download all comments'
-                    }
-
-
-                }
-            }
         }
 
         section {
