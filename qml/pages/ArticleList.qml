@@ -56,6 +56,22 @@ Page {
             //title: ""
         }
 
+/*
+        Row {
+            spacing: Theme.paddingLarge
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            BusyIndicator {
+                running: true
+                size: BusyIndicatorSize.Medium
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            anchors.topMargin: 5
+            anchors.bottomMargin: 5
+        }
+*/
         /*
         model: ListModel {
             ListElement {
