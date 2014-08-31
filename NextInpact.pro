@@ -18,7 +18,6 @@ SOURCES += src/NextInpact.cpp
 
 OTHER_FILES += qml/NextInpact.qml \
     qml/cover/CoverPage.qml \
-    rpm/NextInpact.changes.in \
     rpm/NextInpact.spec \
     rpm/NextInpact.yaml \
     translations/*.ts \
@@ -38,7 +37,8 @@ OTHER_FILES += qml/NextInpact.qml \
     qml/logic/scraper.js \
     qml/lib/iso8859-15.js \
     res/logo-big.png \
-    LICENSE
+    LICENSE \
+    rpm/NextInpact.changes
 
 # to disable building translations every time, comment out the
 # following CONFIG line

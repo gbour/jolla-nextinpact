@@ -8,8 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Sun Apr 13 2014 Jack Tar <jack.tar@example.com> 0.0.1-1
-- Scrubbed the deck
-- Hoisted the sails
+* Sun Aug 31 2014 Guillaume Bour <guillaume@bour.cc> 0.1-1
+First public release
+- no offline mode
+- no CoverPage
 
 
