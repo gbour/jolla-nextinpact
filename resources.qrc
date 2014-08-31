@@ -4,5 +4,6 @@
         <file>res/img2.jpg</file>
         <file>res/img1.jpg</file>
         <file>res/comments.png</file>
+        <file>res/logo-big.png</file>
     </qresource>
 </RCC>
