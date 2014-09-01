@@ -57,6 +57,7 @@ ListModel {
             for (var idx in articles) {
                 var art = articles[idx];
 
+                art.section = art.date.toLocaleDateString();
                 append(art)
             }
         });

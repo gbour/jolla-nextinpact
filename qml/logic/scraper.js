@@ -25,6 +25,10 @@ var STATE_DATE    = 4
 var STATE_SUBTITLE = 5
 var STATE_COMMENTS = 6
 
+var MONTHS = ["Jan", "Feb", "Mar", "Apr",
+              "May", "Jun", "Jul", "Aug",
+              "Sep", "Oct", "Nov", "Dec"];
+
 var states = ['',
     /* STATE_ARTICLE  */ 'article',
     /* STATE_H1       */ 'h1',
@@ -64,6 +68,12 @@ Article.prototype = {
                     if(state[0] == 0 && tag === 'article') {
                         state.unshift(STATE_ARTICLE);
                         article = {};
+
+
+                        //01/09/2014 16:00:08 => new Date('01 Sept 2014 16:00:08')
+                        var elts = attrs['data-datePubli'].value.split('/')
+                        elts[1] = MONTHS[parseInt(elts[1])-1];
+                        article.date = new Date(elts.join(' '));
 
                     } else if(state[0] == STATE_ARTICLE && tag == 'h1') {
                         state.unshift(STATE_H1);
