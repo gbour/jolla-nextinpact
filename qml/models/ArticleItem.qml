@@ -20,10 +20,8 @@ import Sailfish.Silica 1.0
 
 ListModel {
     id: model
-    function init() {
-        console.log("ArticleModel::init")
-//      append({'title': 'added via javascript'})
 
+    function init(onComplete) {
         context.refresh(function(articles) {
             // remove all articles
             clear();
@@ -34,6 +32,8 @@ ListModel {
                 art.section = art.date.toLocaleDateString();
                 append(art)
             }
+
+            onComplete();
         });
     }
 }

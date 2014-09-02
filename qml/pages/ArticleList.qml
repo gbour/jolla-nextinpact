@@ -22,7 +22,22 @@ import "../models"
 Page {
     id: articles
 
-    // To enable PullDownMenu, place our content in a SilicaFlickable
+    Row {
+        id: loader
+        visible: false
+
+        spacing: Theme.paddingLarge
+        anchors.horizontalCenter: parent.horizontalCenter
+        height: 200
+
+        BusyIndicator {
+            id: loader_bi
+            running: false
+            size: BusyIndicatorSize.Large
+            anchors.verticalCenter: parent.verticalCenter
+        }
+    }
+
     SilicaListView {
         id: mylistview
         anchors.fill: parent
@@ -38,10 +53,7 @@ Page {
             }
             MenuItem {
                 text: qsTr("refresh")
-                onClicked: {
-                    console.log("refreshing articles list...");
-                    mylistview.model.init();
-                }
+                onClicked: mylistview.refresh()
             }
 
         }
@@ -104,9 +116,16 @@ Page {
             // initialize JS context
             appwin.context.init();
 
-            model.init();
+            refresh();
         }
 
+        function refresh() {
+            console.log("refreshing articles list...");
+
+            loader.visible = true; loader_bi.running = true;
+            model.init(function() { loader.visible = false; loader_bi.running = false; });
+
+        }
     }
 }
 
