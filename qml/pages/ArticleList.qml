@@ -27,7 +27,6 @@ Page {
         id: mylistview
         anchors.fill: parent
 
-        // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
             MenuItem {
                 text: qsTr("about")
@@ -39,7 +38,6 @@ Page {
             }
             MenuItem {
                 text: qsTr("refresh")
-                //onClicked: pageStack.push(Qt.resolvedUrl("about.qml"))
                 onClicked: {
                     console.log("refreshing articles list...");
                     mylistview.model.init();
@@ -56,17 +54,6 @@ Page {
             //title: ""
         }
 
-        /*
-        model: ListModel {
-            ListElement {
-                title: "foo"
-            }
-
-            ListElement {
-                title: "Homer"
-            }
-        }
-        */
         model: ArticleItem {}
         delegate: ArticleDelegate {
             menu: contextMenu
@@ -114,18 +101,9 @@ Page {
 
 
         Component.onCompleted: {
-            /*
-            model.append({})
-            model.append({})
-            model.append({'section': '2d section'})
-            */
-            console.log("ArticleList load complete");
-
             // initialize JS context
             appwin.context.init();
-            console.log("context state=" + appwin.context.state['key1']);
 
-            //appwin.context.refresh();
             model.init();
         }
 
