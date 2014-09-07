@@ -33,6 +33,9 @@ ListItem {
         id: icon
         source: model.icon
         //width: parent.width*
+        width: 172
+        fillMode: Image.PreserveAspectFit
+
         anchors {
             left: parent.left
             topMargin: 10
