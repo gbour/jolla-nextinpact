@@ -46,7 +46,7 @@ OTHER_FILES += qml/NextInpact.qml \
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/NextInpact-de.ts
+TRANSLATIONS += translations/NextInpact-fr.ts
 
 RESOURCES += \
     resources.qrc

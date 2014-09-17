@@ -34,7 +34,9 @@
 
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QTranslator>
 #include <sailfishapp.h>
+#include <QDebug>
 
 
 int main(int argc, char *argv[])
@@ -49,6 +51,13 @@ int main(int argc, char *argv[])
     // To display the view, call "show()" (will show fullscreen on device).
     QGuiApplication *app = SailfishApp::application(argc,argv); //SailfishApp::main(argc, argv);
     app->setApplicationVersion(APP_VERSION);
+
+    qDebug() << "locale: " << QLocale::system().name();
+
+    QTranslator translator;
+    translator.load("NextInpact-"+ QLocale::system().name().split("_").first(),
+                    SailfishApp::pathTo("translations").path());
+    app->installTranslator(&translator);
 
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/NextInpact.qml"));
