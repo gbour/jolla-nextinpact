@@ -32,6 +32,8 @@
 #include <QtQuick>
 #endif
 
+#include <QGuiApplication>
+#include <QQuickView>
 #include <sailfishapp.h>
 
 
@@ -45,7 +47,14 @@ int main(int argc, char *argv[])
     //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
     //
     // To display the view, call "show()" (will show fullscreen on device).
+    QGuiApplication *app = SailfishApp::application(argc,argv); //SailfishApp::main(argc, argv);
+    app->setApplicationVersion(APP_VERSION);
 
-    return SailfishApp::main(argc, argv);
+    QQuickView *view = SailfishApp::createView();
+    view->setSource(SailfishApp::pathTo("qml/NextInpact.qml"));
+    view->rootContext()->setContextProperty("APP_VERSION", APP_VERSION);
+    view->show();
+
+    return app->exec();
 }
 

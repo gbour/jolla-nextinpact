@@ -12,6 +12,9 @@
 # The name of your application
 TARGET = NextInpact
 
+VERSION = 0.3
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 CONFIG += sailfishapp
 
 SOURCES += src/NextInpact.cpp
