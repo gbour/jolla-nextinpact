@@ -14,6 +14,13 @@ TARGET = NextInpact
 
 VERSION = 0.3
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+DEFINES += BUILD_DATE='"$(shell date '+%s')"'
+
+# $$system() is executed when qmake generates Makefile
+# $(shell) is executed as Makefile runtime
+# Jolla qtcreator copy files in a dedicated build directory outside of git tree
+#DEFINES += GIT_VERSION='\\\"$(shell git symbolic-ref --short HEAD $$_PRO_FILE_PWD_)/$(shell git describe --always $$_PRO_FILE_PWD_)\\\"'
+DEFINES += GIT_VERSION='\\\"$$system(git symbolic-ref --short HEAD)/$$system(git describe --always)\\\"'
 
 CONFIG += sailfishapp
 
@@ -25,7 +32,6 @@ OTHER_FILES += qml/NextInpact.qml \
     rpm/NextInpact.yaml \
     translations/*.ts \
     NextInpact.desktop \
-    qml/pages/about.qml \
     qml/pages/detail.qml \
     qml/pages/comments.qml \
     qml/models/ArticleItem.qml \
@@ -41,7 +47,8 @@ OTHER_FILES += qml/NextInpact.qml \
     qml/lib/iso8859-15.js \
     res/logo-big.png \
     LICENSE \
-    rpm/NextInpact.changes
+    rpm/NextInpact.changes \
+    qml/pages/About.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

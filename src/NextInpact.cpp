@@ -37,7 +37,7 @@
 #include <QTranslator>
 #include <sailfishapp.h>
 #include <QDebug>
-
+#include <QDateTime>
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     QGuiApplication *app = SailfishApp::application(argc,argv); //SailfishApp::main(argc, argv);
     app->setApplicationVersion(APP_VERSION);
 
-    qDebug() << "locale: " << QLocale::system().name();
+    qDebug() << "locale: " << QLocale::system().name() << ", GIT_VERSION: " << GIT_VERSION;
 
     QTranslator translator;
     translator.load("NextInpact-"+ QLocale::system().name().split("_").first(),
@@ -62,6 +62,10 @@ int main(int argc, char *argv[])
     QQuickView *view = SailfishApp::createView();
     view->setSource(SailfishApp::pathTo("qml/NextInpact.qml"));
     view->rootContext()->setContextProperty("APP_VERSION", APP_VERSION);
+    view->rootContext()->setContextProperty("GIT_VERSION", GIT_VERSION);
+
+    QDateTime buildat = QDateTime::fromMSecsSinceEpoch(qint64(BUILD_DATE)*1000);
+    view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));
     view->show();
 
     return app->exec();

@@ -44,11 +44,11 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("about")
-                onClicked: pageStack.push(Qt.resolvedUrl("about.qml"))
+                text: qsTr("About")
+                onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
             MenuItem {
-                text: qsTr("refresh")
+                text: qsTr("Refresh")
                 onClicked: mylistview.refresh()
             }
 
