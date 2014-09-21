@@ -54,6 +54,7 @@ Page {
                     If you like it, please <a href=\"http://www.nextinpact.com/abonnement?utm_source=pcinpact&utm_medium=header&utm_campaign=premium\">subscribe to a member/premium account</a>."
                 ).arg(APP_VERSION).arg(BUILD_DATE).arg(GIT_VERSION)
 
+                textFormat: Text.RichText
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeMedium
                 wrapMode: Text.WordWrap
