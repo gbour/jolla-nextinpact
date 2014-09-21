@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Sep 19 2014 Guillaume Bour <guillaume@bour.cc> 0.3-1
+Improvements:
+- fix articles list icon with so title text do not overlap
+- french localisation (date, about page)
+
 * Wed Sep 03 2014 Guillaume Bour <guillaume@bour.cc> 0.2-1
 Improvements on Articles list view:
  - add spinner when refreshing articles list
