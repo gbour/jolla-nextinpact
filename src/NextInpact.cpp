@@ -38,6 +38,7 @@
 #include <sailfishapp.h>
 #include <QDebug>
 #include <QDateTime>
+#include <QQmlContext>
 
 int main(int argc, char *argv[])
 {
