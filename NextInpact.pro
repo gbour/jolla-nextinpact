@@ -48,7 +48,8 @@ OTHER_FILES += qml/NextInpact.qml \
     res/logo-big.png \
     LICENSE \
     rpm/NextInpact.changes \
-    qml/pages/About.qml
+    qml/pages/About.qml \
+    qml/lib/utils.js
 
 # to disable building translations every time, comment out the
 # following CONFIG line
