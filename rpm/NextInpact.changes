@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu Oct 23 2014 Guillaume Bour <guillaume@bour.cc> 0.4-1
+Fix:
+- fix issue in scrapper (article data-daepubli attribute is lowercase now)
+
 * Sun Sep 19 2014 Guillaume Bour <guillaume@bour.cc> 0.3-1
 Improvements:
 - fix articles list icon with so title text do not overlap
