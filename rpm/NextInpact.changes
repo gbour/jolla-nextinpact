@@ -1,0 +1,28 @@
+# Rename this file as NextInpact.changes to include changelog
+# entries in your RPM file.
+#
+# Add new changelog entries following the format below.
+# Add newest entries to the top of the list.
+# Separate entries from eachother with a blank line.
+
+# * date Author's Name <author's email> version-release
+# - Summary of changes
+
+* Thu Oct 23 2014 Guillaume Bour <guillaume@bour.cc> 0.4-1
+Fix:
+- fix issue in scrapper (article data-daepubli attribute is lowercase now)
+
+* Sun Sep 19 2014 Guillaume Bour <guillaume@bour.cc> 0.3-1
+Improvements:
+- fix articles list icon with so title text do not overlap
+- french localisation (date, about page)
+
+* Wed Sep 03 2014 Guillaume Bour <guillaume@bour.cc> 0.2-1
+Improvements on Articles list view:
+ - add spinner when refreshing articles list
+ - add daily sections
+
+* Sun Aug 31 2014 Guillaume Bour <guillaume@bour.cc> 0.1-1
+First public release
+- no offline mode
+- no CoverPage

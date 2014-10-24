@@ -136,7 +136,7 @@ var HTMLtoDOM;
 			}
 
 			if (html == last)
-                throw "Parse Error: ";// + html;
+                throw "Parse Error: " + html.substring(10);
 			last = html;
 		}
 

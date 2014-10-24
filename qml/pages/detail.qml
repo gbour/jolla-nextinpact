@@ -25,12 +25,6 @@ Page {
     // url is provided when clicking list item in articles list view
     property alias url: detailview.url;
 
-    onStatusChanged: {
-        if (status == PageStatus.Active) {
-            pageStack.pushAttached(Qt.resolvedUrl("comments.qml"), {})
-        }
-    }
-
 
     SilicaWebView {
         id: detailview

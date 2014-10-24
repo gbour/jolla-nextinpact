@@ -17,6 +17,7 @@
 
 .import '../lib/htmlparser2.js' as HtmlParser
 .import '../lib/iso8859-15.js' as Iso
+.import '../lib/utils.js' as Utils
 
 var STATE_ARTICLE = 1 //
 var STATE_H1      = 2      //
@@ -50,7 +51,7 @@ Article.prototype = {
             tmp = tmp.replace('%{'+key+'}', params[key]);
         }
 
-        console.log('url='+tmp)
+        console.log('url='+tmp);
         return tmp;
     },
 
@@ -71,9 +72,14 @@ Article.prototype = {
 
 
                         //01/09/2014 16:00:08 => new Date('01 Sept 2014 16:00:08')
-                        var elts = attrs['data-datePubli'].value.split('/')
-                        elts[1] = MONTHS[parseInt(elts[1])-1];
-                        article.date = new Date(elts.join(' '));
+                        if('data-datepubli' in attrs) {
+                            var elts = attrs['data-datepubli'].value.split('/')
+                            elts[1] = MONTHS[parseInt(elts[1])-1];
+                            article.date = new Date(elts.join(' '));
+                        } else {
+                            article.date = new Date();
+                        }
+
 
                     } else if(state[0] == STATE_ARTICLE && tag == 'h1') {
                         state.unshift(STATE_H1);
@@ -96,7 +102,8 @@ Article.prototype = {
                         state.unshift(STATE_COMMENTS);
                     }
                 } catch(e) {
-                    console.log('e='+e)
+                    console.log('e=' + e + '(tag=' + tag + ')')
+                    console.log(Utils.dump(attrs))
 
                 }
 
@@ -107,7 +114,7 @@ Article.prototype = {
                 //console.log('end='+tag+','+state[0] + ','+states[state[0]]);
 
                 if(states[state[0]] == tag) {
-                    console.log("unshift " + tag)
+                    //console.log("unshift " + tag)
                     state.shift()
                 }
 

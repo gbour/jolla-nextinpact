@@ -32,8 +32,13 @@
 #include <QtQuick>
 #endif
 
+#include <QGuiApplication>
+#include <QQuickView>
+#include <QTranslator>
 #include <sailfishapp.h>
-
+#include <QDebug>
+#include <QDateTime>
+#include <QQmlContext>
 
 int main(int argc, char *argv[])
 {
@@ -45,7 +50,25 @@ int main(int argc, char *argv[])
     //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
     //
     // To display the view, call "show()" (will show fullscreen on device).
+    QGuiApplication *app = SailfishApp::application(argc,argv); //SailfishApp::main(argc, argv);
+    app->setApplicationVersion(APP_VERSION);
 
-    return SailfishApp::main(argc, argv);
+    qDebug() << "locale: " << QLocale::system().name() << ", GIT_VERSION: " << GIT_VERSION;
+
+    QTranslator translator;
+    translator.load("NextInpact-"+ QLocale::system().name().split("_").first(),
+                    SailfishApp::pathTo("translations").path());
+    app->installTranslator(&translator);
+
+    QQuickView *view = SailfishApp::createView();
+    view->setSource(SailfishApp::pathTo("qml/NextInpact.qml"));
+    view->rootContext()->setContextProperty("APP_VERSION", APP_VERSION);
+    view->rootContext()->setContextProperty("GIT_VERSION", GIT_VERSION);
+
+    QDateTime buildat = QDateTime::fromMSecsSinceEpoch(qint64(BUILD_DATE)*1000);
+    view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));
+    view->show();
+
+    return app->exec();
 }
 
