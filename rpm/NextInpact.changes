@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Dec 21 2014 Guillaume Bour <guillaume@bour.cc> 0.5-1
+Fix:
+- fix issue in scrapper (article icon)
+- use new NextInpact logo
+
 * Thu Oct 23 2014 Guillaume Bour <guillaume@bour.cc> 0.4-1
 Fix:
 - fix issue in scrapper (article data-daepubli attribute is lowercase now)
