@@ -91,10 +91,15 @@ Article.prototype = {
                     } else if(state[0] == STATE_ARTICLE && tag == 'img' &&
                               attrs.class.value == 'ded-image') {
                         if('data-frz-src' in attrs) {
-                            article.icon = 'http:' + attrs['data-frz-src'].value;
+                            article.icon = attrs['data-frz-src'].value;
                         } else {
-                            article.icon = 'http:' + attrs['data-src'].value;
+                            article.icon = attrs['data-src'].value;
                         }
+
+                        if(article.icon.startsWith('//')) {
+                            article.icon = 'http:' + article.icon;
+                        }
+
                     } else if(state[0] == STATE_ARTICLE && tag == 'span' &&
                               attrs.class.value == 'date_pub') {
                         state.unshift(STATE_DATE);
