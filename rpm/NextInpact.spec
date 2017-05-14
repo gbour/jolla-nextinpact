@@ -14,7 +14,7 @@ Name:       NextInpact
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    NextINpact
 Version:    0.5
-Release:    1
+Release:    2
 Group:      Applications/Internet
 License:    GPLv3
 URL:        https://github.com/gbour/jolla-nextinpact

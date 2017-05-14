@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed May 10 2017 Guillaume Bour <guillaume@bour.cc> 0.5-2
+Fix:
+- fix issue in scrapper (article icon uri changed)
+
 * Sun Dec 21 2014 Guillaume Bour <guillaume@bour.cc> 0.5-1
 Fix:
 - fix issue in scrapper (article icon)
