@@ -107,7 +107,7 @@ Article.prototype = {
                               attrs.class.value == 'soustitre') {
                         state.unshift(STATE_SUBTITLE);
                     } else if(state[0] == STATE_ARTICLE && tag == 'span' &&
-                              attrs.class.value == 'nbcomment') {
+                              attrs.class.value == 'nb_comments') {
                         state.unshift(STATE_COMMENTS);
                     }
                 } catch(e) {

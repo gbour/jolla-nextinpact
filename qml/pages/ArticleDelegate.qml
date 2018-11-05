@@ -110,7 +110,7 @@ ListItem {
 
     Label {
         id: comments_counter
-        text: model.comments
+        text: model.comments || ''
         font.pixelSize: Theme.fontSizeTiny - 2
         styleColor: "#8a979d"
 
@@ -130,5 +130,6 @@ ListItem {
             bottom: icon.bottom
             right: parent.right
         }
+        visible: model.comments !== undefined
     }
 }
