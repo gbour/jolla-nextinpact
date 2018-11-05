@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
     <name>About</name>
-    <message>
-        <source>About ��NextINpact��</source>
-        <translation>À propos de «NextINpact»</translation>
-    </message>
     <message>
         <source>
                     version %1, released at %2 (git %3).&lt;br/&gt;
@@ -27,13 +23,13 @@ Vous êtes encouragé à télécharger les sources sur &lt;a href=&quot;https://
 Les articles et leur contenu affichés par cette application; ainsi que le logo NextINpact; sont la propriété pleine et entière de &lt;b&gt;PC INpact SARL de presse&lt;/b&gt;&lt;br/&gt;.
 Si vous appréciez ce contenu, vous êtes invité à &lt;a href=&quot;http://www.nextinpact.com/abonnement?utm_source=pcinpact&amp;utm_medium=header&amp;utm_campaign=premium&quot;&gt;souscrire à un abonnement member ou premium&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>About «NextINpact»</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArticleList</name>
-    <message>
-        <source>settings</source>
-        <translation type="obsolete">paramètres</translation>
-    </message>
     <message>
         <source>About</source>
         <translation>À propos</translation>
