@@ -66,7 +66,7 @@ Article.prototype = {
                 //console.log(state+','+tag)
 
                 try {
-                    if(state[0] == 0 && tag === 'article') {
+                    if(state[0] === 0 && tag === 'article') {
                         state.unshift(STATE_ARTICLE);
                         article = {};
 
@@ -81,15 +81,15 @@ Article.prototype = {
                         }
 
 
-                    } else if(state[0] == STATE_ARTICLE && tag == 'h1') {
+                    } else if(state[0] === STATE_ARTICLE && tag === 'h1') {
                         state.unshift(STATE_H1);
 
-                    } else if(state[0] == STATE_H1 && tag == 'a') {
+                    } else if(state[0] === STATE_H1 && tag === 'a') {
                         state.unshift(STATE_A);
                         article.link = 'http://m.nextinpact.com/'+attrs.href.value;
 
-                    } else if(state[0] == STATE_ARTICLE && tag == 'img' &&
-                              attrs.class.value == 'ded-image') {
+                    } else if(state[0] === STATE_ARTICLE && tag === 'img' &&
+                              attrs.class.value === 'ded-image') {
                         if('data-frz-src' in attrs) {
                             article.icon = attrs['data-frz-src'].value;
                         } else {
@@ -100,14 +100,14 @@ Article.prototype = {
                             article.icon = 'http:' + article.icon;
                         }
 
-                    } else if(state[0] == STATE_ARTICLE && tag == 'span' &&
-                              attrs.class.value == 'date_pub') {
+                    } else if(state[0] === STATE_ARTICLE && tag === 'span' &&
+                              attrs.class.value === 'date_pub') {
                         state.unshift(STATE_DATE);
-                    } else if(state[0] == STATE_ARTICLE && tag == 'span' &&
-                              attrs.class.value == 'soustitre') {
+                    } else if(state[0] === STATE_ARTICLE && tag === 'span' &&
+                              attrs.class.value === 'soustitre') {
                         state.unshift(STATE_SUBTITLE);
-                    } else if(state[0] == STATE_ARTICLE && tag == 'span' &&
-                              attrs.class.value == 'nb_comments') {
+                    } else if(state[0] === STATE_ARTICLE && tag === 'span' &&
+                              attrs.class.value === 'nb_comments') {
                         state.unshift(STATE_COMMENTS);
                     }
                 } catch(e) {
@@ -122,12 +122,12 @@ Article.prototype = {
             end: function (tag) {
                 //console.log('end='+tag+','+state[0] + ','+states[state[0]]);
 
-                if(states[state[0]] == tag) {
+                if(states[state[0]] === tag) {
                     //console.log("unshift " + tag)
                     state.shift()
                 }
 
-                if (tag == 'article') {
+                if (tag === 'article') {
                     articles.push(article);
                 }
             },
@@ -136,14 +136,14 @@ Article.prototype = {
                 text = text.trim();
 
                 try {
-                    if(state[0] == STATE_A) {
+                    if(state[0] === STATE_A) {
                         article.title = Iso.map(text);
-                    } else if(state[0] == STATE_DATE) {
+                    } else if(state[0] === STATE_DATE) {
                         article.timestamp = text;
-                    } else if(state[0] == STATE_SUBTITLE) {
+                    } else if(state[0] === STATE_SUBTITLE) {
                         // remove '- ' at start
                         article.subtitle = Iso.map(text.substr(2));
-                    } else if(state[0] == STATE_COMMENTS) {
+                    } else if(state[0] === STATE_COMMENTS) {
                         article.comments = text;
                     }
                 } catch (e) {}
