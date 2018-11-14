@@ -40,6 +40,8 @@
 #include <QDateTime>
 #include <QQmlContext>
 
+#include <src/database.h>
+
 int main(int argc, char *argv[])
 {
     // SailfishApp::main() will display "qml/template.qml", if you need more
@@ -55,18 +57,25 @@ int main(int argc, char *argv[])
 
     qDebug() << "locale: " << QLocale::system().name() << ", GIT_VERSION: " << GIT_VERSION;
 
+    Database *db = new Database();
+    qDebug() << "db:" << db;
+
     QTranslator translator;
     translator.load("NextInpact-"+ QLocale::system().name().split("_").first(),
                     SailfishApp::pathTo("translations").path());
     app->installTranslator(&translator);
 
     QQuickView *view = SailfishApp::createView();
-    view->setSource(SailfishApp::pathTo("qml/NextInpact.qml"));
     view->rootContext()->setContextProperty("APP_VERSION", APP_VERSION);
     view->rootContext()->setContextProperty("GIT_VERSION", GIT_VERSION);
 
     QDateTime buildat = QDateTime::fromMSecsSinceEpoch(qint64(BUILD_DATE)*1000);
     view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));
+    view->rootContext()->setContextProperty("db", db);
+
+    // NOTE: view source MUST be set AFTER properties, or props will not be
+    // visible
+    view->setSource(SailfishApp::pathTo("qml/NextInpact.qml"));
     view->show();
 
     return app->exec();
