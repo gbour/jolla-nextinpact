@@ -39,3 +39,24 @@ bool Database::init()
     return true;
 }
 
+bool Database::articleAdd(QVariantMap values) {
+    //qDebug() << "db.articleAdd" << values;
+    //qDebug() << values.keys() << values["subtitle"] << values["date"] << values["id"];
+
+    QSqlQuery q;
+    q.prepare("INSERT INTO articles (id, date, hour, title, subtitle, nb_comments, unread) "
+              "VALUES (:id, :date, :hour, :title, :subtitle, :nb_comments, :unread)");
+
+    q.bindValue(":id"         , values["id"]);
+    q.bindValue(":date"       , values["date"]);
+    q.bindValue(":hour"       , values["hour"]);
+    q.bindValue(":title"      , values["title"]);
+    q.bindValue(":subtitle"   , values["subtitle"]);
+    q.bindValue(":nb_comments", values["comments"]);
+    q.bindValue(":unread", true);
+    bool ret = q.exec();
+
+    return ret;
+}
+
+

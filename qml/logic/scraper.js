@@ -70,6 +70,9 @@ Article.prototype = {
                         state.unshift(STATE_ARTICLE);
                         article = {};
 
+                        if('data-acturowid' in attrs) {
+                            article.id = attrs['data-acturowid'].value
+                        }
 
                         //01/09/2014 16:00:08 => new Date('01 Sept 2014 16:00:08')
                         if('data-datepubli' in attrs) {

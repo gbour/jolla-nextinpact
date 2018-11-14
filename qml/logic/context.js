@@ -42,6 +42,11 @@ function refresh(callback) {
            //console.log(http.responseText)
 
             var articles = scraper.fetch(http.responseText);
+            // insert into db
+            for(var idx in articles) {
+                db.articleAdd(articles[idx])
+            }
+
             callback(articles);
 
         }
