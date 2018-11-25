@@ -1,4 +1,7 @@
 
+#include <QStandardPaths>
+#include <QStringBuilder>
+
 #include <src/database.h>
 
 Database::Database(QObject *parent) : QObject(parent)
@@ -13,9 +16,10 @@ bool Database::init()
 {
     //qDebug() << QSqlDatabase::drivers();
     //TODO: check QSLITE driver is present ?
+    static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation) % QString("/nextinpact.db");
 
     this->db = QSqlDatabase::addDatabase("QSQLITE");
-    this->db.setDatabaseName("jolla-nextinpact");
+    this->db.setDatabaseName(dbpath);
     if (!this->db.open()) {
         qDebug() << "cannot open sqlite database";
         return false;
