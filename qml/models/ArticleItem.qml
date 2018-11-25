@@ -19,11 +19,11 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 ListModel {
-    id: model
+    id: outdated_model
 
     function init(onComplete) {
         context.refresh(function(articles) {
-            // remove all articles
+            // remove all articles from ListModel
             clear();
 
             for (var idx in articles) {

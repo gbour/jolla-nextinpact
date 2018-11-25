@@ -41,6 +41,7 @@
 #include <QQmlContext>
 
 #include <src/database.h>
+#include <src/ArticleListModel.h>
 
 int main(int argc, char *argv[])
 {
@@ -60,6 +61,8 @@ int main(int argc, char *argv[])
     Database *db = new Database();
     qDebug() << "db:" << db;
 
+    ArticleListModel *listModel  = new ArticleListModel();
+
     QTranslator translator;
     translator.load("NextInpact-"+ QLocale::system().name().split("_").first(),
                     SailfishApp::pathTo("translations").path());
@@ -72,6 +75,7 @@ int main(int argc, char *argv[])
     QDateTime buildat = QDateTime::fromMSecsSinceEpoch(qint64(BUILD_DATE)*1000);
     view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));
     view->rootContext()->setContextProperty("db", db);
+    view->rootContext()->setContextProperty("articlesListModel", listModel);
 
     // NOTE: view source MUST be set AFTER properties, or props will not be
     // visible

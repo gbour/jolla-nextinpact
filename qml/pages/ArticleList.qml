@@ -49,7 +49,7 @@ Page {
             }
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: mylistview.refresh()
+                onClicked: mylistview.refresh(true)
             }
 
         }
@@ -62,7 +62,8 @@ Page {
             //title: ""
         }
 
-        model: ArticleItem {}
+        //model: ArticleItem {}
+        model: articlesListModel
         delegate: ArticleDelegate {
             onClicked: {
                 console.log("clicked on " + model.link);
@@ -78,7 +79,7 @@ Page {
         section {
             property: 'section'
             delegate: SectionHeader {
-                text: section
+                text: new Date(section).toLocaleDateString();
                 height: Theme.itemSizeExtraSmall
             }
         }
@@ -91,14 +92,20 @@ Page {
             // initialize JS context
             appwin.context.init();
 
-            refresh();
+            refresh(false);
         }
 
-        function refresh() {
+        function refresh(showLoader) {
             console.log("refreshing articles list...");
 
-            loader.visible = true; loader_bi.running = true;
-            model.init(function() { loader.visible = false; loader_bi.running = false; });
+            loader.visible = showLoader; loader_bi.running = showLoader;
+            context.refresh(function(articles) {
+                // notify list model to reload articles after db update
+                articlesListModel.updateModel()
+
+                // hide loader
+                loader.visible = false; loader_bi.running = false;
+            });
 
         }
     }

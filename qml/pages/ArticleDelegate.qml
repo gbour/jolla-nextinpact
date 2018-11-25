@@ -110,20 +110,20 @@ ListItem {
 
     Label {
         id: comments_counter
-        text: model.comments || ''
+        text: model.nbcomments || ''
         font.pixelSize: Theme.fontSizeTiny - 2
         styleColor: "#8a979d"
 
         anchors {
             //top: title.bottom
-            top: comments.top
-            right: comments.left
+            top: comments_icon.top
+            right: comments_icon.left
             rightMargin: 5
         }
     }
 
     Image {
-        id: comments
+        id: comments_icon
         source: 'qrc:/res/comments.png'
         anchors {
             //top: title.bottom

@@ -19,7 +19,7 @@ private:
     bool init();
 
 public slots:
-    bool articleAdd(QVariantMap values);
+    bool articleAdd(const QVariantMap values);
 };
 
 #endif // DATABASE_H

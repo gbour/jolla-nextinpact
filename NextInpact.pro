@@ -25,7 +25,8 @@ DEFINES += GIT_VERSION='\\\"$$system(git symbolic-ref --short HEAD)/$$system(git
 CONFIG += sailfishapp
 
 SOURCES += src/NextInpact.cpp \
-    src/database.cpp
+    src/database.cpp \
+    src/ArticleListModel.cpp
 
 OTHER_FILES += qml/NextInpact.qml \
     qml/cover/CoverPage.qml \
@@ -63,5 +64,6 @@ RESOURCES += \
 QT += sql
 
 HEADERS += \
-    src/database.h
+    src/database.h \
+    src/ArticleListModel.h
 
