@@ -18,6 +18,7 @@ public:
         IconRole,
         LinkRole,
         UnreadRole,
+        NewCommentsRole,
         SectionRole
     };
 

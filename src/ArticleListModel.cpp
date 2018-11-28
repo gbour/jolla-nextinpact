@@ -30,6 +30,7 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
     roles[IconRole] = "icon";
     roles[LinkRole] = "link";
     roles[UnreadRole] = "unread";
+    roles[NewCommentsRole] = "new_comments";
     roles[SectionRole] = "section";
 
     return roles;
