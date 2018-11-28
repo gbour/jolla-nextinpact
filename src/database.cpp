@@ -26,6 +26,12 @@ bool Database::init()
     }
 
     QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS config ("
+                    "key   TEXT PRIMARY KEY,"
+                    "value TEXT"
+               ")");
+    query.exec("INSERT OR IGNORE INTO config VALUES (\"version\", \"1\")");
+
     query.exec("CREATE TABLE IF NOT EXISTS articles ("
                     "id INTEGER PRIMARY KEY,"
                     "date TEXT,"
