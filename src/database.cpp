@@ -38,8 +38,8 @@ bool Database::init()
                     // link to original article
                     "link TEXT,"
                     // bool flags
-                    "unread INTEGER,"
-                    "new_comments INTEGER"
+                    "unread INTEGER DEFAULT 1,"
+                    "new_comments INTEGER DEFAULT 1"
                ")");
     qDebug() << query.lastError().text();
 
@@ -51,8 +51,8 @@ bool Database::articleAdd(const QVariantMap values) {
     qDebug() << "db.articleAdd" << values["title"];
 
     QSqlQuery q;
-    q.prepare("INSERT OR IGNORE INTO articles (id, date, timestamp, title, subtitle, nb_comments, icon, link, unread) "
-              "VALUES (:id, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :unread)");
+    q.prepare("INSERT OR IGNORE INTO articles (id, date, timestamp, title, subtitle, nb_comments, icon, link) "
+              "VALUES (:id, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link)");
 
     q.bindValue(":id"         , values["id"]);
     q.bindValue(":date"       , values["date"]);
@@ -62,7 +62,6 @@ bool Database::articleAdd(const QVariantMap values) {
     q.bindValue(":nb_comments", values["comments"]);
     q.bindValue(":icon"       , values["icon"]);
     q.bindValue(":link"       , values["link"]);
-    q.bindValue(":unread"     , true);
     bool ret = q.exec();
     if (!ret) {
         qDebug() << "insert failed:" << q.lastError().text();
