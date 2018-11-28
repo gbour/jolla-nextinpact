@@ -79,6 +79,17 @@ bool Database::articleAdd(const QVariantMap values) {
         return true;
     }
 
+    q.prepare("UPDATE articles SET nb_comments = :nb_comments, new_comments = 1 "
+              "WHERE id = :id AND nb_comments < :nb_comments");
+    q.bindValue(":id"         , values["id"]);
+    q.bindValue(":nb_comments", values["comments"]);
+    ret = q.exec();
+    if (!ret) {
+        qDebug() << "update failed:" << q.lastError().text();
+        return false;
+    }
+
+    qDebug() << "updated rows: " << q.numRowsAffected();
     return ret;
 }
 
