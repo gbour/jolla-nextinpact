@@ -76,4 +76,20 @@ bool Database::articleAdd(const QVariantMap values) {
     return ret;
 }
 
+bool Database::toggleRead(const int articleId, const bool read) {
+    qDebug() << articleId << "marked as read";
+
+    QSqlQuery q;
+    q.prepare("UPDATE articles SET unread = :unread WHERE id = :id");
+    q.bindValue(":id", articleId);
+    q.bindValue(":unread", read ? 0 : 1);
+    bool ret = q.exec();
+    if (!ret) {
+        qDebug() << "toggleRead failed:" << q.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
 

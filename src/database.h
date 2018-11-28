@@ -20,6 +20,8 @@ private:
 
 public slots:
     bool articleAdd(const QVariantMap values);
+    bool toggleRead(const int articleId, const bool read);
+
 };
 
 #endif // DATABASE_H

@@ -68,6 +68,7 @@ Page {
             onClicked: {
                 console.log("clicked on " + model.link);
                 var params = {
+                    artid: model.id,
                     url: model.link
                 }
 

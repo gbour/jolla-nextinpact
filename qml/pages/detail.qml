@@ -17,11 +17,13 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-//import QtWebKit 3.0
+import QtWebKit 3.0
 
 Page {
     id: detail
 
+    // id of current article in the database
+    property string artid;
     // url is provided when clicking list item in articles list view
     property alias url: detailview.url;
 
@@ -46,12 +48,39 @@ Page {
             bottom: parent.bottom
 
         }
+
+        onLoadingChanged: function(req) {
+            /*
+                started: 0
+                stopped: 1
+                succeed: 2
+                failed:  3
+             */
+            // starts read timer when the article is completely loaded
+            if (req.status === WebView.LoadSucceededStatus) {
+                read_timer.start()
+            }
+        }
+
     }
 
 
     Component.onCompleted: {
         //detailview.loadHtml("<html><body><h1>Yeah!!!</h1></body></html> <b>ploploplop</b>")
-
     }
 
+    Component.onDestruction: function() {
+        // when leaving article page, stop 'read' timer if not triggered yet
+        read_timer.stop()
+    }
+
+    Timer {
+        id: read_timer
+        interval: 5000 // 5 secs
+        running: false
+        onTriggered: {
+            db.toggleRead(artid, true);
+            articlesListModel.updateModel()
+        }
+    }
 }
