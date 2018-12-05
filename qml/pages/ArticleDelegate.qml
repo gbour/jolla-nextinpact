@@ -133,6 +133,6 @@ ListItem {
             bottom: icon.bottom
             right: parent.right
         }
-        visible: model.nbcomments !== undefined
+        visible: model.nbcomments !== ''
     }
 }
