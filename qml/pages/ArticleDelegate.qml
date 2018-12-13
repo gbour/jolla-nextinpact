@@ -50,7 +50,7 @@ ListItem {
         font.pixelSize: Theme.fontSizeSmall - 4 //Tiny
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignJustify
-        color: model.unread ? "#FFFFFFFF" : "#60FFFFFF"
+        color: model.unread ? Theme.primaryColor : Theme.secondaryColor
 
         anchors {
             left: icon.right
@@ -93,7 +93,8 @@ ListItem {
         font.pixelSize: Theme.fontSizeTiny  //- 2 //8 //Theme.fontSizeExtraSmall
         font.italic: true
         styleColor: "#8a979d"
-        color: model.unread ? "#FFFFFFFF" : "#60FFFFFF"
+        color: model.unread ? Theme.primaryColor : Theme.secondaryColor
+
 
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignJustify
