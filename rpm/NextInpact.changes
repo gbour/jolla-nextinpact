@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Dec 13 2018 Guillaume Bour <guillaume@bour.cc> 0.6-0
+Feat:
+- store articles list into database
+- mark _read_ articles
+
 * Sun Nov 18 2018 Guillaume Bour <guillaume@bour.cc> 0.5-3
 Fix:
 - fix issue in scrapper (number of comments)
