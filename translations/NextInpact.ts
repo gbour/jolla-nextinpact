@@ -21,7 +21,7 @@
     </message>
 </context>
 <context>
-    <name>ArticleList</name>
+    <name>Articles</name>
     <message>
         <source>About</source>
         <translation type="unfinished"></translation>

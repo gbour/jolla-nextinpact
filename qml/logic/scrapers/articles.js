@@ -14,14 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with «NextINpact app».  If not, see <http://www.gnu.org/licenses/>.
 */
+.pragma library
 
-.import '../lib/htmlparser2.js' as HtmlParser
-.import '../lib/iso8859-15.js' as Iso
-.import '../lib/utils.js' as Utils
+.import '../../lib/htmlparser2.js' as HtmlParser
+.import '../../lib/iso8859-15.js' as Iso
+.import '../../lib/utils.js' as Utils
 
-var STATE_ARTICLE = 1 //
-var STATE_H1      = 2      //
-var STATE_A       = 3       //
+var STATE_ARTICLE = 1
+var STATE_H1      = 2
+var STATE_A       = 3
 var STATE_DATE    = 4
 var STATE_SUBTITLE = 5
 var STATE_COMMENTS = 6
@@ -40,10 +41,10 @@ var states = ['',
 ];
 
 
-function Article() {
+function Articles() {
 }
 
-Article.prototype = {
+Articles.prototype = {
     _url: 'http://m.nextinpact.com/?page=%{page}',
     url: function(params) {
         var tmp = this._url;
@@ -116,9 +117,8 @@ Article.prototype = {
                         state.unshift(STATE_COMMENTS);
                     }
                 } catch(e) {
-                    console.log('e=' + e + '(tag=' + tag + ')')
-                    console.log(Utils.dump(attrs))
-
+                    //console.log('e=' + e + '(tag=' + tag + ')')
+                    //console.log(Utils.dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}
@@ -128,7 +128,6 @@ Article.prototype = {
                 //console.log('end='+tag+','+state[0] + ','+states[state[0]]);
 
                 if(states[state[0]] === tag) {
-                    //console.log("unshift " + tag)
                     state.shift()
                 }
 
