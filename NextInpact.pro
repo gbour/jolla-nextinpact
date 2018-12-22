@@ -22,7 +22,7 @@ SOURCES += src/NextInpact.cpp \
     src/database.cpp \
     src/ArticleListModel.cpp
 
-OTHER_FILES += qml/NextInpact.qml \
+OTHER_FILES += \
     qml/cover/CoverPage.qml \
     rpm/NextInpact.spec \
     rpm/NextInpact.yaml \
@@ -31,12 +31,10 @@ OTHER_FILES += qml/NextInpact.qml \
     qml/pages/detail.qml \
     qml/pages/comments.qml \
     qml/models/ArticleItem.qml \
-    qml/pages/ArticleDelegate.qml \
     res/comments.png \
     res/img1.jpg \
     res/img2.jpg \
     res/img3.jpg \
-    qml/pages/ArticleList.qml \
     qml/logic/context.js \
     qml/lib/htmlparser2.js \
     qml/logic/scraper.js \
@@ -60,4 +58,11 @@ QT += sql
 HEADERS += \
     src/database.h \
     src/ArticleListModel.h
+
+DISTFILES += \
+    qml/NextInpact.qml \
+    qml/logic/scapers/article.js \
+    qml/components/ArticlesDelegate.qml \
+    qml/pages/Article.qml \
+    qml/pages/Articles.qml
 

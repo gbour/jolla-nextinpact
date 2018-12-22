@@ -14,43 +14,25 @@
     You should have received a copy of the GNU General Public License
     along with «NextINpact app».  If not, see <http://www.gnu.org/licenses/>.
 */
-
-.import "../lib/htmlparser2.js" as HtmlParser
-.import "scraper.js" as Scraper
-
-var state = {
-    'key1': null,
-}
+.pragma library
 
 function init() {
-    console.log("context init");
-    state['key1'] = 42;
-
-    console.log('key1=' + state['key1']);
+    //NOTHING TO DO
 }
 
-function refresh(callback) {
-    //
-    var scraper = new Scraper.Article();
-
+function load(url, scraper, callback) {
     var http = new XMLHttpRequest();
-    http.open("GET", scraper.url({page: 1}), true);
+    http.open("GET", url, true);
     // not possible - http.setRequestHeader("User-Agent", "Jolla/NextINpact 0.1")
 
     http.onreadystatechange = function() {
         if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
            //console.log(http.responseText)
 
-            var articles = scraper.fetch(http.responseText);
-            // insert into db
-            for(var idx in articles) {
-                db.articleAdd(articles[idx])
-            }
-
-            callback(articles);
-
+            var content = scraper.fetch(http.responseText);
+            //console.log(articles);
+            callback(content);
         }
-
     }
 
     http.send();

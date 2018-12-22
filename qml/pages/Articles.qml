@@ -17,7 +17,9 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import "../models"
+
+import "../components"
+import "../logic/scrapers/articles.js" as Scraper
 
 Page {
     id: articles
@@ -64,7 +66,7 @@ Page {
 
         //model: ArticleItem {}
         model: articlesListModel
-        delegate: ArticleDelegate {
+        delegate: ArticlesDelegate {
             onClicked: {
                 console.log("clicked on " + model.link);
                 var params = {
@@ -100,7 +102,15 @@ Page {
             console.log("refreshing articles list...");
 
             loader.visible = showLoader; loader_bi.running = showLoader;
-            context.refresh(function(articles) {
+
+            var scraper = new Scraper.Articles();
+            context.load(scraper.url({page: 1}), scraper, function(articles) {
+                // insert into db
+                for(var idx in articles) {
+                    //console.log(articles[idx].comments, articles[idx].title)
+                    db.articleAdd(articles[idx])
+                }
+
                 // notify list model to reload articles after db update
                 articlesListModel.updateModel()
 
