@@ -68,7 +68,9 @@ Article.prototype = {
                 try {
                     if(state[0] === 0 && tag === 'article') {
                         state.unshift(STATE_ARTICLE);
-                        article = {};
+                        article = {
+                            'comments': 0
+                        };
 
                         if('data-acturowid' in attrs) {
                             article.id = attrs['data-acturowid'].value
