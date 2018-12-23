@@ -38,7 +38,9 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
 
 void ArticleListModel::updateModel() {
     //qDebug() << "articlemodel::update";
-    this->setQuery("SELECT *, DATE(date) AS section FROM articles ORDER BY date DESC");
+    this->setQuery("SELECT id, date, timestamp, title, subtitle, nb_comments, icon, link, unread, "
+        "new_comments, DATE(date) AS section "
+        "FROM articles ORDER BY date DESC");
 }
 
 int ArticleListModel::getId(int row) {

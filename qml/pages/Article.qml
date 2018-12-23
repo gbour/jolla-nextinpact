@@ -17,7 +17,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtWebKit 3.0
 
 import "../logic/scrapers/article.js" as Scraper
 
@@ -27,49 +26,120 @@ Page {
     // id of current article in the database
     property string artid;
     // url is provided when clicking list item in articles list view
-    property alias url: detailview.url;
+    property string url;
 
+    // article fields
+    property string title;
+    property string subtitle;
+    property string author;
+    property string content;
 
-    SilicaWebView {
-        id: detailview
+    //allowedOrientations: defaultOrientationTransition
 
-        header: PageHeader {
-
+    onStatusChanged: {
+        var params = {
+            newsid: artid,
+            page: 1
         }
 
-        experimental.userAgent: "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
-
-        url: ""
-        //forwardNavigation: false
-
-        //html: "<html><body><title>Yeah!!!</title></body></html>"
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-
         }
-
-        onLoadingChanged: function(req) {
-            /*
-                started: 0
-                stopped: 1
-                succeed: 2
-                failed:  3
-             */
-            // starts read timer when the article is completely loaded
-            if (req.status === WebView.LoadSucceededStatus) {
-                read_timer.start()
-            }
-        }
-
     }
+
+    SilicaFlickable {
+        id: view
+        //quickScroll: true
+        anchors.fill: parent
+
+        contentHeight: columns.height
+
+        anchors.margins: Theme.horizontalPageMargin
+        anchors.topMargin: 120
+
+        PageHeader {
+        }
+
+        Column {
+            id: columns
+            width: parent.width
+
+            Label {
+                id: title
+                width: parent.width
+
+                text: detail.title
+                font.pixelSize: Theme.fontSizeSmall
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                color: Theme.highlightColor
+            }
+
+            Label {
+                id: subtitle
+
+                text: detail.subtitle
+                font.pixelSize: Theme.fontSizeExtraSmall
+                font.italic: true
+                wrapMode: Text.WordWrap
+                color: Theme.primaryColor
+            }
+
+            Label {
+                id: author
+                width: parent.width
+
+                text: detail.author
+                font.pixelSize: Theme.fontSizeExtraSmall
+                horizontalAlignment: Text.AlignRight
+            }
+
+
+            Label {
+                id: content
+                width: parent.width
+                topPadding: 50
+
+                text: detail.content
+                textFormat: Text.RichText
+                font.pixelSize: Theme.fontSizeExtraSmall
+                verticalAlignment: Qt.AlignJustify
+                wrapMode: Text.WordWrap
+                color:  Theme.secondaryColor
+
+                // links opened in a browser
+                onLinkActivated: Qt.openUrlExternally(link)
+            }
+
+        }
+    }
+
+    VerticalScrollDecorator { flickable: view }
 
 
     Component.onCompleted: {
-        //detailview.loadHtml("<html><body><h1>Yeah!!!</h1></body></html> <b>ploploplop</b>")
+        //console.log('loading article content', appwin, context, url)
+
+        var article = db.getContent(artid);
+
+        var fn = function(article) {
+                    detail.title = article.title
+                    detail.subtitle = article.subtitle
+                    detail.content = article.content
+                    detail.author = article.author
+        };
+        if (true || article === undefined || article.content === "") {
+            var scraper = new Scraper.Article();
+            context.load(url, scraper, function(article) {
+                db.setContent(artid, article);
+
+                detail.title = article.title
+                detail.subtitle = article.subtitle
+                detail.content = article.content
+                detail.author = article.author
+            });
+        } else {
+            fn(article);
+        }
     }
+
 
     Component.onDestruction: function() {
         // when leaving article page, stop 'read' timer if not triggered yet
