@@ -148,12 +148,17 @@ var tablemap = {
     '#255': "\u00FF",
 
     'amp': "&",
+    'nbsp': " ",
 };
 
 var code = /&([^;]+);/g;
 
 function map(text) {
     return text.replace(code, function(match, icode, rest, unary) {
-        return tablemap[icode]
+        if (icode in tablemap) {
+            return tablemap[icode];
+        }
+
+        return '&'+icode;
     });
 }
