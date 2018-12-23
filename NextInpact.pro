@@ -16,6 +16,11 @@ VERSION = 0.6.1
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += BUILD_DATE='"$(shell date '+%s')"'
 
+DBVERSION = 2
+DBNAME = 'nextinpact.db'
+DEFINES += DB_VERSION=\\\"$$DBVERSION\\\"
+DEFINES += DB_NAME=\\\"$$DBNAME\\\"
+
 CONFIG += sailfishapp
 
 SOURCES += src/NextInpact.cpp \
@@ -28,8 +33,6 @@ OTHER_FILES += \
     rpm/NextInpact.yaml \
     translations/*.ts \
     NextInpact.desktop \
-    qml/pages/detail.qml \
-    qml/pages/comments.qml \
     qml/models/ArticleItem.qml \
     res/comments.png \
     res/img1.jpg \
@@ -61,8 +64,7 @@ HEADERS += \
 
 DISTFILES += \
     qml/NextInpact.qml \
-    qml/logic/scapers/article.js \
+    qml/logic/scrapers/article.js \
     qml/components/ArticlesDelegate.qml \
     qml/pages/Article.qml \
     qml/pages/Articles.qml
-

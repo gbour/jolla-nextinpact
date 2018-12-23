@@ -16,12 +16,12 @@ bool Database::init()
 {
     //qDebug() << QSqlDatabase::drivers();
     //TODO: check QSLITE driver is present ?
-    static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation) % QString("/nextinpact.db");
+    static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation) % QString("/" DB_NAME);
 
     this->db = QSqlDatabase::addDatabase("QSQLITE");
     this->db.setDatabaseName(dbpath);
     if (!this->db.open()) {
-        qDebug() << "cannot open sqlite database";
+        qDebug() << "cannot open sqlite database:" << this->db.lastError();
         return false;
     }
 
@@ -30,7 +30,7 @@ bool Database::init()
                     "key   TEXT PRIMARY KEY,"
                     "value TEXT"
                ")");
-    query.exec("INSERT OR IGNORE INTO config VALUES (\"version\", \"1\")");
+    query.exec("INSERT OR IGNORE INTO config VALUES (\"version\", \"" DB_VERSION "\")");
 
     query.exec("CREATE TABLE IF NOT EXISTS articles ("
                     "id INTEGER PRIMARY KEY,"
@@ -43,6 +43,11 @@ bool Database::init()
                     "icon BLOB,"
                     // link to original article
                     "link TEXT,"
+                    // article details
+                    "readtime TEXT,"
+                    "author TEXT,"
+                    "pubdate TEXT,"
+                    "content TEXT,"
                     // bool flags
                     "unread INTEGER DEFAULT 1,"
                     "new_comments INTEGER DEFAULT 1"
@@ -103,6 +108,48 @@ bool Database::toggleRead(const int articleId, const bool read) {
     bool ret = q.exec();
     if (!ret) {
         qDebug() << "toggleRead failed:" << q.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+QVariant Database::getContent(const int articleId) {
+    QVariantMap result;// = new QVariantMap();
+
+    QSqlQuery q;
+    q.prepare("SELECT title, subtitle, readtime, author, pubdate, content FROM articles WHERE id = :id");
+    q.bindValue(":id", articleId);
+    if (!q.exec() || !q.first()) {
+        qDebug() << "getContent failed:" << q.lastError().text();
+        return QVariant(); // NULL value
+    }
+
+    result["title"]    = q.value("title");
+    result["subtitle"] = q.value("subtitle");
+    result.insert("readtime", q.value("readtime"));
+    result.insert("author"  , q.value("author"));
+    result.insert("pubdate" , q.value("pubdate"));
+    result.insert("content" , q.value("content"));
+
+    return result;
+}
+
+bool Database::setContent(const int articleId, const QVariantMap values) {
+    QSqlQuery q;
+    q.prepare("UPDATE articles SET "
+        "readtime = :readtime, "
+        "author   = :author, "
+        "pubdate  = :pubdate, "
+        "content  = :content "
+        "WHERE id = :id");
+    q.bindValue(":readtime", values["readtime"]);
+    q.bindValue(":author", values["author"]);
+    q.bindValue(":pubdate", values["pubdate"]);
+    q.bindValue(":content", values["content"]);
+    q.bindValue(":id", articleId);
+    if (!q.exec()) {
+        qDebug() << "setContent failed:" << q.lastError().text();
         return false;
     }
 
