@@ -74,7 +74,12 @@ Page {
                     url: model.link
                 }
 
-                pageStack.push(Qt.resolvedUrl("detail.qml"), params, PageStackAction.Animated)
+                var target = "Article.qml"
+                if (model.link.indexOf("-lebrief-") > 0) {
+                    target = "BriefArticle.qml"
+                }
+
+                pageStack.push(Qt.resolvedUrl(target), params, PageStackAction.Animated)
             }
 
         }
