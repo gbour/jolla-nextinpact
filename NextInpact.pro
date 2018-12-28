@@ -67,4 +67,5 @@ DISTFILES += \
     qml/logic/scrapers/article.js \
     qml/components/ArticlesDelegate.qml \
     qml/pages/Article.qml \
-    qml/pages/Articles.qml
+    qml/pages/Articles.qml \
+    qml/pages/BriefArticle.qml
