@@ -37,11 +37,13 @@ Page {
     //allowedOrientations: defaultOrientationTransition
 
     onStatusChanged: {
-        var params = {
-            newsid: artid,
-            page: 1
-        }
+        if (status === PageStatus.Active && !pageStack._currentContainer.attachedContainer) {
+            var params = {
+                newsid: artid,
+                //page: 1
+            }
 
+            pageStack.pushAttached(Qt.resolvedUrl("Comments.qml"), params, PageStackAction.Animated)
         }
     }
 

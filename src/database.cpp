@@ -21,7 +21,7 @@ bool Database::init()
     this->db = QSqlDatabase::addDatabase("QSQLITE");
     this->db.setDatabaseName(dbpath);
     if (!this->db.open()) {
-        qDebug() << "cannot open sqlite database:" << this->db.lastError();
+        qDebug() << "cannot open sqlite database" << dbpath << ":" << this->db.lastError();
         return false;
     }
 
@@ -54,6 +54,17 @@ bool Database::init()
                ")");
     qDebug() << query.lastError().text();
 
+    query.exec("CREATE TABLE IF NOT EXISTS comments ("
+                    "id INTEGER,"
+                    "artid INTEGER,"
+                    "author TEXT,"
+                    "date TEXT,"
+                    "content TEXT,"
+
+                    "PRIMARY KEY (id, artid),"
+                    "FOREIGN KEY (artid) REFERENCES articles (id) ON DELETE CASCADE"
+               ")");
+    qDebug() << query.lastError().text();
     //query.exec("INSERT INTO foobar VALUES (NULL, 'plop')");
     return true;
 }
@@ -151,6 +162,25 @@ bool Database::setContent(const int articleId, const QVariantMap values) {
     if (!q.exec()) {
         qDebug() << "setContent failed:" << q.lastError().text();
         return false;
+    }
+
+    return true;
+}
+
+bool Database::addComments(const int articleId, const QVariantList comments) {
+    for(int i = 0; i < comments.size(); i++) {
+        QVariantMap comment = comments.at(i).toMap();
+
+        QSqlQuery q;
+        q.prepare("INSERT OR IGNORE INTO comments VALUES (:id, :artid, :author, :date, :content)");
+        q.bindValue(":artid"  , articleId);
+        q.bindValue(":id"     , comment["num"]);
+        q.bindValue(":author" , comment["author"]);
+        q.bindValue(":date"   , comment["date"]);
+        q.bindValue(":content", comment["content"]);
+        if (!q.exec()) {
+            qDebug() << "addComments failed:" << q.lastError().text();
+        }
     }
 
     return true;
