@@ -127,27 +127,26 @@ Page {
     Component.onCompleted: {
         //console.log('loading article content', appwin, context, url)
 
-        var article = db.getContent(artid);
+        var setValues = function(_article) {
+            detail.title    = _article.title
+            detail.subtitle = _article.subtitle
+            detail.content  = _article.content
+            detail.author   = _article.author
 
-        var fn = function(article) {
-                    detail.title = article.title
-                    detail.subtitle = article.subtitle
-                    detail.content = article.content
-                    detail.author = article.author
-        };
-        if (true || article === undefined || article.content === "") {
-            var scraper = new Scraper.Article();
-            context.load(url, scraper, function(article) {
-                db.setContent(artid, article);
-
-                detail.title = article.title
-                detail.subtitle = article.subtitle
-                detail.content = article.content
-                detail.author = article.author
-            });
-        } else {
-            fn(article);
+            read_timer.start()
         }
+
+        var article = db.getContent(artid);
+        if (article !== undefined && article.content.length > 0) {
+            setValues(article);
+            return
+        }
+
+        var scraper = new Scraper.Article();
+        context.load(url, scraper, function(_article) {
+            db.setContent(artid, _article);
+            setValues(_article);
+        });
     }
 
 
