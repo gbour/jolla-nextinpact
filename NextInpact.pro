@@ -25,7 +25,8 @@ CONFIG += sailfishapp
 
 SOURCES += src/NextInpact.cpp \
     src/database.cpp \
-    src/ArticleListModel.cpp
+    src/ArticleListModel.cpp \
+    src/CommentListModel.cpp
 
 OTHER_FILES += \
     qml/cover/CoverPage.qml \
@@ -60,12 +61,16 @@ QT += sql
 
 HEADERS += \
     src/database.h \
-    src/ArticleListModel.h
+    src/ArticleListModel.h \
+    src/CommentListModel.h
 
 DISTFILES += \
     qml/NextInpact.qml \
     qml/logic/scrapers/article.js \
+    qml/logic/scrapers/comments.js \
+    qml/components/CommentsDelegate.qml \
     qml/components/ArticlesDelegate.qml \
+    qml/pages/Comments.qml \
     qml/pages/Article.qml \
     qml/pages/Articles.qml \
     qml/pages/BriefArticle.qml

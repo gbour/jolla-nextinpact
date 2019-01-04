@@ -42,9 +42,15 @@
 
 #include <src/database.h>
 #include <src/ArticleListModel.h>
+#include <src/CommentListModel.h>
 
 int main(int argc, char *argv[])
 {
+    // declaring types
+    const char *uri = "harbour.nextinpact";
+    qmlRegisterType<CommentListModel> (uri, 1, 0, "CommentsModel");
+
+
     // SailfishApp::main() will display "qml/template.qml", if you need more
     // control over initialization, you can use:
     //
