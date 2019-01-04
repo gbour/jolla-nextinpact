@@ -110,6 +110,14 @@ Page {
                 onLinkActivated: Qt.openUrlExternally(link)
             }
 
+            Label {
+                text: '⌁'
+
+                width: parent.width
+                padding: 10
+                horizontalAlignment: Qt.AlignRight
+            }
+
         }
     }
 
