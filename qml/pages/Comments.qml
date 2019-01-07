@@ -27,9 +27,11 @@ Page {
     property int newsid;
     // current displayed comment (on top of the viewport)
     property int current: listview.indexAt(listview.width/2, listview.contentY)
+    // is loading operation currently running
+    property bool loading: false
 
     onCurrentChanged: function() {
-        if (status === PageStatus.Inactive) {
+        if (status === PageStatus.Inactive || loading) {
             return
         }
 
@@ -106,6 +108,8 @@ Page {
     }
 */
     function loadComments(page) {
+        loading = true
+
         var scraper = new Scraper.Comments();
         scraper.fetch(newsid, page, function(comments) {
             if (comments.length > 0) {
@@ -120,6 +124,7 @@ Page {
                     //console.debug('bef pos:', current, save);
 
                     model.updateModel()
+                    loading = false
                     //console.debug('aft pos:', current);
                     /*
                     if (current !== save) {
