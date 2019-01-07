@@ -128,7 +128,7 @@ Article.prototype = {
                     } else if(state[0] === STATE_SUBTITLE) {
                         article.subtitle = Iso.map(text);
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += Iso.map(text);
+                        article.content += Iso.map(text, false);
                     } else if(state[0] === STATE_READTIME) {
                         article.duration += Iso.map(text);
                     } else if(state[0] === STATE_DATE) {
