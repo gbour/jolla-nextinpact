@@ -148,17 +148,31 @@ var tablemap = {
     '#255': "\u00FF",
 
     'amp': "&",
-    'nbsp': " ",
+    'nbsp': " "
 };
+
+// stage2 table map
+// we want to replace those character sequences only if target field
+// is not able to render HTML codes (eg not a RichText field)
+var tablemap2 = {
+    'lt': "<",
+    'gt': ">"
+}
 
 var code = /&([^;]+);/g;
 
-function map(text) {
+function map(text, stage2) {
+    stage2 = (typeof stage2 !== 'undefined' ? stage2 : true);
+
     return text.replace(code, function(match, icode, rest, unary) {
         if (icode in tablemap) {
             return tablemap[icode];
         }
 
-        return '&'+icode;
+        if (stage2 && icode in tablemap2) {
+            return tablemap2[icode]
+        }
+
+        return '&'+icode+';';
     });
 }

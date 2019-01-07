@@ -182,7 +182,7 @@ Comments.prototype = {
                         comment.num = parseInt(Iso.map(text).substring(1));
                     } else if(state[0] === STATE_CONTENT) {
                         //console.log(text, Iso.map(text))
-                        comment.content += Iso.map(text);
+                        comment.content += Iso.map(text, false);
                     }
                 } catch (e) {}
             }
