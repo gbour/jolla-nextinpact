@@ -70,7 +70,8 @@ Articles.prototype = {
                     if(state[0] === 0 && tag === 'article') {
                         state.unshift(STATE_ARTICLE);
                         article = {
-                            'comments': 0
+                            'comments': 0,
+                            'type'    : 0  // default type is 'article'
                         };
 
                         if('data-acturowid' in attrs) {
@@ -93,6 +94,10 @@ Articles.prototype = {
                     } else if(state[0] === STATE_H1 && tag === 'a') {
                         state.unshift(STATE_A);
                         article.link = 'http://m.nextinpact.com/'+attrs.href.value;
+
+                        if (attrs.href.value.indexOf('-lebrief-') >= 0) {
+                            article.type = 1; // type 'lebrief'
+                        }
 
                     } else if(state[0] === STATE_ARTICLE && tag === 'img' &&
                               attrs.class.value === 'ded-image') {

@@ -50,7 +50,8 @@ bool Database::init()
                     "content TEXT,"
                     // bool flags
                     "unread INTEGER DEFAULT 1,"
-                    "new_comments INTEGER DEFAULT 1"
+                    "new_comments INTEGER DEFAULT 1,"
+                    "type INTEGER DEFAULT 0" // article type - 0: article, 1: lebrief
                ")");
     qDebug() << query.lastError().text();
 
@@ -73,8 +74,8 @@ bool Database::articleAdd(const QVariantMap values) {
     qDebug() << "db.articleAdd" << values["title"];
 
     QSqlQuery q;
-    q.prepare("INSERT OR IGNORE INTO articles (id, date, timestamp, title, subtitle, nb_comments, icon, link) "
-              "VALUES (:id, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link)");
+    q.prepare("INSERT OR IGNORE INTO articles (id, date, timestamp, title, subtitle, nb_comments, icon, link, type) "
+              "VALUES (:id, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :type)");
 
     q.bindValue(":id"         , values["id"]);
     q.bindValue(":date"       , values["date"]);
@@ -84,6 +85,7 @@ bool Database::articleAdd(const QVariantMap values) {
     q.bindValue(":nb_comments", values["comments"]);
     q.bindValue(":icon"       , values["icon"]);
     q.bindValue(":link"       , values["link"]);
+    q.bindValue(":type"       , values["type"]);
     bool ret = q.exec();
     if (!ret) {
         qDebug() << "insert failed:" << q.lastError().text();
