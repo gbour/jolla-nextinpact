@@ -95,9 +95,11 @@ Articles.prototype = {
                         state.unshift(STATE_A);
                         article.link = 'http://m.nextinpact.com/'+attrs.href.value;
 
+                        /*
                         if (attrs.href.value.indexOf('-lebrief-') >= 0) {
                             article.type = 1; // type 'lebrief'
                         }
+                        */
 
                     } else if(state[0] === STATE_ARTICLE && tag === 'img' &&
                               attrs.class.value === 'ded-image') {

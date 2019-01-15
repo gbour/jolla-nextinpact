@@ -7,6 +7,7 @@
 class ArticleListModel : public QSqlQueryModel
 {
     Q_OBJECT
+    Q_PROPERTY(qint32 type READ type WRITE setType)
 public:
     enum Roles {
         IdRole = Qt::UserRole + 1,
@@ -24,9 +25,16 @@ public:
 
     explicit ArticleListModel(QObject *parent = 0);
     QVariant data(const QModelIndex &index, int role) const;
+    qint32 type() const {
+        return m_type;
+    }
+    void setType(const qint32 type) {
+        this->m_type = type;
+    }
 
 protected:
     QHash<int, QByteArray> roleNames() const;
+    qint32 m_type;
 
 signals:
 

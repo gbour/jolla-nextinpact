@@ -37,10 +37,20 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
 }
 
 void ArticleListModel::updateModel() {
-    //qDebug() << "articlemodel::update";
-    this->setQuery("SELECT id, date, timestamp, title, subtitle, nb_comments, icon, link, unread, "
+    qDebug() << "articlemodel::update: type=", this->m_type;
+    QSqlQuery q;
+    q.prepare("SELECT id, date, timestamp, title, subtitle, nb_comments, icon, link, unread, "
         "new_comments, DATE(date) AS section "
-        "FROM articles ORDER BY date DESC");
+        "FROM articles "
+        "WHERE type = :type "
+        "ORDER BY date DESC");
+    q.bindValue(":type", this->m_type);
+    if (!q.exec()) {
+        qDebug() << "updateModel failed:" << q.lastError().text();
+        return;
+    }
+
+    this->setQuery(q);
 }
 
 int ArticleListModel::getId(int row) {

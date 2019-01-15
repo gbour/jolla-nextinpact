@@ -20,10 +20,15 @@ import Sailfish.Silica 1.0
 import harbour.nextinpact 1.0
 
 import "../components"
-import "../logic/scrapers/articles.js" as Scraper
+import "../logic/scrapers/articles.js" as ArticlesScraper
 
 Page {
     id: articles
+
+    // articles type
+    //  0: regular articles (including LeBrief headline)
+    //  1: LeBrief flash news
+    property int type;
 
     Row {
         id: loader
@@ -65,9 +70,9 @@ Page {
             //title: ""
         }
 
-        //model: ArticleItem {}
         model: ArticlesModel {
             id: model
+            type: articles.type
         }
         delegate: ArticlesDelegate {
             onClicked: {
@@ -107,11 +112,12 @@ Page {
         }
 
         function refresh(showLoader) {
-            console.log("refreshing articles list...");
+            console.log("refreshing articles list (type ", type, ")...");
+            var scraperObj = ArticlesScraper;
 
             loader.visible = showLoader; loader_bi.running = showLoader;
 
-            var scraper = new Scraper.Articles();
+            var scraper = new scraperObj.Articles();
             context.load(scraper.url({page: 1}), scraper, function(articles) {
                 // insert into db
                 for(var idx in articles) {

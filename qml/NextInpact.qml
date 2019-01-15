@@ -25,7 +25,7 @@ ApplicationWindow
 {
     id: appwin
 
-    initialPage: Articles {}
+    initialPage: Articles { type: 0 }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
     // static variable over all application
