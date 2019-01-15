@@ -17,6 +17,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import harbour.nextinpact 1.0
 
 import "../components"
 import "../logic/scrapers/articles.js" as Scraper
@@ -65,7 +66,9 @@ Page {
         }
 
         //model: ArticleItem {}
-        model: articlesListModel
+        model: ArticlesModel {
+            id: model
+        }
         delegate: ArticlesDelegate {
             onClicked: {
                 console.log("clicked on " + model.link);
@@ -117,7 +120,7 @@ Page {
                 }
 
                 // notify list model to reload articles after db update
-                articlesListModel.updateModel()
+                model.updateModel();
 
                 // hide loader
                 loader.visible = false; loader_bi.running = false;
