@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = NextInpact
 
-VERSION = 0.6.0
+VERSION = 0.6.1
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += BUILD_DATE='"$(shell date '+%s')"'
 

@@ -8,6 +8,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu Jan 17 2019 Guillaume Bour <guillaume@bour.cc> 0.6-1
+Fix:
+- increase webview font size (display article payload)
+- restore date sections on articles list
+- hide comments icon when no comments available (articles list)
+
 * Sun Dec 13 2018 Guillaume Bour <guillaume@bour.cc> 0.6-0
 Feat:
 - store articles list into database
