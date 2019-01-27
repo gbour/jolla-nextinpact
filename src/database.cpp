@@ -1,6 +1,8 @@
 
 #include <QStandardPaths>
 #include <QStringBuilder>
+#include <QFileInfo>
+#include <QDir>
 
 #include <src/database.h>
 
@@ -17,6 +19,11 @@ bool Database::init()
     //qDebug() << QSqlDatabase::drivers();
     //TODO: check QSLITE driver is present ?
     static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation) % QString("/" DB_NAME);
+
+    // directory is not automatically created if not exists
+    // db.open() fails unless we create the directory tree
+    QFileInfo fi(dbpath);
+    fi.dir().mkpath(".");
 
     this->db = QSqlDatabase::addDatabase("QSQLITE");
     this->db.setDatabaseName(dbpath);
