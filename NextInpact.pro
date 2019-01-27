@@ -23,22 +23,31 @@ DEFINES += DB_NAME=\\\"$$DBNAME\\\"
 
 CONFIG += sailfishapp
 
+HEADERS += \
+    src/database.h \
+    src/ArticleListModel.h \
+    src/CommentListModel.h
+
 SOURCES += src/NextInpact.cpp \
     src/database.cpp \
     src/ArticleListModel.cpp \
     src/CommentListModel.cpp
 
-OTHER_FILES += \
+OTHER_FILES += qml/NextInpact.qml \
     qml/cover/CoverPage.qml \
     rpm/NextInpact.spec \
     rpm/NextInpact.yaml \
     translations/*.ts \
     NextInpact.desktop \
+    qml/pages/detail.qml \
+    qml/pages/comments.qml \
     qml/models/ArticleItem.qml \
+    qml/pages/ArticleDelegate.qml \
     res/comments.png \
     res/img1.jpg \
     res/img2.jpg \
     res/img3.jpg \
+    qml/pages/ArticleList.qml \
     qml/logic/context.js \
     qml/lib/htmlparser2.js \
     qml/logic/scraper.js \
@@ -59,18 +68,4 @@ RESOURCES += \
 
 QT += sql
 
-HEADERS += \
-    src/database.h \
-    src/ArticleListModel.h \
-    src/CommentListModel.h
 
-DISTFILES += \
-    qml/NextInpact.qml \
-    qml/logic/scrapers/article.js \
-    qml/logic/scrapers/comments.js \
-    qml/components/CommentsDelegate.qml \
-    qml/components/ArticlesDelegate.qml \
-    qml/pages/Comments.qml \
-    qml/pages/Article.qml \
-    qml/pages/Articles.qml \
-    qml/pages/BriefArticle.qml
