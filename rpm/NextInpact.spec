@@ -12,13 +12,12 @@ Name:       NextInpact
 %{!?qtc_qmake5:%define qtc_qmake5 %qmake5}
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
-Summary:    NextINpact news reader
+Summary:    NextINpact
 Version:    0.6
-Release:    1
+Release:    2.pre1
 Group:      Applications/Internet
 License:    GPLv3
 URL:        https://github.com/gbour/jolla-nextinpact
-Packager:   Guillaume Bour <guillaume@bour.cc>
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  NextInpact.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
