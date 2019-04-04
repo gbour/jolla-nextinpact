@@ -14,6 +14,11 @@ class Database: public QObject
 public:
     explicit Database(QObject *parent = 0);
     ~Database();
+
+    QSqlDatabase getDatabase() const {
+        return this->db;
+    }
+
 private:
     QSqlDatabase db;
     bool init();

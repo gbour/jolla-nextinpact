@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
 {
     // declaring types
     const char *uri = "harbour.nextinpact";
-    qmlRegisterType<CommentListModel> (uri, 1, 0, "CommentsModel");
 
 
     // SailfishApp::main() will display "qml/template.qml", if you need more
@@ -68,6 +67,7 @@ int main(int argc, char *argv[])
     qDebug() << "db:" << db;
 
     ArticleListModel *listModel  = new ArticleListModel();
+    CommentListModel *commentsModel = new CommentListModel(0, db->getDatabase());
 
     QTranslator translator;
     translator.load("NextInpact-"+ QLocale::system().name().split("_").first(),
@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
     view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));
     view->rootContext()->setContextProperty("db", db);
     view->rootContext()->setContextProperty("articlesListModel", listModel);
+    view->rootContext()->setContextProperty("commentsModel", commentsModel);
 
     // NOTE: view source MUST be set AFTER properties, or props will not be
     // visible

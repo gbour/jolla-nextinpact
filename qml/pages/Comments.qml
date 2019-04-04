@@ -17,7 +17,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import harbour.nextinpact 1.0
 
 import "../components"
 import "../logic/scrapers/comments.js" as Scraper
@@ -35,9 +34,9 @@ Page {
             return
         }
 
-        var last   = model.rowCount();
+        var last   = listview.model.rowCount();
         var bottom = listview.indexAt(listview.width/2, listview.contentY + listview.height);
-        //console.log('current changed:', current, bottom, last, status)
+        console.log('current changed:', current, bottom, last, status)
 
         // either top comment is last-5,
         // or bottom comment is last
@@ -53,11 +52,7 @@ Page {
         anchors.fill: parent
         anchors.topMargin: 100
 
-        model: CommentsModel {
-            id: model
-            articleId: newsid
-
-        }
+        model: commentsModel
         delegate: CommentsDelegate {}
 
         /** onMovementEnded is only triggered for manual moves, not scrolls
@@ -93,15 +88,14 @@ Page {
         //TODO: save and restore position (last comment at top)
 
         if (status === PageStatus.Activating) {
-            model.updateModel()
+            listview.model.articleId = newsid // NOTE: this is automatically fetching comments from db
 
-            if (model.rowCount() === 0) {
+            if (listview.model.rowCount() === 0) {
                 //console.debug('Comments::status activating. loading page 1')
                 loadComments(1)
             }
         }
     }
-
 
 /*
     Component.onCompleted: {
@@ -118,20 +112,11 @@ Page {
                 //console.log('1st comment:', is, expected)
 
                 if (is === expected) {
-                    db.addComments(newsid, comments);
-
-                    //var save = current;
-                    //console.debug('bef pos:', current, save);
-
-                    model.updateModel()
-                    loading = false
-                    //console.debug('aft pos:', current);
-                    /*
-                    if (current !== save) {
-                        listview.positionViewAtIndex(save, ListView.Beginning)
-                        //console.debug('aft pos:', save, current);
+                    for(var idx in comments) {
+                        listview.model.addComment(comments[idx])
                     }
-                    */
+
+                    loading = false
                 }
             }
         })
