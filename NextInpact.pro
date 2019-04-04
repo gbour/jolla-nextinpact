@@ -35,28 +35,28 @@ SOURCES += src/NextInpact.cpp \
 
 OTHER_FILES += qml/NextInpact.qml \
     qml/cover/CoverPage.qml \
-    rpm/NextInpact.spec \
-    rpm/NextInpact.yaml \
-    translations/*.ts \
-    NextInpact.desktop \
+    qml/pages/About.qml \
     qml/pages/detail.qml \
     qml/pages/comments.qml \
-    qml/models/ArticleItem.qml \
+    qml/pages/ArticleList.qml \
     qml/pages/ArticleDelegate.qml \
+    qml/models/ArticleItem.qml \
+    qml/logic/context.js \
+    qml/logic/scraper.js \
+    qml/lib/utils.js \
+    qml/lib/iso8859-15.js \
+    qml/lib/htmlparser2.js \
     res/comments.png \
     res/img1.jpg \
     res/img2.jpg \
     res/img3.jpg \
-    qml/pages/ArticleList.qml \
-    qml/logic/context.js \
-    qml/lib/htmlparser2.js \
-    qml/logic/scraper.js \
-    qml/lib/iso8859-15.js \
     res/logo-big.png \
-    LICENSE \
+    translations/*.ts \
+    rpm/NextInpact.spec \
+    rpm/NextInpact.yaml \
     rpm/NextInpact.changes \
-    qml/pages/About.qml \
-    qml/lib/utils.js
+    LICENSE \
+    NextInpact.desktop
 
 # to disable building translations every time, comment out the
 # following CONFIG line
