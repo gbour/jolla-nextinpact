@@ -37,7 +37,9 @@ bool Database::init()
                     "key   TEXT PRIMARY KEY,"
                     "value TEXT"
                ")");
-    query.exec("INSERT OR IGNORE INTO config VALUES (\"version\", \"" DB_VERSION "\")");
+    query.prepare("INSERT OR IGNORE INTO config VALUES (\"version\", :version)");
+    query.bindValue(":version", DB_VERSION);
+    query.exec();
 
     query.exec("CREATE TABLE IF NOT EXISTS articles ("
                     "id INTEGER PRIMARY KEY,"

@@ -20,7 +20,7 @@ DBVERSION = 2
 #DBNAME = 'nextinpact.db'
 DBNAME = 'nextinpact-pre.db'
 #DBNAME = 'nextinpact-dev.db'
-DEFINES += DB_VERSION=\\\"$$DBVERSION\\\"
+DEFINES += DB_VERSION=$$DBVERSION
 DEFINES += DB_NAME=\\\"$$DBNAME\\\"
 
 CONFIG += sailfishapp
