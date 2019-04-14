@@ -25,6 +25,8 @@ Page {
 
     // id of current article in the database
     property string artid;
+    // type is the article type (0: news, 1: brief)
+    property int type;
     // url is provided when clicking list item in articles list view
     property string url;
 
@@ -40,6 +42,7 @@ Page {
         if (status === PageStatus.Active && !pageStack._currentContainer.attachedContainer) {
             var params = {
                 newsid: artid,
+                type: type,
                 //page: 1
             }
 
@@ -77,7 +80,7 @@ Page {
             Label {
                 id: subtitle
 
-                text: detail.subtitle
+                text: type == 1 ? 'LeBrief' : detail.subtitle
                 font.pixelSize: Theme.fontSizeExtraSmall
                 font.italic: true
                 wrapMode: Text.WordWrap

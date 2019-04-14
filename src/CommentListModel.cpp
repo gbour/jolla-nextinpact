@@ -13,11 +13,12 @@ CommentListModel::CommentListModel(QObject *parent, QSqlDatabase db) : QSqlTable
  * on setting articleId, we update TableModel filter and do the db query to
  * fill TableModel rows
  */
-void CommentListModel::setArticleId(const qint32 articleId) {
-    qDebug() << "set articleId:" << articleId;
+void CommentListModel::setArticle(const qint32 articleId, const qint32 articleType) {
+    qDebug() << "set article:" << articleId << articleType;
     this->m_articleId = articleId;
+    this->m_articleType = articleType;
 
-    this->setFilter(QString("artid='%1'").arg(articleId));
+    this->setFilter(QString("article_id=%1 AND article_type=%2").arg(articleId).arg(articleType));
     this->select();
 }
 
@@ -39,11 +40,12 @@ QHash<int, QByteArray> CommentListModel::roleNames() const {
     qDebug() << "Commentmodel::roleNames";
 
     QHash<int, QByteArray> roles;
-    roles[IdRole]      = "id";
-    roles[ArtIdRole]   = "artid";
-    roles[AuthorRole]  = "author";
-    roles[DateRole]    = "date";
-    roles[ContentRole] = "content";
+    roles[IdRole]          = "id";
+    roles[ArticleIdRole]   = "article_id";
+    roles[ArticleTypeRole] = "article_type";
+    roles[AuthorRole]      = "author";
+    roles[DateRole]        = "date";
+    roles[ContentRole]     = "content";
 
     return roles;
 }
@@ -54,20 +56,22 @@ int CommentListModel::getId(int row) {
 }
 
 bool CommentListModel::addComment(const QVariantMap comment) {
+    qDebug() << "adding comment" << this->m_articleId << this->m_articleType;
     // rec is an empty record, with fieldnames already set
     QSqlRecord rec = this->record();
 
-    rec.setValue("artid"  , this->articleId());
-    rec.setValue("id"     , comment["num"]);
-    rec.setValue("author" , comment["author"]);
-    rec.setValue("date"   , comment["date"]);
-    rec.setValue("content", comment["content"]);
+    rec.setValue("id"          , comment["num"]);
+    rec.setValue("article_id"  , this->m_articleId);
+    rec.setValue("article_type", this->m_articleType);
+    rec.setValue("author"      , comment["author"]);
+    rec.setValue("date"        , comment["date"]);
+    rec.setValue("content"     , comment["content"]);
 
     // insert at the end.
     // NOTE: this is automatically refreshing the upper QML ListView
     bool ret = this->insertRecord(-1, rec);
     if (!ret) {
-        qDebug() << "failed to inserted comment (artid " << this->articleId() << ", id " << comment["num"] << ")";
+        qDebug() << "failed to inserted comment (artid " << this->m_articleId << ", id " << comment["num"] << rec << ")";
     }
 
 

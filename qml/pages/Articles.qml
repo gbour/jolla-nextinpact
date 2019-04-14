@@ -19,6 +19,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../components"
+//import "../lib/utils.js" as Utils
 import "../logic/scrapers/articles.js" as Scraper
 import "../logic/scrapers/brief.js"    as BriefScraper
 
@@ -69,9 +70,10 @@ Page {
         model: articlesListModel
         delegate: ArticlesDelegate {
             onClicked: {
-                console.log("clicked on " + model.link);
+                console.log("clicked on " + model.link + ',' + model.type);
                 var params = {
                     artid: model.id,
+                    type: model.type,
                     url: model.link
                 }
 

@@ -41,7 +41,7 @@ function Comments() {
 Comments.prototype = {
     _url: 'https://m.nextinpact.com/comment/',
 
-    fetch: function(newsid, page, callback) {
+    fetch: function(newsid, type, page, callback) {
         console.debug('Comments.fetch', this._url, newsid, page);
         var http = new XMLHttpRequest();
 
@@ -59,7 +59,7 @@ Comments.prototype = {
             }
         }
 
-        http.send('commId=0&newsId='+newsid+'&page='+page+'&type=0');
+        http.send('commId=0&newsId='+newsid+'&page='+page+'&type='+type);
     },
 
     scrap: function (m) {

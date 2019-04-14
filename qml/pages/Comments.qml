@@ -24,6 +24,7 @@ import "../logic/scrapers/comments.js" as Scraper
 Page {
     id: comments
     property int newsid;
+    property int type; // article type
     // current displayed comment (on top of the viewport)
     property int current: listview.indexAt(listview.width/2, listview.contentY)
     // is loading operation currently running
@@ -88,7 +89,7 @@ Page {
         //TODO: save and restore position (last comment at top)
 
         if (status === PageStatus.Activating) {
-            listview.model.articleId = newsid // NOTE: this is automatically fetching comments from db
+            listview.model.setArticle(newsid, type);
 
             if (listview.model.rowCount() === 0) {
                 //console.debug('Comments::status activating. loading page 1')
@@ -105,7 +106,7 @@ Page {
         loading = true
 
         var scraper = new Scraper.Comments();
-        scraper.fetch(newsid, page, function(comments) {
+        scraper.fetch(newsid, type, page, function(comments) {
             if (comments.length > 0) {
                 var is = comments[0].num;
                 var expected = 10* (page-1) + 1;
