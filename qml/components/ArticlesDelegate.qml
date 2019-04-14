@@ -89,7 +89,7 @@ ListItem {
 
     Label {
         id: subtitle
-        text: model.subtitle
+        text: model.type === 1 ? "LeBrief" : model.subtitle
         font.pixelSize: Theme.fontSizeTiny  //- 2 //8 //Theme.fontSizeExtraSmall
         font.italic: true
         styleColor: "#8a979d"

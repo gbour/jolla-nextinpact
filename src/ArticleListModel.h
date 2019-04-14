@@ -10,6 +10,7 @@ class ArticleListModel : public QSqlQueryModel
 public:
     enum Roles {
         IdRole = Qt::UserRole + 1,
+        TypeRole,
         DateRole,
         TimestampRole,
         TitleRole,

@@ -43,7 +43,10 @@ bool Database::init()
     query.exec();
 
     query.exec("CREATE TABLE IF NOT EXISTS articles ("
-                    "id INTEGER PRIMARY KEY,"
+                    "id INTEGER,"
+                    // article type: 0: news, 1: brief
+                    "type INTEGER DEFAULT 0,"
+
                     "date TEXT,"
                     "timestamp TEXT,"
                     "title TEXT,"
@@ -60,19 +63,23 @@ bool Database::init()
                     "content TEXT,"
                     // bool flags
                     "unread INTEGER DEFAULT 1,"
-                    "new_comments INTEGER DEFAULT 1"
+                    "new_comments INTEGER DEFAULT 1,"
+                    // parent article ('brief' articles only, -1 for no parent)
+                    "parent INTEGER DEFAULT -1,"
+                    "PRIMARY KEY (id, type)"
                ")");
     qDebug() << query.lastError().text();
 
     query.exec("CREATE TABLE IF NOT EXISTS comments ("
                     "id INTEGER,"
-                    "artid INTEGER,"
+                    "article_id INTEGER,"
+                    "article_type INTEGER,"
                     "author TEXT,"
                     "date TEXT,"
                     "content TEXT,"
 
-                    "PRIMARY KEY (id, artid),"
-                    "FOREIGN KEY (artid) REFERENCES articles (id) ON DELETE CASCADE"
+                    "PRIMARY KEY (id, article_id, article_type),"
+                    "FOREIGN KEY (article_id, article_type) REFERENCES articles (id, type) ON DELETE CASCADE"
                ")");
     qDebug() << query.lastError().text();
     //query.exec("INSERT INTO foobar VALUES (NULL, 'plop')");
@@ -128,17 +135,20 @@ bool Database::articleAdd(const QVariantMap values) {
     qDebug() << "db.articleAdd" << values["title"];
 
     QSqlQuery q;
-    q.prepare("INSERT OR IGNORE INTO articles (id, date, timestamp, title, subtitle, nb_comments, icon, link) "
-              "VALUES (:id, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link)");
+    q.prepare("INSERT OR IGNORE INTO articles (id, type, date, timestamp, title, subtitle, nb_comments, icon, link, parent, content) "
+              "VALUES (:id, :type, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :parent, :content)");
 
     q.bindValue(":id"         , values["id"]);
+    q.bindValue(":type"       , values.value("type", 0));
     q.bindValue(":date"       , values["date"]);
     q.bindValue(":timestamp"  , values["timestamp"]);
     q.bindValue(":title"      , values["title"]);
-    q.bindValue(":subtitle"   , values["subtitle"]);
+    q.bindValue(":subtitle"   , values.value("subtitle", QVariant())); // QVariant() is for NULL
     q.bindValue(":nb_comments", values["comments"]);
-    q.bindValue(":icon"       , values["icon"]);
+    q.bindValue(":icon"       , values.value("icon", QVariant()));
     q.bindValue(":link"       , values["link"]);
+    q.bindValue(":parent"     , values.value("parent", -1));
+    q.bindValue(":content"    , values.value("content", QVariant()));
     bool ret = q.exec();
     if (!ret) {
         qDebug() << "insert failed:" << q.lastError().text();
@@ -150,9 +160,11 @@ bool Database::articleAdd(const QVariantMap values) {
         return true;
     }
 
+    // if article already exists
     q.prepare("UPDATE articles SET nb_comments = :nb_comments, new_comments = 1 "
               "WHERE id = :id AND nb_comments < :nb_comments");
     q.bindValue(":id"         , values["id"]);
+    q.bindValue(":type"       , values.value("type", 0));
     q.bindValue(":nb_comments", values["comments"]);
     ret = q.exec();
     if (!ret) {

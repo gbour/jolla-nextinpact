@@ -20,6 +20,7 @@ import Sailfish.Silica 1.0
 
 import "../components"
 import "../logic/scrapers/articles.js" as Scraper
+import "../logic/scrapers/brief.js"    as BriefScraper
 
 Page {
     id: articles
@@ -108,13 +109,42 @@ Page {
 
             loader.visible = showLoader; loader_bi.running = showLoader;
 
+            var briefScraper = new BriefScraper.Brief();
+            var fnLeBrief = function(root) {
+
+                return function(briefs) {
+                    //console.log('root =', root, Utils.dump(root), '= briefs');
+
+                    briefs.forEach(function(brief) {
+                        brief.type   = 1;
+
+                        brief.parent = root.id;
+                        ['date','timestamp','icon'].forEach(function(field) { brief[field] = root[field]; });
+                        // we use date field milliseconds to reflect Lebrief articles correct order
+                        brief.date.setMilliseconds(brief.position);
+
+                        //console.log(Utils.dump(briefs[i]));
+                        db.articleAdd(brief);
+                    })
+
+                    articlesListModel.updateModel()
+                }
+            }
+
             var scraper = new Scraper.Articles();
             context.load(scraper.url({page: 1}), scraper, function(articles) {
                 // insert into db
-                for(var idx in articles) {
-                    //console.log(articles[idx].comments, articles[idx].title)
-                    db.articleAdd(articles[idx])
-                }
+                //for(var idx in articles) {
+                articles.forEach(function(article) {
+                    //console.log(article.comments, article.title)
+
+                    if (article.link.indexOf("-lebrief-") > 0) {
+                        briefScraper.fetch(article.link, fnLeBrief(article));
+                        article.type = 99;
+                    }
+
+                    db.articleAdd(article)
+                });
 
                 // notify list model to reload articles after db update
                 articlesListModel.updateModel()
@@ -122,7 +152,6 @@ Page {
                 // hide loader
                 loader.visible = false; loader_bi.running = false;
             });
-
         }
     }
 }

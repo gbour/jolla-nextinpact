@@ -22,6 +22,7 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
 
     QHash<int, QByteArray> roles;
     roles[IdRole]   = "id";
+    roles[TypeRole] = "type";
     roles[DateRole] = "date";
     roles[TimestampRole] = "timestamp";
     roles[TitleRole] = "title";
@@ -39,9 +40,9 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
 void ArticleListModel::updateModel() {
     //qDebug() << "articlemodel::update";
     //this->setQuery("SELECT *, DATE(date) AS section FROM articles ORDER BY date DESC");
-    this->setQuery("SELECT id, date, timestamp, title, subtitle, nb_comments, icon, link, unread, "
+    this->setQuery("SELECT id, type, date, timestamp, title, subtitle, nb_comments, icon, link, unread, "
                    "new_comments, DATE(date) AS section "
-                   "FROM articles ORDER BY date DESC");
+                   "FROM articles WHERE type < 90 ORDER BY date DESC");
 }
 
 int ArticleListModel::getId(int row) {

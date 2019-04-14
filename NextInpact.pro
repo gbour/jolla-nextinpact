@@ -70,4 +70,7 @@ RESOURCES += \
 
 QT += sql
 
+DISTFILES += \
+    qml/logic/scrapers/brief.js
+
 
