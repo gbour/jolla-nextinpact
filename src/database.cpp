@@ -34,6 +34,9 @@ bool Database::init()
     }
 
     QSqlQuery query;
+    // SET PRAGMAS
+    query.exec("PRAGMA foreign_keys = ON");
+
     query.exec("CREATE TABLE IF NOT EXISTS config ("
                     "key   TEXT PRIMARY KEY,"
                     "value TEXT"
