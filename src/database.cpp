@@ -9,6 +9,7 @@
 Database::Database(QObject *parent) : QObject(parent)
 {
     this->init();
+    this->migrate();
 }
 
 Database::~Database()
@@ -75,6 +76,51 @@ bool Database::init()
                ")");
     qDebug() << query.lastError().text();
     //query.exec("INSERT INTO foobar VALUES (NULL, 'plop')");
+    return true;
+}
+
+bool Database::migrate() {
+    QSqlQuery q;
+
+    q.prepare("SELECT value FROM config WHERE key='version'");
+    if (!q.exec() || !q.first()) {
+        qDebug() << "failed to read config table:" << q.lastError().text();
+        return false;
+    }
+
+    int version = q.value("value").toInt();
+    qDebug() << "version current: " << version << ", target: " << DB_VERSION;
+    if (version == DB_VERSION) {
+        return true;
+    }
+
+    bool ret;
+    // Upgrading from version 1 to 2
+    // NOTE: `comments` is a new table
+    if (version == 1) {
+        QStringList queries = {
+            "ALTER TABLE articles ADD COLUMN readtime TEXT",
+            "ALTER TABLE articles ADD COLUMN author TEXT",
+            "ALTER TABLE articles ADD COLUMN pubdate TEXT",
+            "ALTER TABLE articles ADD COLUMN content TEXT"
+        };
+
+        for(int i = 0; i < queries.size(); i++) {
+            ret = q.exec(queries.at(i));
+            if (!ret) {
+                qDebug() << "db upgrade (1->2):: failed query " << queries.at(i) << ":", q.lastError().text();
+                return false;
+            }
+        }
+    }
+
+    q.prepare("UPDATE config SET value=:version WHERE key='version'");
+    q.bindValue(":version", DB_VERSION);
+    if (!q.exec()) {
+        qDebug() << "failed to upgrade db version:" << q.lastError().text();
+        return false;
+    }
+
     return true;
 }
 
