@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Apr 14 2019 Guillaume Bour <guillaume@bour.cc> 0.6-2
+Fix:
+- store articles and comments in local database
+- articles & comments displayed in sailfishos style (get rid of webview)
+
 * Thu Jan 17 2019 Guillaume Bour <guillaume@bour.cc> 0.6-1
 Fix:
 - increase webview font size (display article payload)
