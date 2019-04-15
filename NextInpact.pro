@@ -58,7 +58,8 @@ OTHER_FILES += qml/NextInpact.qml \
     rpm/NextInpact.yaml \
     rpm/NextInpact.changes \
     LICENSE \
-    NextInpact.desktop
+    NextInpact.desktop \
+    icons
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -70,7 +71,12 @@ RESOURCES += \
 
 QT += sql
 
+SAILFISHAPP_ICONS += 86x86 108x108 128x128 172x172 256x256
 DISTFILES += \
-    qml/logic/scrapers/brief.js
+    icons/86x86/NextInpact.png \
+    icons/108x108/NextInpact.png \
+    icons/128x128/NextInpact.png \
+    icons/172x172/NextInpact.png \
+    icons/256x256/NextInpact.png
 
 
