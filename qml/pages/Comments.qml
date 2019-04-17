@@ -65,8 +65,16 @@ Page {
             'onContentHeightChanged' works for both mouse & slides moves but is triggered way too often
         */
 
-      }
+        // triggered when we hit the end of the list
+        // we decrement by 10 pixel, or we end pointing `after` the last element (indexAt() returning -1)
+        onAtYEndChanged: function() {
+            var bottom = listview.indexAt(listview.width/2, listview.contentY + listview.height-10);
+            var page = Math.floor(bottom/10) + 2;
+            console.log('hitting bottom: idx', bottom+1, ', loading page #', page);
 
+            loadComments(page);
+        }
+    }
 
 /*
     Rectangle {
