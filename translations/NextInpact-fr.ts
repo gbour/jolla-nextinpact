@@ -26,11 +26,10 @@
                     &lt;br/&gt;&lt;br/&gt;
                     Les articles et leur contenu affichés par cette application; ainsi que le logo NextINpact; sont la propriété pleine et entière de &lt;b&gt;PC INpact SARL de presse&lt;/b&gt;&lt;br/&gt;.
                     Si vous appréciez ce contenu, vous êtes invité à &lt;a href=&quot;http://www.nextinpact.com/abonnement?utm_source=pcinpact&amp;utm_medium=header&amp;utm_campaign=premium&quot;&gt;souscrire à un abonnement member ou premium&lt;/a&gt;.</translation>
-        </message>
     </message>
 </context>
 <context>
-    <name>ArticleList</name>
+    <name>Articles</name>
     <message>
         <source>About</source>
         <translation>À propos</translation>
