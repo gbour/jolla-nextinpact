@@ -77,12 +77,7 @@ Page {
                     url: model.link
                 }
 
-                var target = "Article.qml"
-                if (model.link.indexOf("-lebrief-") > 0) {
-                    target = "BriefArticle.qml"
-                }
-
-                pageStack.push(Qt.resolvedUrl(target), params, PageStackAction.Animated)
+                pageStack.push(Qt.resolvedUrl("Article.qml"), params, PageStackAction.Animated)
             }
 
         }
