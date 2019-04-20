@@ -148,6 +148,7 @@ var tablemap = {
     '#255': "\u00FF",
 
     'amp': "&",
+    'quot': "\"",
     'nbsp': " "
 };
 
