@@ -99,8 +99,7 @@ Brief.prototype = {
                         // ie: /brief/my-wonderful-article-1234.htm
                         article.id   = article.link.split('.')[0].split('-').pop()
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += '<'+tag+'>';
-
+                        article.content += Utils.html2qt(tag, attrs);
                         if (tag === 'div') {
                             content_inc += 1;
                         }
@@ -121,7 +120,7 @@ Brief.prototype = {
                     if (tag === 'div') {
                         content_inc -= 1;
 
-                        if (content_inc === 0) {
+                        if (content_inc <= 0) {
                             state.shift(); return
                         }
                     }
@@ -129,12 +128,12 @@ Brief.prototype = {
                     article.content += '</'+tag+'>';
                 }
 
-                if(states[state[0]] === tag) {
-                    state.shift()
+                if(state[0] === STATE_ARTICLE && tag === states[STATE_ARTICLE]) {
+                    articles.push(article);
                 }
 
-                if (tag === 'article') {
-                    articles.push(article);
+                if(states[state[0]] === tag) {
+                    state.shift()
                 }
             },
 
