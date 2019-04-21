@@ -118,7 +118,9 @@ Page {
                         brief.parent = root.id;
                         ['date','timestamp','icon'].forEach(function(field) { brief[field] = root[field]; });
                         // we use date field milliseconds to reflect Lebrief articles correct order
-                        brief.date.setMilliseconds(brief.position);
+                        // NOTES: articles are displayed more recent first, but we want briefs
+                        //        to appears in the same way as online, so we "kind of" reverse them.
+                        brief.date.setMilliseconds(briefs.length +1 -brief.position);
 
                         //console.log(Utils.dump(briefs[i]));
                         db.articleAdd(brief);
