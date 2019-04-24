@@ -16,7 +16,7 @@
 */
 
 // from https://github.com/mathiasbynens/iso-8859-15/blob/master/data/index-by-pointer.json
-var tablemap = {
+var _tablemap = {
     '#39': "'",
     '#128': "\u0080",
     '#129': "\u0081",
@@ -155,23 +155,23 @@ var tablemap = {
 // stage2 table map
 // we want to replace those character sequences only if target field
 // is not able to render HTML codes (eg not a RichText field)
-var tablemap2 = {
+var _tablemap2 = {
     'lt': "<",
     'gt': ">"
 }
 
-var code = /&([^;]+);/g;
 
-function map(text, stage2) {
-    stage2 = (typeof stage2 !== 'undefined' ? stage2 : true);
+function iso_map(text, stage2) {
+    var regex = /&([^;]+);/g;
+    var stage2 = (typeof stage2 !== 'undefined' ? stage2 : true);
 
-    return text.replace(code, function(match, icode, rest, unary) {
-        if (icode in tablemap) {
-            return tablemap[icode];
+    return text.replace(regex, function(match, icode, rest, unary) {
+        if (icode in _tablemap) {
+            return _tablemap[icode];
         }
 
-        if (stage2 && icode in tablemap2) {
-            return tablemap2[icode]
+        if (stage2 && icode in _tablemap2) {
+            return _tablemap2[icode]
         }
 
         return '&'+icode+';';

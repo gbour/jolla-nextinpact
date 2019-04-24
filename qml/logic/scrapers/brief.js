@@ -16,9 +16,14 @@
 */
 .pragma library
 
-.import '../../lib/htmlparser2.js' as HtmlParser
-.import '../../lib/iso8859-15.js' as Iso
-.import '../../lib/utils.js' as Utils
+/*
+   NOTE: WorkerScripts does not support .include keyword to import js libraries,
+         we need to use Qt.include() instead.
+         /!\ this last one imports all functions into the current namespace
+*/
+Qt.include('../../lib/htmlparser2.js')
+Qt.include('../../lib/iso8859-15.js')
+Qt.include('../../lib/utils.js')
 
 var STATE_ARTICLE    = 1
 var STATE_TITLE      = 2
@@ -65,7 +70,7 @@ Brief.prototype = {
         var content_inc = 0;
         var position    = 0;
 
-        HtmlParser.HTMLParser(m, {
+        HTMLParser(m, {
             start: function (tag, attrs, unary) {
                 //console.log(tag)
 
@@ -99,7 +104,7 @@ Brief.prototype = {
                         // ie: /brief/my-wonderful-article-1234.htm
                         article.id   = article.link.split('.')[0].split('-').pop()
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += Utils.html2qt(tag, attrs);
+                        article.content += html2qt(tag, attrs);
                         if (tag === 'div') {
                             content_inc += 1;
                         }
@@ -107,7 +112,7 @@ Brief.prototype = {
 
                 } catch(e) {
                     //console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(Utils.dump(attrs))
+                    //console.log(dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}
@@ -142,9 +147,9 @@ Brief.prototype = {
 
                 try {
                     if(state[0] === STATE_TITLE) {
-                        article.title += Iso.map(text);
+                        article.title += iso_map(text);
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += Iso.map(text);
+                        article.content += iso_map(text);
                     } else if(state[0] === STATE_NBCOMMENTS) {
                         article.comments = parseInt(text);
                     }

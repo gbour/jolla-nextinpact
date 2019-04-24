@@ -16,9 +16,14 @@
 */
 .pragma library
 
-.import '../../lib/htmlparser2.js' as HtmlParser
-.import '../../lib/iso8859-15.js' as Iso
-.import '../../lib/utils.js' as Utils
+/*
+   NOTE: WorkerScripts does not support .include keyword to import js libraries,
+         we need to use Qt.include() instead.
+         /!\ this last one imports all functions into the current namespace
+*/
+Qt.include('../../lib/htmlparser2.js')
+Qt.include('../../lib/iso8859-15.js')
+Qt.include('../../lib/utils.js')
 
 var STATE_ARTICLE = 1
 var STATE_H1      = 2
@@ -27,9 +32,6 @@ var STATE_DATE    = 4
 var STATE_SUBTITLE = 5
 var STATE_COMMENTS = 6
 
-var MONTHS = ["Jan", "Feb", "Mar", "Apr",
-              "May", "Jun", "Jul", "Aug",
-              "Sep", "Oct", "Nov", "Dec"];
 
 var states = ['',
     /* STATE_ARTICLE  */ 'article',
@@ -37,8 +39,9 @@ var states = ['',
     /* STATE_A        */ 'a',
     /* STATE_DATE     */ 'span',
     /* STATE_SUBTITLE */ 'span',
-    /* STATE_COMMENTS */ 'span'
+    /* STATE_COMMENTS */ 'span',
 ];
+
 
 
 function Articles() {
@@ -62,7 +65,7 @@ Articles.prototype = {
         var parent   = {tag: null, attrs:[]}
         var state    = [0]
 
-        HtmlParser.HTMLParser(m, {
+        HTMLParser(m, {
             start: function (tag, attrs, unary) {
                 //console.log(state+','+tag)
 
@@ -118,7 +121,7 @@ Articles.prototype = {
                     }
                 } catch(e) {
                     //console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(Utils.dump(attrs))
+                    //console.log(dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}
@@ -141,12 +144,12 @@ Articles.prototype = {
 
                 try {
                     if(state[0] === STATE_A) {
-                        article.title = Iso.map(text);
+                        article.title = iso_map(text);
                     } else if(state[0] === STATE_DATE) {
                         article.timestamp = text;
                     } else if(state[0] === STATE_SUBTITLE) {
                         // remove '- ' at start
-                        article.subtitle = Iso.map(text.substr(2));
+                        article.subtitle = iso_map(text.substr(2));
                     } else if(state[0] === STATE_COMMENTS) {
                         article.comments = text;
                     }

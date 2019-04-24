@@ -16,9 +16,14 @@
 */
 .pragma library
 
-.import '../../lib/htmlparser2.js' as HtmlParser
-.import '../../lib/iso8859-15.js' as Iso
-.import '../../lib/utils.js' as Utils
+/*
+   NOTE: WorkerScripts does not support .include keyword to import js libraries,
+         we need to use Qt.include() instead.
+         /!\ this last one imports all functions into the current namespace
+*/
+Qt.include('../../lib/htmlparser2.js')
+Qt.include('../../lib/iso8859-15.js')
+Qt.include('../../lib/utils.js')
 
 var STATE_ARTICLE   = 1
 var STATE_TITLE     = 2
@@ -52,7 +57,7 @@ Article.prototype = {
 
         var cnt  = 0
 
-        HtmlParser.HTMLParser(m, {
+        HTMLParser(m, {
             start: function (tag, attrs, unary) {
                 try {
                     if (state[0] === 0) {
@@ -83,7 +88,7 @@ Article.prototype = {
                             state.unshift(STATE_SUBTITLE);
                         }
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += Utils.html2qt(tag, attrs);
+                        article.content += html2qt(tag, attrs);
                         if (tag === 'div') {
                             cnt += 1;
                         }
@@ -92,7 +97,7 @@ Article.prototype = {
 
                 } catch(e) {
                     //console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(Utils.dump(attrs))
+                    //console.log(dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}
@@ -124,17 +129,17 @@ Article.prototype = {
 
                 try {
                     if(state[0] === STATE_TITLE) {
-                        article.title = Iso.map(text);
+                        article.title = iso_map(text);
                     } else if(state[0] === STATE_SUBTITLE) {
-                        article.subtitle = Iso.map(text);
+                        article.subtitle = iso_map(text);
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += Iso.map(text, false);
+                        article.content += iso_map(text, false);
                     } else if(state[0] === STATE_READTIME) {
-                        article.duration += Iso.map(text);
+                        article.duration += iso_map(text);
                     } else if(state[0] === STATE_DATE) {
-                        article.date += Iso.map(text);
+                        article.date += iso_map(text);
                     } else if(state[0] === STATE_AUTHOR) {
-                        article.author += Iso.map(text);
+                        article.author += iso_map(text);
                     }
                 } catch (e) {}
             }

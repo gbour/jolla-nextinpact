@@ -16,9 +16,14 @@
 */
 .pragma library
 
-.import '../../lib/htmlparser2.js' as HtmlParser
-.import '../../lib/iso8859-15.js' as Iso
-.import '../../lib/utils.js' as Utils
+/*
+   NOTE: WorkerScripts does not support .include keyword to import js libraries,
+         we need to use Qt.include() instead.
+         /!\ this last one imports all functions into the current namespace
+*/
+Qt.include('../../lib/htmlparser2.js')
+Qt.include('../../lib/iso8859-15.js')
+Qt.include('../../lib/utils.js')
 
 var STATE_COMMENT = 1
 var STATE_AUTHOR  = 2
@@ -63,7 +68,7 @@ Comments.prototype = {
     },
 
     scrap: function (m) {
-        console.log('fetch comments');
+        //console.log('fetch comments');
 
         var comments = []
         var comment  = null
@@ -73,7 +78,7 @@ Comments.prototype = {
         var cnt = 0
         var quote_idx = 0;
 
-        HtmlParser.HTMLParser(m, {
+        HTMLParser(m, {
             start: function (tag, attrs, unary) {
                 //console.log(tag)
 
@@ -134,7 +139,7 @@ Comments.prototype = {
                     }
                 } catch(e) {
                     console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(Utils.dump(attrs))
+                    //console.log(dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}
@@ -174,19 +179,19 @@ Comments.prototype = {
 
                 try {
                     if(state[0] === STATE_AUTHOR) {
-                        comment.author = Iso.map(text);
+                        comment.author = iso_map(text);
                     } else if(state[0] === STATE_DATE) {
-                        comment.date = Iso.map(text).replace(/\s+/g, ' ');
+                        comment.date = iso_map(text).replace(/\s+/g, ' ');
                     } else if(state[0] === STATE_NUM) {
-                        //console.log(text, ",", parseInt(Iso.map(text).substring(1)));
-                        comment.num = parseInt(Iso.map(text).substring(1));
+                        //console.log(text, ",", parseInt(iso_map(text).substring(1)));
+                        comment.num = parseInt(iso_map(text).substring(1));
                     } else if(state[0] === STATE_CONTENT) {
-                        //console.log(text, Iso.map(text))
-                        comment.content += Iso.map(text, false);
+                        //console.log(text, iso_map(text))
+                        comment.content += iso_map(text, false);
                     }
                 } catch (e) {}
             }
-                              })
+        })
 
         return comments;
     }

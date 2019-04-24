@@ -1,6 +1,11 @@
 
 .pragma library
 
+/* list months (abbrv names, starts at 0) */
+var MONTHS = ["Jan", "Feb", "Mar", "Apr",
+              "May", "Jun", "Jul", "Aug",
+              "Sep", "Oct", "Nov", "Dec"];
+
 /**
  * Function : dump()
  * Arguments: The data - array,hash(associative array),object
@@ -41,7 +46,7 @@ function dump(arr,level) {
 
 // https://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
 function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
+    if (null === obj || "object" != typeof obj) return obj;
     var copy = obj.constructor();
     for (var attr in obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
