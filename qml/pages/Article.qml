@@ -131,7 +131,9 @@ Page {
             }
             model = _tmp
 
-            read_timer.start()
+            if (model.unread === 1) {
+                read_timer.start()
+            }
         }
 
         // try first to load article from database
