@@ -48,7 +48,27 @@ function Article() {
 }
 
 Article.prototype = {
-    fetch: function (m) {
+    fetch: function(uri, callback) {
+        //console.debug('Article.fetch', uri);
+        var http = new XMLHttpRequest();
+        http.open("GET", uri, true);
+        // not possible - http.setRequestHeader("User-Agent", "Jolla/NextINpact 0.1")
+
+        var self = this;
+        http.onreadystatechange = function() {
+            if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+               //console.log(http.responseText)
+
+                var content = self.scrap(http.responseText);
+                //console.log(dump(content));
+                callback(content);
+            }
+        }
+
+        http.send();
+    },
+
+    scrap: function (m) {
         var article  = {}
 
         var articles = []

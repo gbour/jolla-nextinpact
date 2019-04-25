@@ -23,26 +23,18 @@ import "../logic/scrapers/article.js" as Scraper
 Page {
     id: detail
 
-    // id of current article in the database
-    property string artid;
-    // type is the article type (0: news, 1: brief)
-    property int type;
-    // url is provided when clicking list item in articles list view
-    property string url;
-
-    // article fields
-    property string title;
-    property string subtitle;
-    property string author;
-    property string content;
+    // article object.
+    // From Articles.qml, it contains only a subset of fiels (no author or content).
+    // After onCompleted(), it has the same fields as in database
+    property var model;
 
     //allowedOrientations: defaultOrientationTransition
 
     onStatusChanged: {
         if (status === PageStatus.Active && !pageStack._currentContainer.attachedContainer) {
             var params = {
-                newsid: artid,
-                type: type,
+                newsid: model.id,
+                type: model.type,
                 //page: 1
             }
 
@@ -71,7 +63,7 @@ Page {
                 id: title
                 width: parent.width
 
-                text: detail.title
+                text: model.title
                 font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 color: Theme.highlightColor
@@ -80,7 +72,7 @@ Page {
             Label {
                 id: subtitle
 
-                text: type == 1 ? 'LeBrief' : detail.subtitle
+                text: model.type === 1 ? 'LeBrief' : model.subtitle
                 font.pixelSize: Theme.fontSizeExtraSmall
                 font.italic: true
                 wrapMode: Text.WordWrap
@@ -91,7 +83,7 @@ Page {
                 id: author
                 width: parent.width
 
-                text: detail.author
+                text: model.author||'None'
                 font.pixelSize: Theme.fontSizeExtraSmall
                 horizontalAlignment: Text.AlignRight
             }
@@ -102,7 +94,7 @@ Page {
                 width: parent.width
                 topPadding: 50
 
-                text: detail.content
+                text: model.content||'None'
                 textFormat: Text.RichText
                 font.pixelSize: Theme.fontSizeExtraSmall
                 verticalAlignment: Qt.AlignJustify
@@ -128,28 +120,36 @@ Page {
 
 
     Component.onCompleted: {
-        //console.log('loading article content', appwin, context, url)
-
-        var setValues = function(_article) {
-            detail.title    = _article.title
-            detail.subtitle = _article.subtitle
-            detail.content  = _article.content
-            detail.author   = _article.author
+        //console.log('loading article', model.id)
+        var refresh = function(_article) {
+            // merge article fields into model
+            // NOTE: we have to use a temp variable and to reassign to `model` property for
+            //       trigger page update
+            var _tmp = model
+            for(var prop in _article) {
+                _tmp[prop] = _article[prop]
+            }
+            model = _tmp
 
             read_timer.start()
         }
 
-        var article = db.getContent(artid);
+        // try first to load article from database
+        var article = db.getContent(model.id)
         if (article !== undefined && article.content.length > 0) {
-            setValues(article);
+            refresh(article)
             return
         }
 
-        var scraper = new Scraper.Article();
-        context.load(url, scraper, function(_article) {
-            db.setContent(artid, _article);
-            setValues(_article);
+        console.log('article', model.id, 'not found in db, fetchin now');
+        // if not already fetched & stored, then do it & refresh the page
+        var scraper = new Scraper.Article()
+        scraper.fetch(model.link, function(_article) {
+            //console.log('GOT ARTICLE:', Utils.dump(article))
+            db.setContent(model.id, _article)
+            refresh(_article)
         });
+
     }
 
 

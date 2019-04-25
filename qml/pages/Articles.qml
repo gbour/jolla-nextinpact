@@ -72,9 +72,7 @@ Page {
             onClicked: {
                 console.log("clicked on " + model.link + ',' + model.type);
                 var params = {
-                    artid: model.id,
-                    type: model.type,
-                    url: model.link
+                    model: model,
                 }
 
                 pageStack.push(Qt.resolvedUrl("Article.qml"), params, PageStackAction.Animated)
