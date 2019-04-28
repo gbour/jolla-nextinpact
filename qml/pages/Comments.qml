@@ -19,7 +19,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../components"
-import "../logic/scrapers/comments.js" as Scraper
+import "../lib/utils.js" as Utils
 
 Page {
     id: comments
@@ -44,7 +44,7 @@ Page {
         if (current >= last - 5 || bottom === last - 1) {
             var page = Math.floor(bottom / 10) + 2;
             //console.log('loading next comments (page', page, ')')
-            loadComments(page);
+            commentScraper.load(page);
         }
     }
 
@@ -72,7 +72,7 @@ Page {
             var page = Math.floor(bottom/10) + 2;
             console.log('hitting bottom: idx', bottom+1, ', loading page #', page);
 
-            loadComments(page);
+            commentScraper.load(page);
         }
     }
 
@@ -101,34 +101,43 @@ Page {
 
             if (listview.model.rowCount() === 0) {
                 //console.debug('Comments::status activating. loading page 1')
-                loadComments(1)
+                commentScraper.load(1)
             }
         }
     }
 
-/*
-    Component.onCompleted: {
-    }
-*/
-    function loadComments(page) {
-        loading = true
-
-        var scraper = new Scraper.Comments();
-        scraper.fetch(newsid, type, page, function(comments) {
-            if (comments.length > 0) {
-                var is = comments[0].num;
-                var expected = 10* (page-1) + 1;
-                //console.log('1st comment:', is, expected)
-
-                if (is === expected) {
-                    for(var idx in comments) {
-                        listview.model.addComment(comments[idx])
-                    }
-
-                    loading = false
-                }
+    WorkerScript {
+        id: commentScraper
+        source: Qt.resolvedUrl("../logic/scrapers/comments.js")
+        onMessage: function(m) {
+            console.log('comments::worker reply', Utils.dump(m));
+            if (m.comments.length === 0) {
+                loading = false
+                return;
             }
-        })
+
+            var is = m.comments[0].num;
+            var expected = 10* (m.page-1) + 1;
+            //console.log('1st comment:', is, expected)
+            if (is !== expected) {
+                return
+            }
+
+            m.comments.forEach(function(comment) {
+                listview.model.addComment(comment)
+            })
+
+            loading = false
+        }
+
+        function load(page) {
+            if (loading) {
+                return
+            }
+            loading = true
+
+            this.sendMessage({action: 'scrap', id: newsid, type: type, page: page})
+        }
     }
 }
 

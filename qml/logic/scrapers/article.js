@@ -168,3 +168,12 @@ Article.prototype = {
         return article;
     }
 }
+
+WorkerScript.onMessage = function (msg) {
+    console.log('article::workerscript:: msg=', dump(msg));
+
+    var scraper = new Article();
+    scraper.fetch(msg.uri, function(article) {
+        WorkerScript.sendMessage({reply: 'article', article: article});
+    });
+}

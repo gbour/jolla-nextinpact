@@ -19,9 +19,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../components"
-//import "../lib/utils.js" as Utils
-import "../logic/scrapers/articles.js" as Scraper
-import "../logic/scrapers/brief.js"    as BriefScraper
+import "../lib/utils.js" as Utils
 
 Page {
     id: articles
@@ -53,7 +51,7 @@ Page {
             }
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: mylistview.refresh(true)
+                onClicked: articleScraper.load(true)
             }
 
         }
@@ -72,7 +70,7 @@ Page {
             onClicked: {
                 console.log("clicked on " + model.link + ',' + model.type);
                 var params = {
-                    model: model,
+                    model: model
                 }
 
                 pageStack.push(Qt.resolvedUrl("Article.qml"), params, PageStackAction.Animated)
@@ -90,65 +88,66 @@ Page {
 
         VerticalScrollDecorator {}
 
-
-
         Component.onCompleted: {
             // initialize JS context
             appwin.context.init();
+            articleScraper.load(true)
+        }
+    }
 
-            refresh(false);
+    property int _scrapCounter: 0;
+
+    WorkerScript {
+        id: articleScraper
+        source: Qt.resolvedUrl("../logic/scrapers/articles.js")
+        onMessage: function(m) {
+            //console.log('articles::worker reply', Utils.dump(m));
+            if (m.reply === 'counter') {
+                _scrapCounter += m.count;
+                return;
+            }
+
+            if (m.article.link.indexOf("-lebrief-") > 0) {
+                m.article.type = 99;
+                _scrapCounter += 1
+                briefScraper.sendMessage({action: 'scrape', uri: m.article.link, parent: m.article});
+            }
+
+            db.articleAdd(m.article);
+            _scrapCounter -= 1;
+            //console.log('cnt=', _scrapCounter)
+            if (_scrapCounter <= 0) {
+                articlesListModel.updateModel()
+                // hide loader
+                loader.visible = false; loader_bi.running = false;
+            }
         }
 
-        function refresh(showLoader) {
+        function load(showLoader) {
             console.log("refreshing articles list...");
 
             loader.visible = showLoader; loader_bi.running = showLoader;
-
-            var briefScraper = new BriefScraper.Brief();
-            var fnLeBrief = function(root) {
-
-                return function(briefs) {
-                    //console.log('root =', root, Utils.dump(root), '= briefs');
-
-                    briefs.forEach(function(brief) {
-                        brief.type   = 1;
-
-                        brief.parent = root.id;
-                        ['date','timestamp','icon'].forEach(function(field) { brief[field] = root[field]; });
-                        // we use date field milliseconds to reflect Lebrief articles correct order
-                        // NOTES: articles are displayed more recent first, but we want briefs
-                        //        to appears in the same way as online, so we "kind of" reverse them.
-                        brief.date.setMilliseconds(briefs.length +1 -brief.position);
-
-                        //console.log(Utils.dump(briefs[i]));
-                        db.articleAdd(brief);
-                    })
-
-                    articlesListModel.updateModel()
-                }
+            this.sendMessage({action: 'scrap', page: 1})
+        }
+    }
+    WorkerScript {
+        id: briefScraper
+        source: Qt.resolvedUrl("../logic/scrapers/brief.js")
+        onMessage: function(m) {
+            //console.log('briefs::worker reply', Utils.dump(m));
+            if (m.reply === 'counter') {
+                _scrapCounter += m.count - 1;
+                return;
             }
 
-            var scraper = new Scraper.Articles();
-            context.load(scraper.url({page: 1}), scraper, function(articles) {
-                // insert into db
-                //for(var idx in articles) {
-                articles.forEach(function(article) {
-                    //console.log(article.comments, article.title)
-
-                    if (article.link.indexOf("-lebrief-") > 0) {
-                        briefScraper.fetch(article.link, fnLeBrief(article));
-                        article.type = 99;
-                    }
-
-                    db.articleAdd(article)
-                });
-
-                // notify list model to reload articles after db update
+            db.articleAdd(m.brief);
+            _scrapCounter -= 1;
+            //console.log('cnt=', _scrapCounter)
+            if (_scrapCounter <= 0) {
                 articlesListModel.updateModel()
-
                 // hide loader
                 loader.visible = false; loader_bi.running = false;
-            });
+            }
         }
     }
 }

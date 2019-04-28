@@ -59,7 +59,27 @@ Articles.prototype = {
         return tmp;
     },
 
-    fetch: function (m) {
+    fetch: function(uri, callback) {
+        //console.debug('Articles.fetch', uri);
+        var http = new XMLHttpRequest();
+        http.open("GET", uri, true);
+        // not possible - http.setRequestHeader("User-Agent", "Jolla/NextINpact 0.1")
+
+        var self = this;
+        http.onreadystatechange = function() {
+            if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+               //console.log(http.responseText)
+
+                var content = self.scrap(http.responseText);
+                //console.log(content);
+                callback(content);
+            }
+        }
+
+        http.send();
+    },
+
+    scrap: function (m) {
         var articles = []
         var article  = null
         var parent   = {tag: null, attrs:[]}
@@ -159,4 +179,20 @@ Articles.prototype = {
 
         return articles;
     }
+}
+
+WorkerScript.onMessage = function (msg) {
+    console.log('articles::workerscript:: msg=', dump(msg), msg.page);
+
+    var scraper = new Articles();
+    scraper.fetch(scraper.url({page: msg.page}), function(articles) {
+        //dump(articles);
+        WorkerScript.sendMessage({reply: 'counter', count: articles.length})
+
+        articles.forEach(function(article) {
+            //console.log(article.comments, article.title)
+            WorkerScript.sendMessage({reply: 'article', article: article});
+        });
+    });
+
 }

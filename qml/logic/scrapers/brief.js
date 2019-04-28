@@ -53,7 +53,7 @@ Brief.prototype = {
                //console.log(http.responseText)
 
                 var briefs = self.scrap(http.responseText);
-                //console.log(briefs);
+                //console.log(dump(briefs));
                 callback(briefs);
             }
         }
@@ -159,4 +159,28 @@ Brief.prototype = {
 
         return articles;
     }
+}
+
+WorkerScript.onMessage = function (msg) {
+    console.log('briefs::workerscript:: msg=', dump(msg));
+
+    var scraper = new Brief();
+    scraper.fetch(msg.uri, function(briefs) {
+        //console.log(dump(briefs));
+        WorkerScript.sendMessage({reply: 'counter', count: briefs.length})
+
+        briefs.forEach(function(brief) {
+            //console.log('brief:', brief.title, brief.comments, msg.parent.id);
+            brief.type   = 1;
+
+            brief.parent = msg.parent.id;
+            ['date','timestamp','icon'].forEach(function(field) { brief[field] = msg.parent[field]; });
+            // we use date field milliseconds to reflect Lebrief articles correct order
+            // NOTES: articles are displayed more recent first, but we want briefs
+            //        to appears in the same way as online, so we "kind of" reverse them.
+            brief.date.setMilliseconds(briefs.length +1 -brief.position);
+
+            WorkerScript.sendMessage({reply: 'brief', brief: brief});
+        });
+    });
 }

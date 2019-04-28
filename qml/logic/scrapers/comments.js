@@ -47,7 +47,7 @@ Comments.prototype = {
     _url: 'https://m.nextinpact.com/comment/',
 
     fetch: function(newsid, type, page, callback) {
-        console.debug('Comments.fetch', this._url, newsid, page);
+        //console.debug('Comments.fetch', this._url, newsid, page);
         var http = new XMLHttpRequest();
 
         http.open("POST", this._url, true)
@@ -59,7 +59,7 @@ Comments.prototype = {
                 //console.log(http.responseText)
 
                 var comments = self.scrap(http.responseText);
-                console.debug('comments::fetch: got', comments.length, ' comments');
+                //console.debug('comments::fetch: got', comments.length, ' comments');
                 callback(comments);
             }
         }
@@ -196,3 +196,14 @@ Comments.prototype = {
         return comments;
     }
 }
+
+WorkerScript.onMessage = function (msg) {
+    console.log('comments::workerscript:: msg=', dump(msg));
+
+    var scraper = new Comments();
+    scraper.fetch(msg.id, msg.type, msg.page, function(comments) {
+        WorkerScript.sendMessage({reply: 'comments', comments: comments, page: msg.page});
+    });
+}
+
+

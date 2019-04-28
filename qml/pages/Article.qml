@@ -18,7 +18,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "../logic/scrapers/article.js" as Scraper
+import "../lib/utils.js" as Utils
 
 Page {
     id: detail
@@ -121,21 +121,6 @@ Page {
 
     Component.onCompleted: {
         //console.log('loading article', model.id)
-        var refresh = function(_article) {
-            // merge article fields into model
-            // NOTE: we have to use a temp variable and to reassign to `model` property for
-            //       trigger page update
-            var _tmp = model
-            for(var prop in _article) {
-                _tmp[prop] = _article[prop]
-            }
-            model = _tmp
-
-            if (model.unread === 1) {
-                read_timer.start()
-            }
-        }
-
         // try first to load article from database
         var article = db.getContent(model.id)
         if (article !== undefined && article.content.length > 0) {
@@ -143,21 +128,44 @@ Page {
             return
         }
 
-        console.log('article', model.id, 'not found in db, fetchin now');
         // if not already fetched & stored, then do it & refresh the page
-        var scraper = new Scraper.Article()
-        scraper.fetch(model.link, function(_article) {
-            //console.log('GOT ARTICLE:', Utils.dump(article))
-            db.setContent(model.id, _article)
-            refresh(_article)
-        });
+        console.log('article', model.id, 'not found in db, fetchin now');
+        articleScraper.load()
 
     }
-
 
     Component.onDestruction: function() {
         // when leaving article page, stop 'read' timer if not triggered yet
         read_timer.stop()
+    }
+
+    function refresh(_article) {
+        // merge article fields into model
+        // NOTE: we have to use a temp variable and to reassign to `model` property for
+        //       trigger page update
+        var _tmp = model
+        for(var prop in _article) {
+            _tmp[prop] = _article[prop]
+        }
+        model = _tmp
+
+        if (model.unread === 1) {
+            read_timer.start()
+        }
+    }
+
+    WorkerScript {
+        id: articleScraper
+        source: Qt.resolvedUrl("../logic/scrapers/article.js")
+        onMessage: function(m) {
+            //console.log("article:worker reply", Utils.dump(m))
+            db.setContent(model.id, m.article)
+            refresh(m.article)
+        }
+
+        function load() {
+            articleScraper.sendMessage({action: 'scrape', uri: model.link})
+        }
     }
 
     Timer {
@@ -165,7 +173,8 @@ Page {
         interval: 5000 // 5 secs
         running: false
         onTriggered: {
-            db.toggleRead(artid, true);
+            //console.log('timer', model.id, model.title, model.unread)
+            db.toggleRead(model.id, true)
             articlesListModel.updateModel()
         }
     }
