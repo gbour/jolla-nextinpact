@@ -16,7 +16,7 @@ VERSION = 0.6.2
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += BUILD_DATE='"$(shell date '+%s')"'
 
-DBVERSION = 2
+DBVERSION = 3
 DBNAME = 'nextinpact.db'
 #DBNAME = 'nextinpact-pre.db'
 #DBNAME = 'nextinpact-dev.db'

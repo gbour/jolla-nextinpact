@@ -125,6 +125,41 @@ bool Database::migrate() {
 		}
     }
 
+    if (version < 3) {
+        /*
+         * PRIMARY KEY update cannot be done with ALTER TABLE command
+         * we need to create a new table, copy data from old one and finally delete the old table
+         * see https://www.sqlite.org/lang_altertable.html#otheralter
+         */
+        QStringList queries = {
+            "CREATE TABLE IF NOT EXISTS new_articles ("
+                "id INTEGER, type INTEGER DEFAULT 0, date TEXT, timestamp TEXT, title TEXT,"
+                "subtitle TEXT, nb_comments INTEGER, icon BLOB, link TEXT, readtime TEXT,"
+                "author TEXT, pubdate TEXT, content TEXT, unread INTEGER DEFAULT 1,"
+                "new_comments INTEGER DEFAULT 1, parent INTEGER DEFAULT -1,"
+                "PRIMARY KEY (id, type))",
+            "INSERT INTO new_articles "
+                "SELECT id, 0, date, timestamp, title, subtitle, nb_comments, icon, link, readtime,"
+                "author, pubdate, content, unread, new_comments, -1 FROM articles",
+
+            "CREATE TABLE IF NOT EXISTS new_comments ("
+                "id INTEGER, article_id INTEGER, article_type INTEGER, author TEXT, date TEXT,"
+                "content TEXT,"
+                "PRIMARY KEY (id, article_id, article_type),"
+                "FOREIGN KEY (article_id, article_type) REFERENCES articles (id, type) "
+                    "ON DELETE CASCADE)",
+            "INSERT INTO new_comments "
+                "SELECT id, artid, 0, author, date, content FROM comments",
+
+            "DROP TABLE articles",
+            "DROP TABLE comments",
+            "ALTER TABLE new_articles RENAME TO articles",
+            "ALTER TABLE new_comments RENAME TO comments"
+        };
+        if (!updater->exec(3, queries)) {
+            return false;
+        }
+    }
 
     return true;
 }
