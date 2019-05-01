@@ -5,6 +5,7 @@
 #include <QDir>
 
 #include <src/database.h>
+#include <src/DbUpdater.h>
 
 Database::Database(QObject *parent) : QObject(parent)
 {
@@ -36,6 +37,7 @@ bool Database::init()
     QSqlQuery query;
     // SET PRAGMAS
     query.exec("PRAGMA foreign_keys = ON");
+    query.finish();
 
     query.exec("CREATE TABLE IF NOT EXISTS config ("
                     "key   TEXT PRIMARY KEY,"
@@ -44,6 +46,7 @@ bool Database::init()
     query.prepare("INSERT OR IGNORE INTO config VALUES (\"version\", :version)");
     query.bindValue(":version", DB_VERSION);
     query.exec();
+    query.finish();
 
     query.exec("CREATE TABLE IF NOT EXISTS articles ("
                     "id INTEGER,"
@@ -72,6 +75,7 @@ bool Database::init()
                     "PRIMARY KEY (id, type)"
                ")");
     qDebug() << query.lastError().text();
+    query.finish();
 
     query.exec("CREATE TABLE IF NOT EXISTS comments ("
                     "id INTEGER,"
@@ -85,51 +89,42 @@ bool Database::init()
                     "FOREIGN KEY (article_id, article_type) REFERENCES articles (id, type) ON DELETE CASCADE"
                ")");
     qDebug() << query.lastError().text();
+    query.finish();
     //query.exec("INSERT INTO foobar VALUES (NULL, 'plop')");
     return true;
 }
 
 bool Database::migrate() {
     QSqlQuery q;
+    DbUpdater *updater = new DbUpdater(this->db);
 
     q.prepare("SELECT value FROM config WHERE key='version'");
     if (!q.exec() || !q.first()) {
         qDebug() << "failed to read config table:" << q.lastError().text();
         return false;
     }
-
     int version = q.value("value").toInt();
+    q.finish();
+
     qDebug() << "version current: " << version << ", target: " << DB_VERSION;
     if (version == DB_VERSION) {
         return true;
     }
 
-    bool ret;
     // Upgrading from version 1 to 2
     // NOTE: `comments` is a new table
-    if (version == 1) {
+    if (version < 2) {
         QStringList queries = {
             "ALTER TABLE articles ADD COLUMN readtime TEXT",
             "ALTER TABLE articles ADD COLUMN author TEXT",
             "ALTER TABLE articles ADD COLUMN pubdate TEXT",
             "ALTER TABLE articles ADD COLUMN content TEXT"
         };
-
-        for(int i = 0; i < queries.size(); i++) {
-            ret = q.exec(queries.at(i));
-            if (!ret) {
-                qDebug() << "db upgrade (1->2):: failed query " << queries.at(i) << ":", q.lastError().text();
-                return false;
-            }
-        }
+        if (!updater->exec(2, queries)) {
+			return false;
+		}
     }
 
-    q.prepare("UPDATE config SET value=:version WHERE key='version'");
-    q.bindValue(":version", DB_VERSION);
-    if (!q.exec()) {
-        qDebug() << "failed to upgrade db version:" << q.lastError().text();
-        return false;
-    }
 
     return true;
 }

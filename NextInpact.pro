@@ -28,12 +28,14 @@ CONFIG += sailfishapp
 HEADERS += \
     src/database.h \
     src/ArticleListModel.h \
-    src/CommentListModel.h
+    src/CommentListModel.h \
+    src/DbUpdater.h
 
 SOURCES += src/NextInpact.cpp \
     src/database.cpp \
     src/ArticleListModel.cpp \
-    src/CommentListModel.cpp
+    src/CommentListModel.cpp \
+    src/DbUpdater.cpp
 
 OTHER_FILES += qml/NextInpact.qml \
     qml/cover/CoverPage.qml \
