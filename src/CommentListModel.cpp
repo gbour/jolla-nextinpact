@@ -62,9 +62,17 @@ bool CommentListModel::addComment(const QVariantMap comment) {
     // rec is an empty record, with fieldnames already set
     QSqlRecord rec = this->record();
 
+    //NOTE: why are we not using anymore CommentListModel articleId and articleType values ?
+    //      There's only 1 CommentListModel instance running in QML (`commentsModel`),
+    //      and if a user rapidly switch from a first article comments to a second article comments,
+    //      and network is slow;
+    //      when first article comments are finally downloaded and ready to be inserted in database,
+    //      then CommentsListModel articleId and articleType values are those of the second article.
+    QVariantMap article = comment["article"].toMap();
+
     rec.setValue("id"          , comment["num"]);
-    rec.setValue("article_id"  , this->m_articleId);
-    rec.setValue("article_type", this->m_articleType);
+    rec.setValue("article_id"  , article["id"]);
+    rec.setValue("article_type", article["type"]);
     rec.setValue("author"      , comment["author"]);
     rec.setValue("date"        , comment["date"]);
     rec.setValue("content"     , comment["content"]);

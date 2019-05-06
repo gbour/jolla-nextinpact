@@ -59,6 +59,9 @@ Comments.prototype = {
                 //console.log(http.responseText)
 
                 var comments = self.scrap(http.responseText);
+                comments.forEach(function (comment) {
+                    comment.article = {id: newsid, type: type}
+                })
                 //console.debug('comments::fetch: got', comments.length, ' comments');
                 callback(comments);
             }
