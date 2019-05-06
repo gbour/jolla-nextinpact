@@ -7,6 +7,7 @@
 CommentListModel::CommentListModel(QObject *parent, QSqlDatabase db) : QSqlTableModel(parent, db)
 {
     this->setTable("comments");
+    this->setSort(0, Qt::AscendingOrder);
 }
 
 /*
@@ -19,6 +20,7 @@ void CommentListModel::setArticle(const qint32 articleId, const qint32 articleTy
     this->m_articleType = articleType;
 
     this->setFilter(QString("article_id=%1 AND article_type=%2").arg(articleId).arg(articleType));
+    qDebug() << "comments model populating:" << this->selectStatement();
     this->select();
 }
 
