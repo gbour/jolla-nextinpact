@@ -83,7 +83,7 @@ Page {
                 id: author
                 width: parent.width
 
-                text: model.author||'None'
+                text: model.author||''
                 font.pixelSize: Theme.fontSizeExtraSmall
                 horizontalAlignment: Text.AlignRight
             }
@@ -94,7 +94,7 @@ Page {
                 width: parent.width
                 topPadding: 50
 
-                text: model.content||'None'
+                text: model.content||''
                 textFormat: Text.RichText
                 font.pixelSize: Theme.fontSizeExtraSmall
                 verticalAlignment: Qt.AlignJustify
