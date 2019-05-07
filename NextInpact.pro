@@ -12,13 +12,13 @@
 # The name of your application
 TARGET = NextInpact
 
-VERSION = 0.6.2
+VERSION = 0.6.3-pre1
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += BUILD_DATE='"$(shell date '+%s')"'
 
 DBVERSION = 3
-DBNAME = 'nextinpact.db'
-#DBNAME = 'nextinpact-pre.db'
+#DBNAME = 'nextinpact.db'
+DBNAME = 'nextinpact-pre.db'
 #DBNAME = 'nextinpact-dev.db'
 DEFINES += DB_VERSION=$$DBVERSION
 DEFINES += DB_NAME=\\\"$$DBNAME\\\"
