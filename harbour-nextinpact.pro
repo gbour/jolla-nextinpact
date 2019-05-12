@@ -10,7 +10,7 @@
 #   - translation filenames have to be changed
 
 # The name of your application
-TARGET = NextInpact
+TARGET = harbour-nextinpact
 
 VERSION = 0.6.3
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
@@ -57,10 +57,7 @@ OTHER_FILES += qml/NextInpact.qml \
     res/logo-big.png \
     translations/*.ts \
     rpm/NextInpact.spec \
-    rpm/NextInpact.yaml \
-    rpm/NextInpact.changes \
     LICENSE \
-    NextInpact.desktop \
     icons
 
 # to disable building translations every time, comment out the
@@ -75,10 +72,13 @@ QT += sql
 
 SAILFISHAPP_ICONS += 86x86 108x108 128x128 172x172 256x256
 DISTFILES += \
-    icons/86x86/NextInpact.png \
-    icons/108x108/NextInpact.png \
-    icons/128x128/NextInpact.png \
-    icons/172x172/NextInpact.png \
-    icons/256x256/NextInpact.png
+    harbour-nextinpact.desktop \
+    icons/86x86/harbour-nextinpact.png \
+    icons/256x256/harbour-nextinpact.png \
+    icons/172x172/harbour-nextinpact.png \
+    icons/128x128/harbour-nextinpact.png \
+    icons/108x108/harbour-nextinpact.png \
+    rpm/harbour-nextinpact.yaml \
+    rpm/harbour-nextinpact.changes
 
 

@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=NextInpact
-Exec=NextInpact
+Icon=harbour-nextinpact
+Exec=harbour-nextinpact
 Name=NextInpact
 # translation example:
 # your app name in German locale (de)
