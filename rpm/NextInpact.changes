@@ -8,6 +8,16 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Tue May 14 2019 Guillaume Bour <guillaume@bour.cc> 0.6-3
+Features:
+- scrap and store LeBrief articles as already done for regular articles
+- improve app reactivity by scraping articles asynchronously
+- add multi-sized application icons
+- improve db migration process
+
+Fixes:
+- fix some comments loading issues
+
 * Sun Apr 14 2019 Guillaume Bour <guillaume@bour.cc> 0.6-2
 Fix:
 - store articles and comments in local database
