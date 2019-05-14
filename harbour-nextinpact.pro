@@ -68,7 +68,8 @@ TRANSLATIONS += translations/NextInpact-fr.ts
 RESOURCES += \
     resources.qrc
 
-QT += sql
+QT += sql dbus
+PKGCONFIG += nemonotifications-qt5
 
 SAILFISHAPP_ICONS += 86x86 108x108 128x128 172x172 256x256
 DISTFILES += \

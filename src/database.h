@@ -41,6 +41,7 @@ private:
     QSqlDatabase db;
     bool init();
     bool migrate();
+    bool storeMigration(QString dbpath);
 
 public slots:
     bool articleAdd(const QVariantMap values);

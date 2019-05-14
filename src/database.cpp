@@ -21,6 +21,9 @@
 #include <QFileInfo>
 #include <QDir>
 
+// nemo notifications
+#include "notification.h"
+
 #include <src/database.h>
 #include <src/DbUpdater.h>
 
@@ -37,12 +40,16 @@ bool Database::init()
 {
     //qDebug() << QSqlDatabase::drivers();
     //TODO: check QSLITE driver is present ?
-    static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation) % QString("/" DB_NAME);
+    static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) % QString("/" DB_NAME);
 
     // directory is not automatically created if not exists
     // db.open() fails unless we create the directory tree
     QFileInfo fi(dbpath);
     fi.dir().mkpath(".");
+
+    // Temporary: copy database from old path if exists.
+    // Will be removed in future versions.
+    this->storeMigration(dbpath);
 
     this->db = QSqlDatabase::addDatabase("QSQLITE");
     this->db.setDatabaseName(dbpath);
@@ -181,6 +188,46 @@ bool Database::migrate() {
     return true;
 }
 
+/*
+ * storeMigration is when migrating from openrepos NextInpact application to harbour-nextinpact
+ * Jolla store application.
+ * The purpose is to copy legacy database to use it in the new application
+ * (database format is exactly the same).
+ */
+bool Database::storeMigration(QString dbpath) {
+    if (QFileInfo::exists(dbpath)) {
+        return true;
+    }
+
+    QString legacyDb = QString("%1/NextInpact/NextInpact/nextinpact.db").\
+            arg(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation));
+    if (!QFileInfo::exists(legacyDb)) {
+        return true;
+    }
+
+    QString body = QString(
+        "We successfully imported your NextInpact database \"%1\" to harbour-nextinpact.\n"
+        "You can now uninstall NextInpact application and delete the legacy database.").arg(legacyDb);
+    bool ret = QFile::copy(legacyDb, dbpath);
+    if (!ret) {
+        body = QString(
+            "Legacy database import from \"%1\" failed. "
+            "You can do it manually by copying the database in \"%2/\" directory.").arg(
+               legacyDb, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+        );
+    }
+    QString summary = ret ? "Data migration succeed !" : "Data migration failed !";
+
+    Notification *notif = new Notification();
+    notif->setAppIcon("harbour-nextinpact");
+    notif->setAppName("NextInpact");
+    notif->setMaxContentLines(20);
+    notif->setSummary(summary);
+    notif->setBody(body);
+
+    notif->publish();
+    return ret;
+}
 bool Database::articleAdd(const QVariantMap values) {
     qDebug() << "db.articleAdd" << values["title"];
 
