@@ -45,7 +45,6 @@ OTHER_FILES += qml/NextInpact.qml \
     qml/pages/ArticleList.qml \
     qml/pages/ArticleDelegate.qml \
     qml/models/ArticleItem.qml \
-    qml/logic/context.js \
     qml/logic/scraper.js \
     qml/lib/utils.js \
     qml/lib/iso8859-15.js \

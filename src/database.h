@@ -44,11 +44,6 @@ private:
     bool storeMigration(QString dbpath);
 
 public slots:
-    bool articleAdd(const QVariantMap values);
-    bool toggleRead(const int articleId, const bool read);
-    QVariant getContent(const int articleId);
-    bool setContent(const int articleId, const QVariantMap values);
-    bool addComments(const int articleId, const QVariantList comments);
 };
 
 #endif // DATABASE_H

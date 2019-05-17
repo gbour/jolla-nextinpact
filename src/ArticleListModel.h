@@ -20,9 +20,9 @@
 #define ARTICLELISTMODEL_H
 
 #include <QObject>
-#include <QSqlQueryModel>
+#include <QSqlTableModel>
 
-class ArticleListModel : public QSqlQueryModel
+class ArticleListModel : public QSqlTableModel
 {
     Q_OBJECT
 public:
@@ -36,22 +36,39 @@ public:
         NbCommentsRole,
         IconRole,
         LinkRole,
+        ReadTimeRole,
+        AuthorRole,
+        PubDateRole,
+        ContentRole,
         UnreadRole,
         NewCommentsRole,
+        ParentRole,
         SectionRole
     };
 
-    explicit ArticleListModel(QObject *parent = 0);
+    explicit ArticleListModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
+    int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
 
 protected:
     QHash<int, QByteArray> roleNames() const;
 
+private:
+    int column(const int role) const {
+        return role - Qt::UserRole - 1;
+    }
+    QModelIndex index(const int row, const int role) const
+    {
+        return QSqlTableModel::index(row, this->column(role));
+    }
+
 signals:
 
 public slots:
-    void updateModel();
     int getId(int row);
+    bool addArticle(const QVariantMap values);
+    bool setContent(const int row, const QVariantMap values);
+    bool toggleRead(const int row, const bool read);
 };
 
 #endif // ARTICLELISTMODEL_H

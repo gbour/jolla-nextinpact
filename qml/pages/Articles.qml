@@ -66,7 +66,7 @@ Page {
         }
 
         //model: ArticleItem {}
-        model: articlesListModel
+        model: articlesModel
         delegate: ArticlesDelegate {
             onClicked: {
                 console.log("clicked on " + model.link + ',' + model.type);
@@ -90,8 +90,6 @@ Page {
         VerticalScrollDecorator {}
 
         Component.onCompleted: {
-            // initialize JS context
-            appwin.context.init();
             articleScraper.load(true)
         }
     }
@@ -114,11 +112,11 @@ Page {
                 briefScraper.sendMessage({action: 'scrape', uri: m.article.link, parent: m.article});
             }
 
-            db.articleAdd(m.article);
+            articlesModel.addArticle(m.article);
             _scrapCounter -= 1;
             //console.log('cnt=', _scrapCounter)
             if (_scrapCounter <= 0) {
-                articlesListModel.updateModel()
+                articlesModel.select()
                 // hide loader
                 loader.visible = false; loader_bi.running = false;
             }
@@ -141,11 +139,11 @@ Page {
                 return;
             }
 
-            db.articleAdd(m.brief);
+            articlesModel.addArticle(m.brief);
             _scrapCounter -= 1;
             //console.log('cnt=', _scrapCounter)
             if (_scrapCounter <= 0) {
-                articlesListModel.updateModel()
+                articlesModel.select()
                 // hide loader
                 loader.visible = false; loader_bi.running = false;
             }

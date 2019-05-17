@@ -18,21 +18,40 @@
 
 #include "ArticleListModel.h"
 #include <QDateTime>
+#include <QSqlRecord>
 
 #include "database.h"
 
-ArticleListModel::ArticleListModel(QObject *parent) : QSqlQueryModel(parent)
+ArticleListModel::ArticleListModel(QObject *parent, QSqlDatabase db) : QSqlTableModel(parent, db)
 {
-    this->updateModel();
+    this->setEditStrategy(EditStrategy::OnRowChange);
+
+    this->setTable("articles");
+    // filtering out LeBrief overall article
+    this->setFilter(QString("type < 90"));
+
+    this->setSort(DateRole- Qt::UserRole - 1, Qt::DescendingOrder);
+    qDebug() << "articles model populating:" << this->selectStatement();
+    this->select();
+}
+
+int ArticleListModel::columnCount(const QModelIndex &parent) const {
+    // we add 1 calculated column (date part of article datetime)
+    return QSqlTableModel::columnCount(parent) + 1;
 }
 
 QVariant ArticleListModel::data(const QModelIndex &index, int role) const {
     //qDebug() << "articlemodel::data" << index << role;
-    int colId = role - Qt::UserRole - 1;
-    QModelIndex idx = this->index(index.row(), colId);
+    if (role < Qt::UserRole) {
+        return QSqlTableModel::data(index, role);
+    } else if (role == SectionRole) {
+        QString datetime = QSqlTableModel::data(this->index(index.row(),  DateRole),
+                                                Qt::DisplayRole).toString();
+        return QDateTime::fromString(datetime, "yyyy-MM-ddTHH:mm:ss.zzz").toString("yyyy-MM-dd");
+    }
 
-    QVariant res = QSqlQueryModel::data(idx, Qt::DisplayRole);
-    return res;
+    QModelIndex idx = this->index(index.row(), role);
+    return QSqlTableModel::data(idx, Qt::DisplayRole);
 }
 
 QHash<int, QByteArray> ArticleListModel::roleNames() const {
@@ -48,22 +67,89 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
     roles[NbCommentsRole] = "nbcomments";
     roles[IconRole] = "icon";
     roles[LinkRole] = "link";
+    roles[ReadTimeRole] = "readtime";
+    roles[AuthorRole] = "author";
+    roles[PubDateRole] = "pubdate";
+    roles[ContentRole] = "content";
     roles[UnreadRole] = "unread";
     roles[NewCommentsRole] = "new_comments";
+    roles[ParentRole] = "parent";
     roles[SectionRole] = "section";
 
     return roles;
 }
 
-void ArticleListModel::updateModel() {
-    //qDebug() << "articlemodel::update";
-    //this->setQuery("SELECT *, DATE(date) AS section FROM articles ORDER BY date DESC");
-    this->setQuery("SELECT id, type, date, timestamp, title, subtitle, nb_comments, icon, link, unread, "
-                   "new_comments, DATE(date) AS section "
-                   "FROM articles WHERE type < 90 ORDER BY date DESC");
-}
-
 int ArticleListModel::getId(int row) {
     //qDebug() << "articlemodel::getid" << row;
-    return this->data(this->index(row, 0), IdRole).toInt();
+    return this->data(this->index(row, IdRole), IdRole).toInt();
+}
+
+/*
+ * For now on, we continue to add article directly into database using QSqlQuery instead of
+ * insertRecord(QSqlRecord) for 2 reasons:
+ * - some inserted articles must not be displayed (original LeBrief)
+ * - it is hard to respect articles order
+ *
+ * As QSqlTableModel cannot "re-filter" and "re-sort" items on the fly,
+ * after having added all articles, we reload items from database with select() command
+ *
+ */
+bool ArticleListModel::addArticle(const QVariantMap values) {
+    qDebug() << "adding article id" << values["id"] << "," << values["title"];
+
+    QSqlQuery q;
+    q.prepare("INSERT OR IGNORE INTO articles (id, type, date, timestamp, title, subtitle, nb_comments, icon, link, parent, content) "
+              "VALUES (:id, :type, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :parent, :content)");
+
+    q.bindValue(":id"         , values["id"]);
+    q.bindValue(":type"       , values.value("type", 0));
+    q.bindValue(":date"       , values["date"]);
+    q.bindValue(":timestamp"  , values["timestamp"]);
+    q.bindValue(":title"      , values["title"]);
+    q.bindValue(":subtitle"   , values.value("subtitle", QVariant())); // QVariant() is for NULL
+    q.bindValue(":nb_comments", values["comments"]);
+    q.bindValue(":icon"       , values.value("icon", QVariant()));
+    q.bindValue(":link"       , values["link"]);
+    q.bindValue(":parent"     , values.value("parent", -1));
+    q.bindValue(":content"    , values.value("content", QVariant()));
+    bool ret = q.exec();
+    if (!ret) {
+        qDebug() << "insert failed:" << q.lastError().text();
+        return false;
+    }
+
+    qDebug() << "inserted rows: " << q.numRowsAffected();
+    if (q.numRowsAffected() > 0) {
+        return true;
+    }
+
+    // if article already exists
+    q.prepare("UPDATE articles SET nb_comments = :nb_comments, new_comments = 1 "
+              "WHERE id = :id AND type = :type AND nb_comments < :nb_comments");
+    q.bindValue(":id"         , values["id"]);
+    q.bindValue(":type"       , values.value("type", 0));
+    q.bindValue(":nb_comments", values["comments"]);
+    ret = q.exec();
+    if (!ret) {
+        qDebug() << "update failed:" << q.lastError().text();
+        return false;
+    }
+
+    qDebug() << "updated rows: " << q.numRowsAffected();
+    return ret;
+}
+
+bool ArticleListModel::setContent(const int row, const QVariantMap values) {
+    //NOTE: needs to set an edit strategy w/ setEditStrategy().
+    this->setData(this->index(row, ReadTimeRole), values["readtime"]);
+    this->setData(this->index(row, AuthorRole)  , values["author"]);
+    this->setData(this->index(row, PubDateRole) , values["pubdate"]);
+    this->setData(this->index(row, ContentRole) , values["content"]);
+
+    return this->submit();
+}
+
+bool ArticleListModel::toggleRead(const int row, const bool read) {
+    this->setData(this->index(row, UnreadRole), !read);
+    return this->submit();
 }

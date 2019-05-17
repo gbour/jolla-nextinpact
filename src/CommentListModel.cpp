@@ -51,10 +51,8 @@ QVariant CommentListModel::data(const QModelIndex &index, int role) const {
     int colId = role - Qt::UserRole - 1;
     QModelIndex idx = this->index(index.row(), colId);
 
-    QVariant res = QSqlTableModel::data(idx, Qt::DisplayRole);
-    return res;
+    return QSqlTableModel::data(idx, Qt::DisplayRole);
 }
-
 
 QHash<int, QByteArray> CommentListModel::roleNames() const {
     qDebug() << "Commentmodel::roleNames";
@@ -76,7 +74,6 @@ int CommentListModel::getId(int row) {
 }
 
 bool CommentListModel::addComment(const QVariantMap comment) {
-    qDebug() << "adding comment" << this->m_articleId << this->m_articleType;
     // rec is an empty record, with fieldnames already set
     QSqlRecord rec = this->record();
 
@@ -87,6 +84,7 @@ bool CommentListModel::addComment(const QVariantMap comment) {
     //      when first article comments are finally downloaded and ready to be inserted in database,
     //      then CommentsListModel articleId and articleType values are those of the second article.
     QVariantMap article = comment["article"].toMap();
+    qDebug() << "adding comment to article " << article["id"];
 
     rec.setValue("id"          , comment["num"]);
     rec.setValue("article_id"  , article["id"]);

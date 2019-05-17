@@ -122,17 +122,17 @@ Page {
 
     Component.onCompleted: {
         //console.log('loading article', model.id)
-        // try first to load article from database
-        var article = db.getContent(model.id)
-        if (article !== undefined && article.content.length > 0) {
-            refresh(article)
+
+        //NOTE : model already contains all db fields
+        // so we need to check of mode.content is empty (NULL?) or not
+        if (model.content !== "") {
+            read_timer.condstart()
             return
         }
 
         // if not already fetched & stored, then do it & refresh the page
         console.log('article', model.id, 'not found in db, fetchin now');
         articleScraper.load()
-
     }
 
     Component.onDestruction: function() {
@@ -140,28 +140,17 @@ Page {
         read_timer.stop()
     }
 
-    function refresh(_article) {
-        // merge article fields into model
-        // NOTE: we have to use a temp variable and to reassign to `model` property for
-        //       trigger page update
-        var _tmp = model
-        for(var prop in _article) {
-            _tmp[prop] = _article[prop]
-        }
-        model = _tmp
-
-        if (model.unread === 1) {
-            read_timer.start()
-        }
-    }
-
     WorkerScript {
         id: articleScraper
         source: Qt.resolvedUrl("../logic/scrapers/article.js")
         onMessage: function(m) {
-            //console.log("article:worker reply", Utils.dump(m))
-            db.setContent(model.id, m.article)
-            refresh(m.article)
+            console.log("article:worker reply", Utils.dump(m))
+
+            //refresh(m.article)
+            var ret = articlesModel.setContent(model.index, m.article)
+            if (ret) {
+                read_timer.condstart()
+            }
         }
 
         function load() {
@@ -175,8 +164,13 @@ Page {
         running: false
         onTriggered: {
             //console.log('timer', model.id, model.title, model.unread)
-            db.toggleRead(model.id, true)
-            articlesListModel.updateModel()
+            articlesModel.toggleRead(model.index, true)
+        }
+
+        function condstart() {
+            if (model.unread === 1) {
+                read_timer.start()
+            }
         }
     }
 }

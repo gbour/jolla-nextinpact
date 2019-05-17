@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     Database *db = new Database();
     qDebug() << "db:" << db;
 
-    ArticleListModel *listModel  = new ArticleListModel();
+    ArticleListModel *listModel  = new ArticleListModel(0, db->getDatabase());
     CommentListModel *commentsModel = new CommentListModel(0, db->getDatabase());
 
     QTranslator translator;
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     QDateTime buildat = QDateTime::fromMSecsSinceEpoch(qint64(BUILD_DATE)*1000);
     view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));
     view->rootContext()->setContextProperty("db", db);
-    view->rootContext()->setContextProperty("articlesListModel", listModel);
+    view->rootContext()->setContextProperty("articlesModel", listModel);
     view->rootContext()->setContextProperty("commentsModel", commentsModel);
 
     // NOTE: view source MUST be set AFTER properties, or props will not be
