@@ -3,6 +3,8 @@
 *.lo
 *.o
 *.obj
+*.jsc
+*.spec
 
 # Compiled Dynamic libraries
 *.so
@@ -19,3 +21,5 @@
 *.exe
 *.out
 *.app
+
+*.pro.user*
