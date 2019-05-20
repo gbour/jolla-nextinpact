@@ -150,7 +150,8 @@ var _tablemap = {
 
     'amp': "&",
     'quot': "\"",
-    'nbsp': " "
+    'nbsp': " ",
+    'eacute': 'é'
 };
 
 // stage2 table map
@@ -164,7 +165,7 @@ var _tablemap2 = {
 
 function iso_map(text, stage2) {
     var regex = /&([^;]+);/g;
-    var stage2 = (typeof stage2 !== 'undefined' ? stage2 : true);
+    stage2 = (typeof stage2 !== 'undefined' ? stage2 : true);
 
     return text.replace(regex, function(match, icode, rest, unary) {
         if (icode in _tablemap) {
