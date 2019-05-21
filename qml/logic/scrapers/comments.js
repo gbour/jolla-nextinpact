@@ -81,6 +81,8 @@ Comments.prototype = {
 
         var cnt = 0
         var quote_idx = 0;
+        // `spacer` is here to re-introduce missing space before or after a link (<a> tag)
+        var spacer      = false;
 
         HTMLParser(m, {
             start: function (tag, attrs, unary) {
@@ -110,6 +112,11 @@ Comments.prototype = {
                             cnt = 1; quote_idx = -1;
                         }
                     } else if(state[0] === STATE_CONTENT) {
+                        if (spacer) {
+                            article.content += ' '
+                            spacer = false
+                        }
+
                         /*
                             "<a href='http://google.fr' style='text-decoration: none; color: orange; font-weight: bold' >plop</a> baba."
                             "<div style='margin-left: 20px'>flow</div><div style='margin-left: 0px'></div><br> bobo blabla "
@@ -190,8 +197,15 @@ Comments.prototype = {
                         //console.log(text, ",", parseInt(iso_map(text).substring(1)));
                         comment.num = parseInt(iso_map(text).substring(1));
                     } else if(state[0] === STATE_CONTENT) {
-                        //console.log(text, iso_map(text))
-                        comment.content += iso_map(text, false);
+                        var _text = iso_map(text)
+                        // no space before dot, comma, dash, closing brace and bracket, quotes
+                        if (spacer && _text.length > 0 && ".,-)]'\"".indexOf(_text[0]) < 0) {
+                            comment.content += ' '
+                        }
+                        // no space after space, dash, open brace and bracket, quotes
+                        spacer = (_text.length > 0 && " -(['\"".indexOf(_text[_text.length-1]) < 0)
+
+                        comment.content += _text;
                     }
                 } catch (e) {}
             }

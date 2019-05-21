@@ -70,6 +70,8 @@ Brief.prototype = {
 
         var content_inc = 0;
         var position    = 0;
+        // `spacer` is here to re-introduce missing space before or after a link (<a> tag)
+        var spacer      = false;
 
         HTMLParser(m, {
             start: function (tag, attrs, unary) {
@@ -105,6 +107,11 @@ Brief.prototype = {
                         // ie: /brief/my-wonderful-article-1234.htm
                         article.id   = article.link.split('.')[0].split('-').pop()
                     } else if(state[0] === STATE_CONTENT) {
+                        if (spacer) {
+                            article.content += ' '
+                            spacer = false
+                        }
+
                         article.content += html2qt(tag, attrs);
                         if (tag === 'div') {
                             content_inc += 1;
@@ -127,6 +134,7 @@ Brief.prototype = {
                         content_inc -= 1;
 
                         if (content_inc <= 0) {
+                            //console.log('> final', article.content)
                             state.shift(); return
                         }
                     }
@@ -150,7 +158,15 @@ Brief.prototype = {
                     if(state[0] === STATE_TITLE) {
                         article.title += iso_map(text);
                     } else if(state[0] === STATE_CONTENT) {
-                        article.content += iso_map(text);
+                        var _text = iso_map(text)
+                        // no space before dot, comma, dash, closing brace and bracket, quotes
+                        if (spacer && _text.length > 0 && ".,-)]'\"".indexOf(_text[0]) < 0) {
+                            article.content += ' '
+                        }
+                        // no space after space, dash, open brace and bracket, quotes
+                        spacer = (_text.length > 0 && " -(['\"".indexOf(_text[_text.length-1]) < 0)
+
+                        article.content += _text;
                     } else if(state[0] === STATE_NBCOMMENTS) {
                         article.comments = parseInt(text);
                     }
