@@ -69,6 +69,7 @@ public slots:
     bool addArticle(const QVariantMap values);
     bool setContent(const int row, const QVariantMap values);
     bool toggleRead(const int row, const bool read);
+    QVariantMap stats();
 };
 
 #endif // ARTICLELISTMODEL_H

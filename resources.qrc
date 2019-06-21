@@ -5,5 +5,6 @@
         <file>res/img1.jpg</file>
         <file>res/comments.png</file>
         <file>res/logo-big.png</file>
+        <file>res/cover-background.png</file>
     </qresource>
 </RCC>

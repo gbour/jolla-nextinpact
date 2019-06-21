@@ -153,3 +153,25 @@ bool ArticleListModel::toggleRead(const int row, const bool read) {
     this->setData(this->index(row, UnreadRole), !read);
     return this->submit();
 }
+
+QVariantMap ArticleListModel::stats() {
+    // returns statistics regarding articles
+    // - total articles
+    // - unread articles
+    QVariantMap stats;
+
+    QSqlQuery q;
+    q.prepare(
+        "SELECT 'unread' AS key, count(*) AS value FROM articles WHERE type < 99 AND unread = 1 UNION "
+        "SELECT 'total', count(*) FROM articles WHERE type < 99");
+    if (!q.exec()) {
+        qDebug() << "failed to get articles stats:" << q.lastError().text();
+        return stats;
+    }
+
+    while (q.next()) {
+        stats[q.value("key").toString()] = q.value("value");
+    }
+
+    return stats;
+}

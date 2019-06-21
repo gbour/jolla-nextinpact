@@ -52,7 +52,7 @@ Page {
             }
             MenuItem {
                 text: qsTr("Refresh")
-                onClicked: articleScraper.load(true)
+                onClicked: refresh(true)
             }
 
         }
@@ -90,7 +90,7 @@ Page {
         VerticalScrollDecorator {}
 
         Component.onCompleted: {
-            articleScraper.load(true)
+            refresh(true)
         }
     }
 
@@ -99,6 +99,10 @@ Page {
     WorkerScript {
         id: articleScraper
         source: Qt.resolvedUrl("../logic/scrapers/articles.js")
+
+        // _onComplete is a callback function executed when articles scraping is over
+        property var _onComplete
+
         onMessage: function(m) {
             //console.log('articles::worker reply', Utils.dump(m));
             if (m.reply === 'counter') {
@@ -116,17 +120,22 @@ Page {
             _scrapCounter -= 1;
             //console.log('cnt=', _scrapCounter)
             if (_scrapCounter <= 0) {
-                articlesModel.select()
-                // hide loader
-                loader.visible = false; loader_bi.running = false;
+                completed()
             }
         }
 
-        function load(showLoader) {
-            console.log("refreshing articles list...");
+        function setOnComplete(onComplete) {
+            _onComplete = onComplete
+        }
 
-            loader.visible = showLoader; loader_bi.running = showLoader;
-            this.sendMessage({action: 'scrap', page: 1})
+        function completed() {
+            articlesModel.select()
+            // hide loader
+            loader.visible = false; loader_bi.running = false;
+
+            if (_onComplete !== undefined) {
+                _onComplete()
+            }
         }
     }
     WorkerScript {
@@ -143,11 +152,20 @@ Page {
             _scrapCounter -= 1;
             //console.log('cnt=', _scrapCounter)
             if (_scrapCounter <= 0) {
-                articlesModel.select()
-                // hide loader
-                loader.visible = false; loader_bi.running = false;
+                articleScraper.completed()
             }
         }
+    }
+
+    /*
+      NOTE: WorkerScript cannot be invoked from outsize (eg from CoverPage) directly
+    */
+    function refresh(showLoader, onComplete) {
+        console.log("refreshing articles list...", loader, loader_bi);
+
+        loader.visible = showLoader; loader_bi.running = showLoader;
+        articleScraper.setOnComplete(onComplete)
+        articleScraper.sendMessage({action: 'scrap', page: 1})
     }
 }
 

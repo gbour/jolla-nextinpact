@@ -31,4 +31,17 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>CoverPage</name>
+    <message>
+        <source>Unread
+articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Total
+articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
