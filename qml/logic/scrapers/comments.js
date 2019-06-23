@@ -113,7 +113,7 @@ Comments.prototype = {
                         }
                     } else if(state[0] === STATE_CONTENT) {
                         if (spacer) {
-                            article.content += ' '
+                            comment.content += ' '
                             spacer = false
                         }
 
