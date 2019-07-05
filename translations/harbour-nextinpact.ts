@@ -30,6 +30,10 @@
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -42,6 +46,29 @@ articles</source>
         <source>Total
 articles</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Filters</name>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LeBrief</source>
+        <translation>Briefs</translation>
     </message>
 </context>
 </TS>

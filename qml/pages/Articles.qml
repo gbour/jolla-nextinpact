@@ -51,10 +51,13 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
             MenuItem {
+                text: qsTr("Filters")
+                onClicked: pageStack.push(Qt.resolvedUrl("Filters.qml"))
+            }
+            MenuItem {
                 text: qsTr("Refresh")
                 onClicked: refresh(true)
             }
-
         }
         // Tell SilicaFlickable the height of its content.
         //contentHeight: column.height

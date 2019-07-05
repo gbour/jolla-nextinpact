@@ -78,6 +78,7 @@ DISTFILES += \
     icons/128x128/harbour-nextinpact.png \
     icons/108x108/harbour-nextinpact.png \
     rpm/harbour-nextinpact.yaml \
-    rpm/harbour-nextinpact.changes
+    rpm/harbour-nextinpact.changes \
+    qml/pages/Filters.qml
 
 

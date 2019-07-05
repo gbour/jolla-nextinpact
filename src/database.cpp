@@ -228,3 +228,39 @@ bool Database::storeMigration(QString dbpath) {
     notif->publish();
     return ret;
 }
+
+QVariantMap Database::getConfig(QString prefix) {
+    QSqlQuery q;
+    QVariantMap configs;
+
+    q.prepare("SELECT key, value FROM config WHERE key LIKE :key");
+    q.bindValue(":key", QString("%1.%%").arg(prefix));// + ".%");
+    if (!q.exec()) {
+        qDebug() << "GetConfig failed:" << q.lastError().text();
+        return configs;
+    }
+
+    while (q.next()) {
+        QString key = q.value("key").toString();
+        key = key.right(key.length() - prefix.length() - 1);
+        qDebug() << "res" << q.value("key") << key;
+
+        configs[key] = q.value("value");
+    }
+
+    return configs;
+}
+
+bool Database::setConfig(QString key, QVariant value) {
+    QSqlQuery q;
+
+    q.prepare("INSERT OR REPLACE INTO config VALUES (:key, :value)");
+    q.bindValue(":key", key);
+    q.bindValue(":value", value.toString());
+    if (!q.exec()) {
+        qDebug() << QString("failed to update %1 config:").arg(key) << q.lastError().text();
+        return false;
+    }
+
+    return true;
+}

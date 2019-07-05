@@ -38,5 +38,9 @@
         <source>Refresh</source>
         <translation>Rafraîchir</translation>
     </message>
+    <message>
+        <source>Filters</source>
+        <translation>Filtres</translation>
+    </message>
 </context>
 </TS>

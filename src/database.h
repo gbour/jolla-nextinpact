@@ -36,6 +36,8 @@ public:
     QSqlDatabase getDatabase() const {
         return this->db;
     }
+    Q_INVOKABLE QVariantMap getConfig(QString prefix);
+    Q_INVOKABLE bool setConfig(QString key, QVariant value);
 
 private:
     QSqlDatabase db;
