@@ -25,7 +25,9 @@ ApplicationWindow
 {
     id: appwin
 
+    //initialPage: TestDelegateModel{}
     initialPage: Articles {}
+    //initialPage: Filters{}
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 }
 

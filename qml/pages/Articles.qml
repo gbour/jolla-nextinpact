@@ -16,7 +16,14 @@
     along with «NextINpact app».  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*
+    IMPORTANT NOTE
+    filering w/ DelegateModel basically works, with 2 "bugs":
+    - model do not load all records at start (pagination?), so after filtering we may not see enough articles (not all available at least)
+    - sections are not working anymore (incompatible with DelegateModel ?)
+  */
 import QtQuick 2.0
+import QtQml.Models 2.1
 import Sailfish.Silica 1.0
 
 import "../components"
@@ -39,6 +46,69 @@ Page {
             size: BusyIndicatorSize.Large
             anchors.verticalCenter: parent.verticalCenter
         }
+    }
+
+    DelegateModel {
+        id: displayDelegateModel
+        model: articlesModel
+        delegate: ArticlesDelegate {}
+
+        groups: [
+            DelegateModelGroup {
+                includeByDefault: false
+                name: "filters"
+            }
+        ]
+        filterOnGroup: "filters"
+
+
+        // now done in onStatusChanged
+        /*
+        Component.onCompleted: {
+            dof()
+        }
+        */
+        function dof() {
+            // get filters from db
+            var filters = db.getConfig("articles.filters")
+            console.log("filters", filters['type'], filters['status'])
+
+            var rowCount = articlesModel.rowCount()
+            console.log(rowCount + " available articles in db")
+
+            // removing articles from current filter group
+            if (items.count > 0) {
+                items.removeGroups(0, items.count, ["filters"])
+                items.remove(0, items.count)
+            }
+            // re-add articles in filter group, based on filter rules
+            // NOTE: item must match ALL filters to be added
+            for (var i = 0; i < rowCount; i++) {
+                var entry = articlesModel.get(i)
+                //console.log(entry.section)
+
+                var match = {
+                    'articles': 0,
+                    'lebrief': 1
+                }
+                var value = filters['type'] || 'all'
+                if (value !== 'all' && entry.type !== match[value]) {
+                    continue
+                }
+
+                match = {
+                    'read': 0,
+                    'unread': 1
+                }
+                value = filters['status'] || 'all'
+                if (value !== 'all' && entry.unread !== match[value]) {
+                    continue
+                }
+
+                items.insert(entry, "filters")
+            }
+        }
+
     }
 
     SilicaListView {
@@ -69,6 +139,8 @@ Page {
         }
 
         //model: ArticleItem {}
+        model: displayDelegateModel
+        /*
         model: articlesModel
         delegate: ArticlesDelegate {
             onClicked: {
@@ -81,6 +153,7 @@ Page {
             }
 
         }
+        */
 
         section {
             property: 'section'
@@ -169,6 +242,12 @@ Page {
         loader.visible = showLoader; loader_bi.running = showLoader;
         articleScraper.setOnComplete(onComplete)
         articleScraper.sendMessage({action: 'scrap', page: 1})
+    }
+
+    onStatusChanged: {
+        if (status === PageStatus.Activating) {
+            displayDelegateModel.dof()
+        }
     }
 }
 

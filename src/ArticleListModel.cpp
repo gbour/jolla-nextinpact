@@ -55,7 +55,7 @@ QVariant ArticleListModel::data(const QModelIndex &index, int role) const {
 }
 
 QHash<int, QByteArray> ArticleListModel::roleNames() const {
-    qDebug() << "articlemodel::roleNames";
+    //qDebug() << "articlemodel::roleNames";
 
     QHash<int, QByteArray> roles;
     roles[IdRole]   = "id";
@@ -174,4 +174,22 @@ QVariantMap ArticleListModel::stats() {
     }
 
     return stats;
+}
+
+QVariantMap ArticleListModel::get(int rowNumber) const {
+
+    QVariantMap map;
+    QHash<int,QByteArray> roleName = this->roleNames();
+    foreach (int i, roleName.keys()) {
+        // For each attribute (role) get its value and insert it into the map
+        // where the map's key is the attributes string reference
+
+        // The data() method returns the value for the requested attribute
+        // where i is the attributes enum value.
+        // The index() method returns a QModelIndex which is a further
+        // abstraction layer (will talk about that in a later post)
+        //qDebug() << "get " << rowNumber << roleName.value(i) <<  QSqlTableModel::index(rowNumber, 0) << this->data(QSqlTableModel::index(rowNumber, 0), i);
+        map[roleName.value(i)] = this->data(QSqlTableModel::index(rowNumber, 0), i);
+    }
+    return map;
 }
