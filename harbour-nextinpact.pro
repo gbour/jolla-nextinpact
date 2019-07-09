@@ -23,7 +23,7 @@ DBNAME = 'nextinpact.db'
 DEFINES += DB_VERSION=$$DBVERSION
 DEFINES += DB_NAME=\\\"$$DBNAME\\\"
 
-CONFIG += sailfishapp
+CONFIG += sailfishapp c++14
 
 HEADERS += \
     src/database.h \
