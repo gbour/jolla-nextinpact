@@ -28,6 +28,9 @@
 #include <QDateTime>
 #include <QQmlContext>
 
+#include <QSslSocket>
+#include <QSslConfiguration>
+
 #include <src/database.h>
 #include <src/ArticleListModel.h>
 #include <src/CommentListModel.h>
@@ -50,6 +53,15 @@ int main(int argc, char *argv[])
     app->setApplicationVersion(APP_VERSION);
 
     qDebug() << "locale: " << QLocale::system().name();
+
+    // Weird bug. Appears on arm only (ok in the emulator)
+    // icons loading failed with 'QML Image: SSL handshake failed), while there was no issue
+    // loading articles (w/ XmlHttpRequest).
+    // Maybe due to unknown CA?
+    // Dirty fix: we disable peer certificate verification (while connection remains encrypted).
+    QSslConfiguration conf = QSslConfiguration::defaultConfiguration();
+    conf.setPeerVerifyMode(QSslSocket::VerifyNone);
+    QSslConfiguration::setDefaultConfiguration(conf);
 
     Database *db = new Database();
     qDebug() << "db:" << db;
