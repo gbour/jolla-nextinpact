@@ -95,6 +95,7 @@ Page {
     }
 
     property int _scrapCounter: 0;
+    property bool loading: false
 
     WorkerScript {
         id: articleScraper
@@ -132,6 +133,7 @@ Page {
             articlesModel.select()
             // hide loader
             loader.visible = false; loader_bi.running = false;
+            loading = false
 
             if (_onComplete !== undefined) {
                 _onComplete()
@@ -164,6 +166,7 @@ Page {
         console.log("refreshing articles list...", loader, loader_bi);
 
         loader.visible = showLoader; loader_bi.running = showLoader;
+        loading = true;
         articleScraper.setOnComplete(onComplete)
         articleScraper.sendMessage({action: 'scrap', page: 1})
     }

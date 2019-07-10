@@ -24,6 +24,9 @@ import "../lib/utils.js" as Utils
 CoverBackground {
     id: cover
     property var stats;
+    // NOTE: default value is required to use it as visible selector
+    //       the object is initialized later in onStatusChanged callback (Activating state)
+    property var articlesPageStack: {'loading': false}
 
     // Background image
     Image {
@@ -32,15 +35,30 @@ CoverBackground {
         source: 'qrc:/res/cover-background.png'
     }
 
-    // Title
+    // Loader
+    BusyIndicator {
+        id: loaderCover
+        visible: articlesPageStack.loading
+        running: true
+        anchors.centerIn: parent
+
+        NumberAnimation on rotation {
+            from: 0; to: 360
+            duration: 2000
+            running: articlesPageStack.loading
+            loops: Animation.Infinite
+        }
+    }
+
+    // Articles statistics
     Column {
-        id: labelTitle1
+        id: statsCover
+        visible: !articlesPageStack.loading
 
         anchors { top: parent.top; topMargin: Theme.paddingLarge }
         width: cover.width - (2 * Theme.paddingLarge)
         x: Theme.paddingLarge
         spacing: Theme.paddingSmall
-        visible: true
 
         Item {
             width: parent.width
@@ -174,34 +192,34 @@ CoverBackground {
         CoverAction {
             iconSource: "image://theme/icon-cover-refresh"
             onTriggered: {
-                console.log(nextinpacter.loading)//myloader.item.articleScraper.load(true)
-
-                // get Articles.qml page instance to ask for refresh
-                const articlesPageStack = pageStack.find(function(page) {
-                    return page.toString().substr(0, 8) === "Articles"
-                })
-                if (articlesPageStack === undefined) {
-                    console.error("ArticlesPageStack not found")
+                if (articlesPageStack.loading) {
+                    // already loading
                     return
                 }
 
+                console.log('Cover:: refresh articles')
                 articlesPageStack.refresh(true, refresh)
-                //__silica_applicationwindow_instance.activate()
             }
         }
     }
 
     onStatusChanged: {
         if (status == PageStatus.Activating) {
+            // get Articles.qml page instance to ask for refresh
+            articlesPageStack = pageStack.find(function(page) {
+                return page.toString().substr(0, 8) === "Articles"
+            })
+            if (articlesPageStack === undefined) {
+                console.error("ERR:: ArticlesPageStack not found")
+            }
+
             refresh()
         }
     }
 
     // refresh stats
     function refresh() {
-        console.log('refresh')
+        console.log('Cover:: refresh stats')
         stats = articlesModel.stats();
     }
 }
-
-
