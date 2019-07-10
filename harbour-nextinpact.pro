@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = harbour-nextinpact
 
-VERSION = 0.6.5-pre2
+VERSION = 0.6.5-pre3
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += BUILD_DATE='"$(shell date '+%s')"'
 
