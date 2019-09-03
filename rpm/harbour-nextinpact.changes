@@ -8,6 +8,13 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+
+* Tue Sep 03 2019 Guillaume Bour <guillaume@bour.cc> 0.6.5-1
+- new CoverPage display total/unread articles
+- fix: html entities decoding (add &eacute / é)
+- fix: use correct french translation
+- fix: images loading (https failure with QML)
+
 * Mon May 27 2019 Guillaume Bour <guillaume@bour.cc> 0.6-4
 - migration to jolla store
 
