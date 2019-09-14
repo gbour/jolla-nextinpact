@@ -25,6 +25,19 @@ import "../lib/utils.js" as Utils
 Page {
     id: articles
 
+    property var filters
+    property variant translations: [
+        QT_TRANSLATE_NOOP("filters", "all-all"),
+        QT_TRANSLATE_NOOP("filters", "all-articles"),
+        QT_TRANSLATE_NOOP("filters", "all-lebrief"),
+        QT_TRANSLATE_NOOP("filters", "read-all"),
+        QT_TRANSLATE_NOOP("filters", "read-articles"),
+        QT_TRANSLATE_NOOP("filters", "read-lebrief"),
+        QT_TRANSLATE_NOOP("filters", "unread-all"),
+        QT_TRANSLATE_NOOP("filters", "unread-articles"),
+        QT_TRANSLATE_NOOP("filters", "unread-lebrief"),
+    ]
+
     Row {
         id: loader
         visible: false
@@ -51,6 +64,10 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
             MenuItem {
+                text: qsTr("Filters")
+                onClicked: pageStack.push(Qt.resolvedUrl("Filters.qml"))
+            }
+            MenuItem {
                 text: qsTr("Refresh")
                 onClicked: refresh(true)
             }
@@ -62,7 +79,7 @@ Page {
         spacing: Theme.paddingMedium
 
         header: PageHeader {
-            //title: ""
+            title: qsTranslate("filters", filters['status'] + '-' + filters['type'])
         }
 
         //model: ArticleItem {}
@@ -90,7 +107,20 @@ Page {
         VerticalScrollDecorator {}
 
         Component.onCompleted: {
-            refresh(true)
+            //refresh(true)
+        }
+    }
+
+    onStatusChanged: {
+        if (status === PageStatus.Activating) {
+            // TODO: make it better (common function to read filters ?)
+            // NOTE: this is weird: the value used for displaying are the 1st one after
+            // 1st affectation. If you change values after, UI is not updated! ?
+            var _filters = db.getConfig("articles.filters")
+            filters= {
+                'status': _filters['status'] || 'all',
+                'type': _filters['type'] || 'all'
+            }
         }
     }
 
@@ -130,7 +160,7 @@ Page {
         }
 
         function completed() {
-            articlesModel.select()
+            articlesModel.update()
             // hide loader
             loader.visible = false; loader_bi.running = false;
             loading = false

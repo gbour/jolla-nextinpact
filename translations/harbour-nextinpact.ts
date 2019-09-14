@@ -30,6 +30,10 @@
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -42,6 +46,76 @@ articles</source>
         <source>Total
 articles</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Filters</name>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Articles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LeBrief</source>
+        <translation>Briefs</translation>
+    </message>
+    <message>
+        <source>Unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>filters</name>
+    <message>
+        <source>all-all</source>
+        <translation>All content</translation>
+    </message>
+    <message>
+        <source>all-articles</source>
+        <translation>Articles</translation>
+    </message>
+    <message>
+        <source>all-lebrief</source>
+        <translation>Briefs</translation>
+    </message>
+    <message>
+        <source>read-all</source>
+        <translation>Read</translation>
+    </message>
+    <message>
+        <source>read-articles</source>
+        <translation>Read articles</translation>
+    </message>
+    <message>
+        <source>read-lebrief</source>
+        <translation>Read briefs</translation>
+    </message>
+    <message>
+        <source>unread-all</source>
+        <translation>Unread</translation>
+    </message>
+    <message>
+        <source>unread-articles</source>
+        <translation>Unread articles</translation>
+    </message>
+    <message>
+        <source>unread-lebrief</source>
+        <translation>Unread briefs</translation>
     </message>
 </context>
 </TS>

@@ -49,6 +49,8 @@ public:
     explicit ArticleListModel(QObject *parent = 0, QSqlDatabase db = QSqlDatabase());
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
+    Q_INVOKABLE void update();
+
 
 protected:
     QHash<int, QByteArray> roleNames() const;

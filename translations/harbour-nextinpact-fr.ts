@@ -38,6 +38,10 @@
         <source>Refresh</source>
         <translation>Rafraîchir</translation>
     </message>
+    <message>
+        <source>Filters</source>
+        <translation>Filtres</translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -50,6 +54,76 @@ articles</source>
         <source>Total
 articles</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Filters</name>
+    <message>
+        <source>All</source>
+        <translation>Tous</translation>
+    </message>
+    <message>
+        <source>Articles</source>
+        <translation>Articles</translation>
+    </message>
+    <message>
+        <source>LeBrief</source>
+        <translation>Brèves</translation>
+    </message>
+    <message>
+        <source>Unread</source>
+        <translation>Non lus</translation>
+    </message>
+    <message>
+        <source>Read</source>
+        <translation>Lus</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Read status</source>
+        <translation>Status</translation>
+    </message>
+</context>
+<context>
+    <name>filters</name>
+    <message>
+        <source>all-all</source>
+        <translation>Tout le contenu</translation>
+    </message>
+    <message>
+        <source>all-articles</source>
+        <translation>Tous les articles</translation>
+    </message>
+    <message>
+        <source>all-lebrief</source>
+        <translation>Toutes les brèves</translation>
+    </message>
+    <message>
+        <source>read-all</source>
+        <translation>Lus</translation>
+    </message>
+    <message>
+        <source>read-articles</source>
+        <translation>Articles lus</translation>
+    </message>
+    <message>
+        <source>read-lebrief</source>
+        <translation>Brèves lues</translation>
+    </message>
+    <message>
+        <source>unread-all</source>
+        <translation>Non lus</translation>
+    </message>
+    <message>
+        <source>unread-articles</source>
+        <translation>Articles non lus</translation>
+    </message>
+    <message>
+        <source>unread-lebrief</source>
+        <translation>Brèves non lues</translation>
     </message>
 </context>
 </TS>

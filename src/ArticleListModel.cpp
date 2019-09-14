@@ -27,11 +27,54 @@ ArticleListModel::ArticleListModel(QObject *parent, QSqlDatabase db) : QSqlTable
     this->setEditStrategy(EditStrategy::OnRowChange);
 
     this->setTable("articles");
-    // filtering out LeBrief overall article
-    this->setFilter(QString("type < 90"));
 
     this->setSort(DateRole- Qt::UserRole - 1, Qt::DescendingOrder);
     qDebug() << "articles model populating:" << this->selectStatement();
+
+    this->update();
+}
+
+void ArticleListModel::update() {
+    // Filtering articles.
+    // Depends on user-defined filters.
+    // Filters values are saved in _config_ table, with key like 'articles.filters.NAME'
+    // where NAME is one of 'type' or 'status'
+    QString filter = QString("type < 90");
+    QString keyprefix = QString("articles.filters");
+
+    // TODO: refactor*
+    QMap<QString, QList<QString>> choices;
+    QList<QString> types; types << "articles" << "lebrief";
+    choices["type"] = types;
+    QList<QString> status; status << "read" << "unread";
+    choices["status"] = status;
+
+    QMap<QString, QString> dbfields;
+    dbfields["type"] = "type";
+    dbfields["status"] = "unread";
+
+    QSqlQuery q;
+    q.prepare("SELECT key, value FROM config WHERE key LIKE :key");
+    q.bindValue(":key", QString("%1.%").arg(keyprefix));
+    if (!q.exec()) {
+        qDebug() << "failed to read filters from config table" << q.lastError().text();
+        // NOTE: here we don't return. Thus we still apply basic filter
+    }
+    while (q.next()) {
+        QString key = q.value("key").toString().mid(keyprefix.length()+1);
+
+        if (choices.contains(key)) {
+            QList<QString> alts = choices.value(key);
+            if (alts.indexOf(q.value("value").toString()) >= 0) {
+                filter += QString(" AND %1 = %2").arg(dbfields[key]).arg(alts.indexOf(q.value("value").toString()));
+            }
+        }
+    }
+
+    //qDebug() << "filter:" << filter;
+    QSqlTableModel::setFilter(filter);
+
+    // updating datas (do query)
     this->select();
 }
 
