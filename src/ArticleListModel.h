@@ -50,7 +50,7 @@ public:
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
     Q_INVOKABLE void update();
-
+    Q_INVOKABLE QVariantMap stats2() const;
 
 protected:
     QHash<int, QByteArray> roleNames() const;

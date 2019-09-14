@@ -49,6 +49,7 @@ public:
     qint32 articleType() const {
         return m_articleType;
     }
+    Q_INVOKABLE int count() const;
 
 private:
     qint32 m_articleId;

@@ -198,7 +198,7 @@ bool ArticleListModel::toggleRead(const int row, const bool read) {
 }
 
 QVariantMap ArticleListModel::stats() {
-    // returns statistics regarding articles
+    // returns statistics regarding articles (cover page)
     // - total articles
     // - unread articles
     QVariantMap stats;
@@ -214,6 +214,32 @@ QVariantMap ArticleListModel::stats() {
 
     while (q.next()) {
         stats[q.value("key").toString()] = q.value("value");
+    }
+
+    return stats;
+}
+
+QVariantMap ArticleListModel::stats2() const {
+    // returns overall statistics (stats page)
+    // - read/unread/total articles
+    // - read/unread/total lebrief
+    QVariantMap stats;
+
+    QSqlQuery q;
+    q.prepare(
+        "SELECT CASE type WHEN 0 THEN 'article' ELSE 'lebrief' END AS type, "
+               "CASE unread WHEN 0 THEN 'read' ELSE 'unread' END AS read, "
+               "COUNT(*) AS value FROM articles WHERE type < 99 GROUP BY type, unread UNION "
+        "SELECT CASE type WHEN 0 THEN 'article' ELSE 'lebrief' END AS type, "
+               "'total' AS read, COUNT(*) AS value FROM articles WHERE type < 99 GROUP BY type");
+    if (!q.exec()) {
+        qDebug() << "failed to get articles stats2:" << q.lastError().text();
+        return stats;
+    }
+
+    while (q.next()) {
+        stats[QString("%1-%2").arg(q.value("type").toString()).arg(q.value("read").toString())] = q.value("value").toInt();
+
     }
 
     return stats;

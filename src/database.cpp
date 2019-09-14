@@ -261,3 +261,16 @@ bool Database::setConfig(QString key, QString value) {
 
     return true;
 }
+
+/*
+ * Returns database file size
+ */
+qint64 Database::size() const {
+    // TODO: duplicated code. TO BE FACTORIZED
+    static QString dbpath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) % QString("/" DB_NAME);
+
+    // directory is not automatically created if not exists
+    // db.open() fails unless we create the directory tree
+    QFileInfo fi(dbpath);
+    return fi.size();
+}

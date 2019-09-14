@@ -64,6 +64,10 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("About.qml"))
             }
             MenuItem {
+                text: qsTr("Statistics")
+                onClicked: pageStack.push(Qt.resolvedUrl("Stats.qml"))
+            }
+            MenuItem {
                 text: qsTr("Filters")
                 onClicked: pageStack.push(Qt.resolvedUrl("Filters.qml"))
             }

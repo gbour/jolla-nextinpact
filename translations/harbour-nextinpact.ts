@@ -34,6 +34,10 @@
         <source>Filters</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -76,6 +80,29 @@ articles</source>
     </message>
     <message>
         <source>Read status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Stats</name>
+    <message>
+        <source>Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Articles&lt;/b&gt; &lt;i&gt;Read&lt;br/&gt;Unread&lt;br/&gt;Total&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;LeBrief&lt;/b&gt; &lt;i&gt;Read&lt;br/&gt;Unread&lt;br/&gt;Total&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Comments&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

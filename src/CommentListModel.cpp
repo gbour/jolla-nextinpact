@@ -104,3 +104,15 @@ bool CommentListModel::addComment(const QVariantMap comment) {
     return ret;
 }
 
+int CommentListModel::count() const {
+    QSqlQuery q;
+    q.prepare("SELECT COUNT(*) FROM comments");
+    if (!q.exec()) {
+        qDebug() << "failed to count comments:" << q.lastError().text();
+        return -1;
+    }
+
+    q.next();
+    return q.value(0).toInt();
+}
+

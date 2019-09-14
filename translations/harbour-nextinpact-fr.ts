@@ -42,6 +42,10 @@
         <source>Filters</source>
         <translation>Filtres</translation>
     </message>
+    <message>
+        <source>Statistics</source>
+        <translation>Statistiques</translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -85,6 +89,29 @@ articles</source>
     <message>
         <source>Read status</source>
         <translation>Status</translation>
+    </message>
+</context>
+<context>
+    <name>Stats</name>
+    <message>
+        <source>Statistics</source>
+        <translation>Statistiques</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Articles&lt;/b&gt; &lt;i&gt;Read&lt;br/&gt;Unread&lt;br/&gt;Total&lt;/i&gt;</source>
+        <translation>&lt;b&gt;Articles&lt;/b&gt; &lt;i&gt;Lus&lt;br/&gt;Non lus&lt;br/&gt;Totals&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;LeBrief&lt;/b&gt; &lt;i&gt;Read&lt;br/&gt;Unread&lt;br/&gt;Total&lt;/i&gt;</source>
+        <translation>&lt;b&gt;Brèves&lt;/b&gt; &lt;i&gt;Lues&lt;br/&gt;Non lues&lt;br/&gt;Totales&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Comments&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Commentaires&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Database size</source>
+        <translation>Base de données</translation>
     </message>
 </context>
 <context>
