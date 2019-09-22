@@ -274,3 +274,14 @@ qint64 Database::size() const {
     QFileInfo fi(dbpath);
     return fi.size();
 }
+
+// DELETE ALL ARTICLES AND COMMENTS
+void Database::flush() const {
+    QSqlQuery q;
+    q.exec("DELETE FROM comments");
+    q.exec("DELETE FROM articles");
+    if (!q.exec("VACUUM FULL")) {
+        qDebug() << QString("VACUUM FULL failed:") << q.lastError().text();
+    }
+}
+

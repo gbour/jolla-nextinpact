@@ -39,6 +39,7 @@ public:
     Q_INVOKABLE QVariantMap getConfig(QString keyprefix);
     Q_INVOKABLE bool setConfig(QString key, QString value);
     Q_INVOKABLE qint64 size() const;
+    Q_INVOKABLE void flush() const;
 
 private:
     QSqlDatabase db;

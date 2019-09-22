@@ -123,6 +123,25 @@ Page {
                     font.bold: true
                 }
             }
+
+            SectionHeader {
+                text: "Actions"
+            }
+
+            ButtonLayout {
+                RemorsePopup { id: remorse }
+
+                Button {
+                    text: "Clear"
+                    highlightBackgroundColor : 'red'
+                    highlightColor: 'black'
+                    onClicked: remorse.execute("WARNING: Clearing database", function() {
+                        db.flush()
+                        refresh()
+                        articlesModel.update()
+                    })
+                }
+            }
         }
     }
 
