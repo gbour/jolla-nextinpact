@@ -46,6 +46,10 @@
         <source>Statistics</source>
         <translation>Statistiques</translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation>Paramètres</translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -89,6 +93,37 @@ articles</source>
     <message>
         <source>Read status</source>
         <translation>Status</translation>
+    </message>
+</context>
+<context>
+    <name>Settings</name>
+    <message>
+        <source>Settings</source>
+        <translation>Paramètres</translation>
+    </message>
+    <message>
+        <source>Delete entries older than</source>
+        <translation>Effacer les entrées plus anciennes que</translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation>jamais</translation>
+    </message>
+    <message>
+        <source>1 month</source>
+        <translation>1 mois</translation>
+    </message>
+    <message>
+        <source>3 month</source>
+        <translation>3 mois</translation>
+    </message>
+    <message>
+        <source>6 month</source>
+        <translation>6 mois</translation>
+    </message>
+    <message>
+        <source>Based on publication date</source>
+        <translation>Basé sur la date de publication</translation>
     </message>
 </context>
 <context>

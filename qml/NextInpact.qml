@@ -27,6 +27,26 @@ ApplicationWindow
 
     initialPage: Articles {}
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
+
+
+    Component.onCompleted: {
+        if (db.cleanup()) {
+            articlesModel.update()
+        }
+    }
+
+    Timer {
+        id: timer_dbcleanup
+        interval: 60000*60*12 // 12 hours
+        repeat: true
+        running: true
+
+        onTriggered: {
+            if (db.cleanup()) {
+                articlesModel.update()
+            }
+        }
+    }
 }
 
 

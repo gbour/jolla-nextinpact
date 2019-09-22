@@ -40,6 +40,7 @@ public:
     Q_INVOKABLE bool setConfig(QString key, QString value);
     Q_INVOKABLE qint64 size() const;
     Q_INVOKABLE void flush() const;
+    Q_INVOKABLE bool cleanup() const;
 
 private:
     QSqlDatabase db;

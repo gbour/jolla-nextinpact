@@ -141,10 +141,20 @@ Page {
                         articlesModel.update()
                     })
                 }
+
+                Button {
+                    text: "Settings"
+                    onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml"), PageStackAction.Animated)
+
+                }
             }
         }
     }
 
+    // TODO: this function should be trigged on global event
+    //       ie if db is clean by ApplicationWindow timer and this page is displayed
+    //       we would like to autàmatically refresh the statistics
+    //       (see https://doc.qt.io/qt-5/qtqml-syntax-signals.html)
     function refresh() {
         var _stats = articlesModel.stats2()
         _stats['comments'] = commentsModel.count()
@@ -164,6 +174,8 @@ Page {
     }
 
     onVisibleChanged: {
+        // NOTE: when coming back from settings, refresh is executed BEFORE cleanup
+        //       this should be the contrary
         if (visible) {
             refresh()
         }

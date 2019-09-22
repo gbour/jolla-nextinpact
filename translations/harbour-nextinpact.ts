@@ -38,6 +38,10 @@
         <source>Statistics</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -80,6 +84,37 @@ articles</source>
     </message>
     <message>
         <source>Read status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Settings</name>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished">Paramètres</translation>
+    </message>
+    <message>
+        <source>Delete entries older than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3 month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6 month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Based on publication date</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

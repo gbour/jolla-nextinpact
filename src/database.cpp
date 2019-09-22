@@ -285,3 +285,31 @@ void Database::flush() const {
     }
 }
 
+bool Database::cleanup() const {
+    QSqlQuery q;
+
+    if (!q.exec("SELECT value FROM config WHERE key = 'cleanup.frequency'")) {
+        qDebug() << "Failed to get cleanup frequency:" << q.lastError().text();
+        return false;
+    }
+
+    int freq = 0;
+    if (q.first()) {
+        freq = q.value("value").toInt();
+    }
+
+    if (freq == 0) {
+        qDebug() << "db cleanup disabled";
+        return true;
+    }
+
+    qDebug() << QString("Cleaning database:: deleting articles & comments older than %1 days").arg(freq);
+    if (!q.exec(QString("DELETE FROM articles WHERE date <= DATETIME('now', 'start of day', '-%1 month')").arg(freq))) {
+        qDebug() << "Failed to clean articles:" << q.lastError().text();
+        return false;
+    }
+    qDebug() << q.lastQuery() << QString("%1 rows deleted").arg(q.numRowsAffected());
+
+    return true;
+}
+
