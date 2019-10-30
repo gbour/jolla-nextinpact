@@ -109,7 +109,11 @@ var HTMLtoDOM;
 						html = html.substring(match[0].length);
 						match[0].replace(startTag, parseStartTag);
 						chars = false;
-					}
+                    } else {
+                        // if '<' does not match an HTML tag, this is just a unencoded &lt;
+                        // NAÏVE FIX: replace '<' by '&lt;' in source html
+                        html = '&lt;' + html.substring(1);
+                    }
 				}
 
 				if (chars) {

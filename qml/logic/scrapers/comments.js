@@ -197,7 +197,7 @@ Comments.prototype = {
                         //console.log(text, ",", parseInt(iso_map(text).substring(1)));
                         comment.num = parseInt(iso_map(text).substring(1));
                     } else if(state[0] === STATE_CONTENT) {
-                        var _text = iso_map(text)
+                        var _text = iso_map(text, false)
                         // no space before dot, comma, dash, closing brace and bracket, quotes
                         if (spacer && _text.length > 0 && ".,-)]'\"".indexOf(_text[0]) < 0) {
                             comment.content += ' '
