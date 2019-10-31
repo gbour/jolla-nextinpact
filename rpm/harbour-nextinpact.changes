@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed Oct 30 2019 Guillaume Bour <guillaume@bour.cc> 0.6.6-1
+- allow filtering articles by type (news/brief/all) and status (read/unread/all)
+- added statistics page, with clear button (deletes all records)
+- added settings page, with old articles auto-delete
+- fix: crash caused by unencoded '<' character in comments
 
 * Tue Sep 03 2019 Guillaume Bour <guillaume@bour.cc> 0.6.5-1
 - new CoverPage display total/unread articles
