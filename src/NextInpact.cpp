@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     QGuiApplication *app = SailfishApp::application(argc,argv); //SailfishApp::main(argc, argv);
     app->setApplicationVersion(APP_VERSION);
 
-    qDebug() << "locale: " << QLocale::system().name() << ", GIT_VERSION: " << GIT_VERSION;
+    qDebug() << "locale: " << QLocale::system().name();
 
     Database *db = new Database();
     qDebug() << "db:" << db;
@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
 
     QQuickView *view = SailfishApp::createView();
     view->rootContext()->setContextProperty("APP_VERSION", APP_VERSION);
-    view->rootContext()->setContextProperty("GIT_VERSION", GIT_VERSION);
 
     QDateTime buildat = QDateTime::fromMSecsSinceEpoch(qint64(BUILD_DATE)*1000);
     view->rootContext()->setContextProperty("BUILD_DATE" , buildat.toString(Qt::DefaultLocaleShortDate));

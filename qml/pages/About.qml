@@ -44,7 +44,7 @@ Page {
                 width: about.width - 2*Theme.paddingLarge
 
                 text: qsTr("
-                    version %1, released at %2 (git %3).<br/>
+                    version %1, released on %2.<br/>
                     <br/>
                     The NextINpact Jolla application is developped by <a href=\"http://guillaume.bour.cc\">Guillaume Bour</a>, </br>
                     and distributed under GPLv3 license.<br/>
@@ -52,7 +52,7 @@ Page {
                     <br/><br/>
                     Articles and their contents displayed in this application; as NextINpact logo; are the entire property of <b>PC INpact SARL de presse</b>.<br/>
                     If you like it, please <a href=\"http://www.nextinpact.com/abonnement?utm_source=pcinpact&utm_medium=header&utm_campaign=premium\">subscribe to a member/premium account</a>."
-                ).arg(APP_VERSION).arg(BUILD_DATE).arg(GIT_VERSION)
+                ).arg(APP_VERSION).arg(BUILD_DATE)
 
                 textFormat: Text.RichText
                 color: Theme.secondaryHighlightColor

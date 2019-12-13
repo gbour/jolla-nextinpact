@@ -16,12 +16,6 @@ VERSION = 0.5
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += BUILD_DATE='"$(shell date '+%s')"'
 
-# $$system() is executed when qmake generates Makefile
-# $(shell) is executed as Makefile runtime
-# Jolla qtcreator copy files in a dedicated build directory outside of git tree
-#DEFINES += GIT_VERSION='\\\"$(shell git symbolic-ref --short HEAD $$_PRO_FILE_PWD_)/$(shell git describe --always $$_PRO_FILE_PWD_)\\\"'
-DEFINES += GIT_VERSION='\\\"$$system(git symbolic-ref --short HEAD)/$$system(git describe --always)\\\"'
-
 CONFIG += sailfishapp
 
 SOURCES += src/NextInpact.cpp \
