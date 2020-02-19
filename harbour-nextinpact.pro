@@ -12,9 +12,10 @@
 # The name of your application
 TARGET = harbour-nextinpact
 
-VERSION = 0.6.6
+VERSION = 0.6.7
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-DEFINES += BUILD_DATE='"$(shell date '+%s')"'
+# get build date (timestamp) with: python -c 'import time; print(int(time.time()))'
+DEFINES += BUILD_DATE='1582142848'
 
 DBVERSION = 3
 DBNAME = 'nextinpact.db'

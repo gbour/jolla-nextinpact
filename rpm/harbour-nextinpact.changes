@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Tue Feb 19 2020 Guillaume Bour <guillaume@bour.cc> 0.6.7-1
+- fix deleted comments issue
+
 * Wed Oct 30 2019 Guillaume Bour <guillaume@bour.cc> 0.6.6-1
 - allow filtering articles by type (news/brief/all) and status (read/unread/all)
 - added statistics page, with clear button (deletes all records)
