@@ -31,13 +31,15 @@ var STATE_AUTHOR  = 2
 var STATE_DATE    = 3
 var STATE_NUM     = 4
 var STATE_CONTENT = 5
+var STATE_DELETED = 6
 
 var states = ['',
               /* STATE_COMMENT  */ 'div',
               /* STATE_AUTHOR   */ 'span',
               /* STATE_DATE     */ 'span',
               /* STATE_NUM      */ 'span',
-              /* STATE_CONTENT  */ 'div'
+              /* STATE_CONTENT  */ 'div',
+              /* STATE_DELETED  */ 'div'
         ];
 
 
@@ -59,7 +61,8 @@ Comments.prototype = {
             if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
                 //console.log(http.responseText)
 
-                var comments = self.scrap(http.responseText);
+                //NOTE: we expect max 10 comments per page (starting at page 1)
+                var comments = self.scrap(http.responseText, (page-1)*10);
                 comments.forEach(function (comment) {
                     comment.article = {id: newsid, type: type}
                 })
@@ -71,7 +74,7 @@ Comments.prototype = {
         http.send('commId=0&newsId='+newsid+'&page='+page+'&type='+type);
     },
 
-    scrap: function (m) {
+    scrap: function (m, commentid) {
         //console.log('fetch comments');
 
         var comments = []
@@ -94,7 +97,15 @@ Comments.prototype = {
                         if (attrs.class.value === 'actu_comm ') {
                             state.unshift(STATE_COMMENT);
                             comment = {
-                                'num'    : -1,
+                                'num'    : ++commentid,
+                                'author' : '',
+                                'date'   : '',
+                                'content': ''
+                            }
+                        } else if (attrs.class.value.indexOf('commentaire_supprime') >= 0) {
+                            state.unshift(STATE_DELETED);
+                            comment = {
+                                'num'    : ++commentid,
                                 'author' : '',
                                 'date'   : '',
                                 'content': ''
@@ -177,6 +188,10 @@ Comments.prototype = {
                     }
 
                     return
+                } else if(state[0] === STATE_DELETED) {
+                    comments.push(comment)
+                    state.shift()
+                    return
                 }
 
                 if(states[state[0]] === tag) {
@@ -206,8 +221,20 @@ Comments.prototype = {
                         spacer = (_text.length > 0 && " -(['\"".indexOf(_text[_text.length-1]) < 0)
 
                         comment.content += _text;
+                    } else if(state[0] === STATE_DELETED) {
+                        var _text = iso_map(text, false)
+                        // no space before dot, comma, dash, closing brace and bracket, quotes
+                        if (spacer && _text.length > 0 && ".,-)]'\"".indexOf(_text[0]) < 0) {
+                            comment.content += ' '
+                        }
+                        // no space after space, dash, open brace and bracket, quotes
+                        spacer = (_text.length > 0 && " -(['\"".indexOf(_text[_text.length-1]) < 0)
+
+                        comment.content = "<em style=\"color: grey\">" + _text + "</em>";
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.log(e)
+                }
             }
         })
 
