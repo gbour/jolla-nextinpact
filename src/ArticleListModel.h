@@ -43,6 +43,10 @@ public:
         UnreadRole,
         NewCommentsRole,
         ParentRole,
+        TagRole,
+        SubtagRole,
+        StarRole,
+        SubscriberRole,
         SectionRole
     };
 

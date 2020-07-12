@@ -19,6 +19,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import "../lib/tags.js" as Tags
+
 ListItem {
     x: Theme.paddingSmall
     width: parent.width - 2*Theme.paddingSmall
@@ -41,14 +43,67 @@ ListItem {
         }
     }
 
+    Image {
+        id: blur
+        source: 'qrc:/res/blur60.png'
+
+        anchors {
+            bottom: icon.bottom
+            left: icon.left
+            right: icon.right
+        }
+        height: 31
+    }
+
+    // Brief & Subscriber tags are not both displayed at the same time
+    Tag {
+        id: brief
+        color: "#064358"
+        text: qsTr("brief")
+        visible: model.type === 1
+
+        anchors {
+            left: icon.left
+            bottom: icon.bottom
+            bottomMargin: 3
+        }
+    }
+
+    Tag {
+        id: subscriber
+        color: "#da7012"
+        text: qsTr("subscriber")
+        visible: model.subscriber
+
+        anchors {
+            left: icon.left
+            bottom: icon.bottom
+            bottomMargin: 3
+        }
+    }
+
+    Tag {
+        id: tag
+        color: Tags.color(model.tag)
+        text: qsTranslate("Tags", model.subtag ? model.subtag : model.tag)
+        visible: model.tag !== ''
+
+        anchors {
+            left: brief.visible ? brief.right : (subscriber.visible ? subscriber.right : icon.left)
+            leftMargin: (brief.visible || subscriber.visible) ? 5 : 0
+            bottom: icon.bottom
+            bottomMargin: 3
+        }
+    }
+
     Label {
         id: title
         text: model.title
-        font.pixelSize: Theme.fontSizeSmall - 4 //Tiny
+        font.pixelSize: Theme.fontSizeSmall - 4
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignJustify
         color: model.unread ? Theme.primaryColor : Theme.secondaryColor
-        lineHeight: 0.85
+        lineHeight: 0.90 //0.85
 
         anchors {
             left: icon.right
@@ -66,8 +121,11 @@ ListItem {
         color: "#ea8211"
 
         anchors {
-            bottom: icon.bottom
-            bottomMargin: -4
+            //bottom: icon.bottom
+            //bottomMargin: -4
+            top: subtitle.top
+            topMargin: 2
+
             left: icon.right
             leftMargin: 10
         }
@@ -89,7 +147,7 @@ ListItem {
     Label {
         id: subtitle
         text: model.type === 1 ? "LeBrief" : model.subtitle
-        font.pixelSize: Theme.fontSizeTiny  //- 2 //8 //Theme.fontSizeExtraSmall
+        font.pixelSize: Theme.fontSizeTiny
         font.italic: true
         styleColor: "#8a979d"
         color: model.unread ? Theme.primaryColor : Theme.secondaryColor
@@ -101,6 +159,8 @@ ListItem {
             bottomMargin: -5
 
             left: dash.right
+            right: comments_counter.left
+            rightMargin: 5
         }
     }
 

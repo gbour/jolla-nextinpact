@@ -19,6 +19,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import "../components"
+import "../lib/tags.js" as Tags
 import "../lib/utils.js" as Utils
 
 Page {
@@ -80,6 +82,7 @@ Page {
                 color: Theme.primaryColor
             }
 
+
             Label {
                 id: author
                 width: parent.width
@@ -89,6 +92,50 @@ Page {
                 horizontalAlignment: Text.AlignRight
             }
 
+
+            Row {
+                // Brief & Subscriber tags are not both displayed at the same time
+                Tag {
+                    id: brief
+                    color: "#064358"
+                    text: "brief"
+                    visible: model.type === 1
+
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                        //bottomMargin: 3
+                    }
+                }
+
+                Tag {
+                    id: subscriber
+                    color: "#da7012"
+                    text: qsTr("subscriber")
+                    visible: model.subscriber
+
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                    }
+                }
+
+                Tag {
+                    id: tag
+                    color: Tags.color(model.tag)
+                    text: qsTranslate("Tags", model.subtag ? model.subtag : model.tag)
+                    //font.pixelSize: Theme.fontSizeTiny
+                    visible: model.tag !== ''
+
+                    anchors {
+                        left: brief.visible ? brief.right : (subscriber.visible ? subscriber.right : parent.left)
+                        leftMargin: (brief.visible || subscriber.visible) ? 5 : 0
+                    }
+                }
+
+                anchors.top: author.bottom
+                height: 100
+            }
 
             Label {
                 id: content

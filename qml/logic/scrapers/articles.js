@@ -94,7 +94,8 @@ Articles.prototype = {
                     if(state[0] === 0 && tag === 'article') {
                         state.unshift(STATE_ARTICLE);
                         article = {
-                            'comments': 0
+                            'comments': 0,
+                            'subscriber': false,
                         };
 
                         if('data-acturowid' in attrs) {
@@ -119,14 +120,14 @@ Articles.prototype = {
                         article.link = 'http://m.nextinpact.com/'+attrs.href.value;
 
                     } else if(state[0] === STATE_ARTICLE && tag === 'img' &&
-                              attrs.class.value === 'ded-image') {
+                              'class' in attrs && attrs.class.value === 'ded-image') {
                         if('data-frz-src' in attrs) {
                             article.icon = attrs['data-frz-src'].value;
                         } else {
                             article.icon = attrs['data-src'].value;
                         }
 
-                        if(article.icon.startsWith('//')) {
+                        if(article.icon.indexOf('//') === 0) {
                             article.icon = 'http:' + article.icon;
                         }
 
@@ -139,10 +140,14 @@ Articles.prototype = {
                     } else if(state[0] === STATE_ARTICLE && tag === 'span' &&
                               attrs.class.value === 'nb_comments') {
                         state.unshift(STATE_COMMENTS);
+                    } else if(state[0] === STATE_ARTICLE && tag === 'img' &&
+                              'alt' in attrs && attrs.alt.value === 'badge_abonne') {
+                        article.subscriber = true;
                     }
+
                 } catch(e) {
-                    //console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(dump(attrs))
+                    console.log('e=' + e + ' (tag=' + tag + ')')
+                    console.log(dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}
@@ -191,9 +196,8 @@ WorkerScript.onMessage = function (msg) {
         WorkerScript.sendMessage({reply: 'counter', count: articles.length})
 
         articles.forEach(function(article) {
-            //console.log(article.comments, article.title)
+            //console.log(dump(article));
             WorkerScript.sendMessage({reply: 'article', article: article});
         });
     });
-
 }

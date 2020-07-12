@@ -89,6 +89,8 @@ Brief.prototype = {
                                 'title'   : '',
                                 'content' : '',
                                 'comments': 0,
+                                'tag'     : '',
+                                'subtag'  : '', // briefs have no subtag
                                 'position': position += 1,
                             }
                         }
@@ -100,6 +102,11 @@ Brief.prototype = {
                             content_inc = 0
                         } else if(tag === 'span' && attrs.class.value === 'nb_comments') {
                             state.unshift(STATE_NBCOMMENTS);
+                        } else if(tag === "div" && attrs.class.value.indexOf("brief-circle-color") >= 0) {
+                            var cat = attrs.class.value.match(/([^ ]+)-bgcolor/);
+                            if (cat !== null) {
+                                article.tag = cat.pop();
+                            }
                         }
 
                     } else if(state[0] === STATE_TITLE) {
@@ -119,8 +126,8 @@ Brief.prototype = {
                     }
 
                 } catch(e) {
-                    //console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(dump(attrs))
+                    console.log('e=' + e + ' (tag=' + tag + ')')
+                    console.log(dump(attrs))
                 }
 
                 parent = {tag: tag, attrs: attrs}

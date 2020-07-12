@@ -44,18 +44,21 @@ OTHER_FILES += qml/NextInpact.qml \
     qml/pages/detail.qml \
     qml/pages/comments.qml \
     qml/pages/ArticleList.qml \
-    qml/pages/ArticleDelegate.qml \
     qml/pages/Settings.qml \
     qml/pages/Stats.qml \
+    qml/components/ArticleDelegate.qml \
+    qml/components/Tag.qml \
     qml/logic/scraper.js \
     qml/lib/utils.js \
     qml/lib/iso8859-15.js \
     qml/lib/htmlparser2.js \
+    qml/lib/tags.js \
     res/comments.png \
     res/img1.jpg \
     res/img2.jpg \
     res/img3.jpg \
     res/logo-big.png \
+    res/blur60.png \
     translations/*.ts \
     rpm/NextInpact.spec \
     LICENSE \

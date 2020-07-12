@@ -21,6 +21,13 @@
     </message>
 </context>
 <context>
+    <name>Article</name>
+    <message>
+        <source>subscriber</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Articles</name>
     <message>
         <source>About</source>
@@ -41,6 +48,13 @@
     <message>
         <source>Settings</source>
         <translation type="unfinished">Paramètres</translation>
+    </message>
+</context>
+<context>
+    <name>ArticlesDelegate</name>
+    <message>
+        <source>subscriber</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -138,6 +152,41 @@ articles</source>
     </message>
     <message>
         <source>Database size</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Tags</name>
+    <message>
+        <source>droit</source>
+        <translation>law</translation>
+    </message>
+    <message>
+        <source>culture-numerique</source>
+        <translation>digital culture</translation>
+    </message>
+    <message>
+        <source>economie</source>
+        <translation>economy</translation>
+    </message>
+    <message>
+        <source>internet</source>
+        <translation>internet</translation>
+    </message>
+    <message>
+        <source>logiciel</source>
+        <translation>software</translation>
+    </message>
+    <message>
+        <source>mobilite</source>
+        <translation>mobile</translation>
+    </message>
+    <message>
+        <source>tech</source>
+        <translation>tech</translation>
+    </message>
+    <message>
+        <source>next-inpact</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

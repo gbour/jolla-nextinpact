@@ -117,6 +117,10 @@ QHash<int, QByteArray> ArticleListModel::roleNames() const {
     roles[UnreadRole] = "unread";
     roles[NewCommentsRole] = "new_comments";
     roles[ParentRole] = "parent";
+    roles[TagRole] = "tag";
+    roles[SubtagRole] = "subtag";
+    roles[StarRole] = "star";
+    roles[SubscriberRole] = "subscriber";
     roles[SectionRole] = "section";
 
     return roles;
@@ -141,8 +145,8 @@ bool ArticleListModel::addArticle(const QVariantMap values) {
     qDebug() << "adding article id" << values["id"] << "," << values["title"];
 
     QSqlQuery q;
-    q.prepare("INSERT OR IGNORE INTO articles (id, type, date, timestamp, title, subtitle, nb_comments, icon, link, parent, content) "
-              "VALUES (:id, :type, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :parent, :content)");
+    q.prepare("INSERT OR IGNORE INTO articles (id, type, date, timestamp, title, subtitle, nb_comments, icon, link, parent, content, tag, subtag, subscriber) "
+              "VALUES (:id, :type, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :parent, :content, :tag, :subtag, :subscriber)");
 
     q.bindValue(":id"         , values["id"]);
     q.bindValue(":type"       , values.value("type", 0));
@@ -155,6 +159,9 @@ bool ArticleListModel::addArticle(const QVariantMap values) {
     q.bindValue(":link"       , values["link"]);
     q.bindValue(":parent"     , values.value("parent", -1));
     q.bindValue(":content"    , values.value("content", QVariant()));
+    q.bindValue(":tag"        , values.value("tag", QVariant()));
+    q.bindValue(":subtag"     , values.value("subtag", QVariant()));
+    q.bindValue(":subscriber" , values.value("subscriber", false));
     bool ret = q.exec();
     if (!ret) {
         qDebug() << "insert failed:" << q.lastError().text();
@@ -188,6 +195,8 @@ bool ArticleListModel::setContent(const int row, const QVariantMap values) {
     this->setData(this->index(row, AuthorRole)  , values["author"]);
     this->setData(this->index(row, PubDateRole) , values["pubdate"]);
     this->setData(this->index(row, ContentRole) , values["content"]);
+    this->setData(this->index(row, TagRole)     , values["tag"]);
+    this->setData(this->index(row, SubtagRole)  , values["subtag"]);
 
     return this->submit();
 }

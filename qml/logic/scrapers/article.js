@@ -27,21 +27,25 @@ Qt.include('../../lib/iso8859-15.js')
 Qt.include('../../lib/utils.js')
 
 var STATE_ARTICLE   = 1
-var STATE_TITLE     = 2
-var STATE_SUBTITLE  = 3
-var STATE_CONTENT   = 4
-var STATE_READTIME  = 5
-var STATE_DATE      = 6
-var STATE_AUTHOR    = 7
+var STATE_HEADER    = 2
+var STATE_TITLE     = 3
+var STATE_SUBTITLE  = 4
+var STATE_CONTENT   = 5
+var STATE_READTIME  = 6
+var STATE_DATE      = 7
+var STATE_AUTHOR    = 8
+var STATE_SUBTAG    = 9
 
 var states = ['',
-    /* STATE_ARTICLE  */ 'div',
+    /* STATE_ARTICLE  */ 'article',
+    /* STATE_HEADER   */ 'div',
     /* STATE_TITLE    */ 'h1',
     /* STATE_SUBTITLE */ 'span',
     /* STATE_CONTENT  */ 'div',
     /* STATE_READTIME */ 'div',
     /* STATE_DATE     */ 'p',
-    /* STATE_AUTHOR   */ 'p'
+    /* STATE_AUTHOR   */ 'p',
+    /* STATE_SUBTAG   */ 'span',
 ];
 
 
@@ -71,9 +75,6 @@ Article.prototype = {
 
     scrap: function (m) {
         var article  = {}
-
-        var articles = []
-        var parent   = {tag: null, attrs:[]}
         var state    = [0]
 
         var cnt  = 0
@@ -81,18 +82,29 @@ Article.prototype = {
         HTMLParser(m, {
             start: function (tag, attrs, unary) {
                 try {
-                    if (state[0] === 0) {
-
-                        if (tag === 'div' && attrs.class.value === 'content-header') {
-                            state.unshift(STATE_ARTICLE);
-                            article = {
-                                'title': '',
-                                'subtitle': '',
-                                'date': '',
-                                'author': '',
-                                'duration':'',
-                                'content': ''
+                    if (state[0] === 0 && tag === "article") {
+                        state.unshift(STATE_ARTICLE);
+                        article = {
+                            'title'   : '',
+                            'subtitle': '',
+                            'date'    : '',
+                            'author'  : '',
+                            'duration': '',
+                            'content' : '',
+                            'tag'     : '',
+                            'subtag'  : '',
+                        };
+                    } else if(state[0] === STATE_ARTICLE) {
+                        if (tag === 'span' && attrs.class.value.indexOf('thumbnail_categorie') >= 0) {
+                            var cat = attrs.class.value.match(/([^ ]+)-bgcolor/);
+                            if (cat !== null) {
+                                article.tag = cat.pop();
                             }
+                            state.unshift(STATE_SUBTAG);
+                        } else if (tag === 'div' && attrs.class.value === 'content-header') {
+                            //NOTE: header does not contains any sub-divs, so we don't
+                            //      need to count them
+                            state.unshift(STATE_HEADER);
                         } else if (tag === 'div' && attrs.class.value === 'actu_content') {
                             state.unshift(STATE_CONTENT);
                         } else if (tag === 'div' && attrs.class.value === 'read-time') {
@@ -102,7 +114,7 @@ Article.prototype = {
                         } else if (tag === 'p' && attrs.itemprop.value === 'author') {
                             state.unshift(STATE_AUTHOR);
                         }
-                    } else if(state[0] === STATE_ARTICLE) {
+                    } else if(state[0] === STATE_HEADER) {
                         if(tag === 'h1') {
                             state.unshift(STATE_TITLE);
                         } else if(tag === 'span' && attrs.class.value === 'actu-sub') {
@@ -117,11 +129,9 @@ Article.prototype = {
                     }
 
                 } catch(e) {
-                    //console.log('e=' + e + '(tag=' + tag + ')')
-                    //console.log(dump(attrs))
+                    console.log('e=' + e + ' (tag=' + tag + ')')
+                    console.log(dump(attrs))
                 }
-
-                parent = {tag: tag, attrs: attrs}
             },
 
             end: function (tag) {
@@ -130,7 +140,6 @@ Article.prototype = {
                         cnt -= 1;
 
                         if (cnt <= 0) {
-                            articles.push(article);
                             state.shift();
                             return
                         }
@@ -138,6 +147,7 @@ Article.prototype = {
 
                     article.content += '</'+tag+'>';
                 }
+
 
                 if(states[state[0]] === tag) {
                     state.shift()
@@ -161,6 +171,8 @@ Article.prototype = {
                         article.date += iso_map(text);
                     } else if(state[0] === STATE_AUTHOR) {
                         article.author += iso_map(text);
+                    } else if(state[0] === STATE_SUBTAG) {
+                        article.subtag += iso_map(text).toLowerCase();
                     }
                 } catch (e) {}
             }

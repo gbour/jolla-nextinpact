@@ -29,6 +29,13 @@
     </message>
 </context>
 <context>
+    <name>Article</name>
+    <message>
+        <source>subscriber</source>
+        <translation type="unfinished">abonné</translation>
+    </message>
+</context>
+<context>
     <name>Articles</name>
     <message>
         <source>About</source>
@@ -49,6 +56,13 @@
     <message>
         <source>Settings</source>
         <translation>Paramètres</translation>
+    </message>
+</context>
+<context>
+    <name>ArticlesDelegate</name>
+    <message>
+        <source>subscriber</source>
+        <translation>abonné</translation>
     </message>
 </context>
 <context>
@@ -147,6 +161,41 @@ articles</source>
     <message>
         <source>Database size</source>
         <translation>Base de données</translation>
+    </message>
+</context>
+<context>
+    <name>Tags</name>
+    <message>
+        <source>droit</source>
+        <translation>droit</translation>
+    </message>
+    <message>
+        <source>culture-numerique</source>
+        <translation>culture num.</translation>
+    </message>
+    <message>
+        <source>economie</source>
+        <translation>économie</translation>
+    </message>
+    <message>
+        <source>internet</source>
+        <translation>internet</translation>
+    </message>
+    <message>
+        <source>logiciel</source>
+        <translation>logiciel</translation>
+    </message>
+    <message>
+        <source>mobilite</source>
+        <translation>mobilité</translation>
+    </message>
+    <message>
+        <source>tech</source>
+        <translation>tech</translation>
+    </message>
+    <message>
+        <source>next-inpact</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

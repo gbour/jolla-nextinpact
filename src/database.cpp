@@ -185,6 +185,19 @@ bool Database::migrate() {
         }
     }
 
+    if (version < 4) {
+        QStringList queries = {
+            "ALTER TABLE articles ADD COLUMN tag TEXT",
+            "ALTER TABLE articles ADD COLUMN subtag TEXT",
+            "ALTER TABLE articles ADD COLUMN star INTEGER", // boolean: 0=false, 1=true
+            "ALTER TABLE articles ADD COLUMN subscriber INTEGER" // boolean. access restricted (full access to subscribers)
+            //TODO: create index
+        };
+        if (!updater->exec(4, queries)) {
+            return false;
+        }
+    }
+
     return true;
 }
 
