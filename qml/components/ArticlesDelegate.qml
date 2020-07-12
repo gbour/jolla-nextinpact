@@ -22,26 +22,22 @@ import Sailfish.Silica 1.0
 ListItem {
     x: Theme.paddingSmall
     width: parent.width - 2*Theme.paddingSmall
-    //height: childrenRect.height * 1.7
-    // how it is computed ?
-    //height: childrenRect.height * 2
-    height: Math.max(icon.height, title.height+subtitle.height) + 15
-    //implicitHeight: Math.max(icon.implicitHeight, (title.implicitHeight+subtitle.implicitHeight))
+    // better than height, include selection height
+    contentHeight: Math.max(icon.height, title.height+subtitle.height) + 15
 
     property string link;
 
     Image {
         id: icon
         source: model.icon
-        //width: parent.width*
-        width: 172
+        width: parent.width / 3 // 300
+        height: width * 0.8     // 240
+
         fillMode: Image.PreserveAspectFit
 
         anchors {
             left: parent.left
             topMargin: 10
-            //right: title.left
-            //rightMargin: Theme.paddingSmall
         }
     }
 
@@ -52,11 +48,14 @@ ListItem {
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignJustify
         color: model.unread ? Theme.primaryColor : Theme.secondaryColor
+        lineHeight: 0.85
 
         anchors {
             left: icon.right
+            leftMargin: 10
+
             right: parent.right
-            leftMargin: 5
+            rightMargin: 5
         }
     }
 
@@ -67,11 +66,10 @@ ListItem {
         color: "#ea8211"
 
         anchors {
-            top: subtitle.top
+            bottom: icon.bottom
+            bottomMargin: -4
             left: icon.right
-            //top: title.bottom
-            //bottom: icon.bottom
-            leftMargin: 5
+            leftMargin: 10
         }
     }
 
@@ -83,7 +81,7 @@ ListItem {
         styleColor: "#8a979d"
 
         anchors {
-            top: subtitle.top //title.bottom
+            top: subtitle.top
             left: timestamp.right
         }
     }
@@ -95,33 +93,28 @@ ListItem {
         font.italic: true
         styleColor: "#8a979d"
         color: model.unread ? Theme.primaryColor : Theme.secondaryColor
-
-
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignJustify
 
         anchors {
-            //bottom: icon.bottom
-            bottom: title.height+subtitle.height < 130 ? icon.bottom : undefined
-            top: title.height+subtitle.height > 130 ? title.bottom : undefined
-            topMargin: 5
-
+            bottom: icon.bottom
+            bottomMargin: -5
 
             left: dash.right
-            right: comments_counter.left
-            rightMargin: 10
         }
     }
 
     Label {
         id: comments_counter
         text: model.nbcomments || ''
-        font.pixelSize: Theme.fontSizeTiny - 2
+        font.pixelSize: Theme.fontSizeTiny - 4
         styleColor: "#8a979d"
+        font.family: "Arial"
 
         anchors {
-            //top: title.bottom
-            top: comments_icon.top
+            bottom: icon.bottom
+            bottomMargin: -3
+
             right: comments_icon.left
             rightMargin: 5
         }
@@ -130,11 +123,14 @@ ListItem {
     Image {
         id: comments_icon
         source: 'qrc:/res/comments.png'
-        anchors {
-            //top: title.bottom
-            bottom: icon.bottom
-            right: parent.right
-        }
         visible: model.nbcomments > 0
+
+        anchors {
+            bottom: icon.bottom
+            bottomMargin: -8
+
+            right: parent.right
+            rightMargin: 5
+        }
     }
 }
