@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Tue Jul 14 2020 Guillaume Bour <guillaume@bour.cc> 0.6.8-1
+- Add labels (brief/subscriber/tags)
+
 * Tue Feb 19 2020 Guillaume Bour <guillaume@bour.cc> 0.6.7-1
 - fix deleted comments issue
 
