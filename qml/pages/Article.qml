@@ -50,10 +50,14 @@ Page {
         //quickScroll: true
         anchors.fill: parent
 
-        contentHeight: columns.height
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Open in browser")
+                onClicked: Qt.openUrlExternally("https://nextinpact.com" + model.link)
+            }
+        }
 
-        anchors.margins: Theme.horizontalPageMargin
-        anchors.topMargin: 120
+        contentHeight: columns.height + columns.anchors.topMargin
 
         PageHeader {
         }
@@ -61,6 +65,16 @@ Page {
         Column {
             id: columns
             width: parent.width
+
+            anchors {
+                top: parent.top
+                topMargin: 120
+
+                left: parent.left
+                leftMargin: 20
+                right: parent.right
+                rightMargin: 20
+            }
 
             Label {
                 id: title
@@ -145,7 +159,8 @@ Page {
                 text: model.content||''
                 textFormat: Text.RichText
                 font.pixelSize: Theme.fontSizeExtraSmall
-                verticalAlignment: Qt.AlignJustify
+                verticalAlignment: Text.AlignJustify
+                horizontalAlignment: Text.AlignJustify
                 wrapMode: Text.WordWrap
                 color:  Theme.secondaryColor
 
