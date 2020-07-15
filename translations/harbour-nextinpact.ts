@@ -65,11 +65,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mark as read</source>
+        <source>📖 Mark as read</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mark as unread</source>
+        <source>📕 Mark as unread</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -33,7 +33,7 @@ ListItem {
     ContextMenu {
         id: contextMenu
         MenuItem {
-            text: model.unread ? qsTr("Mark as read") : qsTr("Mark as unread")
+            text: model.unread ? qsTr("📖 Mark as read") : qsTr("📕 Mark as unread")
             onClicked: {
                 articlesModel.toggleRead(model.index, model.unread)
             }
