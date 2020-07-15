@@ -64,6 +64,18 @@
         <source>subscriber</source>
         <translation>abonné</translation>
     </message>
+    <message>
+        <source>brief</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation>Marquer comme lu</translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation>Marquer comme non-lu</translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
