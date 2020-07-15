@@ -1,5 +1,5 @@
 /*
-   Copyright 2019 Guillaume Bour.
+   Copyright 2020 Guillaume Bour.
    This file is part of «NextINpact app».
 
    «NextINpact app» is free software: you can redistribute it and/or modify
