@@ -34,6 +34,10 @@
         <source>subscriber</source>
         <translation type="unfinished">abonné</translation>
     </message>
+    <message>
+        <source>Open in browser</source>
+        <translation>Ouvrir dans un navigateur</translation>
+    </message>
 </context>
 <context>
     <name>Articles</name>
