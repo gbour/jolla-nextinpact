@@ -27,16 +27,32 @@
                     Les articles et leur contenu affichés par cette application; ainsi que le logo NextINpact; sont la propriété pleine et entière de &lt;b&gt;PC INpact SARL de presse&lt;/b&gt;&lt;br/&gt;.
                     Si vous appréciez ce contenu, vous êtes invité à &lt;a href=&quot;http://www.nextinpact.com/abonnement?utm_source=pcinpact&amp;utm_medium=header&amp;utm_campaign=premium&quot;&gt;souscrire à un abonnement member ou premium&lt;/a&gt;.</translation>
     </message>
+    <message>
+        <source>Credits</source>
+        <translation>Crédits</translation>
+    </message>
+    <message>
+        <source>Heart icon</source>
+        <translation>icône Cœur</translation>
+    </message>
+    <message>
+        <source>by</source>
+        <translation>par</translation>
+    </message>
 </context>
 <context>
     <name>Article</name>
     <message>
         <source>subscriber</source>
-        <translation type="unfinished">abonné</translation>
+        <translation>abonné</translation>
     </message>
     <message>
         <source>Open in browser</source>
         <translation>Ouvrir dans un navigateur</translation>
+    </message>
+    <message>
+        <source>brief</source>
+        <translation>brève</translation>
     </message>
 </context>
 <context>
@@ -70,7 +86,15 @@
     </message>
     <message>
         <source>brief</source>
-        <translation type="unfinished"></translation>
+        <translation>brève</translation>
+    </message>
+    <message>
+        <source>♡ Unmark as favorite</source>
+        <translation>♡ Marquer comme non-favori</translation>
+    </message>
+    <message>
+        <source>♥ Mark as favorite</source>
+        <translation>♥ Marquer comme favori</translation>
     </message>
     <message>
         <source>Mark as read</source>

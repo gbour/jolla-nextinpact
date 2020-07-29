@@ -206,6 +206,11 @@ bool ArticleListModel::toggleRead(const int row, const bool read) {
     return this->submit();
 }
 
+bool ArticleListModel::toggleFavorite(const int row, const bool favorite) {
+    this->setData(this->index(row, StarRole), !favorite);
+    return this->submit();
+}
+
 QVariantMap ArticleListModel::stats() {
     // returns statistics regarding articles (cover page)
     // - total articles

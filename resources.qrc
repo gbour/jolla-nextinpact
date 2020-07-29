@@ -7,5 +7,6 @@
         <file>res/logo-big.png</file>
         <file>res/cover-background.png</file>
         <file>res/blur60.png</file>
+        <file>res/heart-s.png</file>
     </qresource>
 </RCC>
