@@ -52,6 +52,7 @@ void ArticleListModel::update() {
     QMap<QString, QString> dbfields;
     dbfields["type"] = "type";
     dbfields["status"] = "unread";
+    dbfields["tag"] = "tag";
 
     QSqlQuery q;
     q.prepare("SELECT key, value FROM config WHERE key LIKE :key");

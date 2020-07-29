@@ -136,6 +136,10 @@ articles</source>
         <source>Read status</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Tag</source>
+        <translation>Label</translation>
+    </message>
 </context>
 <context>
     <name>Settings</name>

@@ -84,6 +84,54 @@ Page {
                     save('status', currentItem.value)
                 }
             }
+
+            ComboBox {
+                id: cb_tag
+
+                label: qsTr("Tag")+":"
+                menu: ContextMenu{
+                    MenuItem {
+                        property string value: "all"
+                        text: qsTr("All")
+                    }
+                    MenuItem {
+                        property string value: "culture-numerique"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "droit"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "economie"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "internet"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "logiciel"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "mobilite"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "tech"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                    MenuItem {
+                        property string value: "next-inpact"
+                        text: Utils.capitalize(qsTranslate("Tags", value))
+                    }
+                }
+
+                onCurrentItemChanged: {
+                    save('tag', currentItem.value)
+                }
+            }
         }
 
     }
@@ -104,7 +152,9 @@ Page {
         // ie type.children[x].value
         var conf = {
             'type': ['all', 'articles', 'lebrief'],
-            'status': ['all', 'unread', 'read']
+            'status': ['all', 'unread', 'read'],
+            'tag': ['all', 'culture-numerique', 'droit', 'economie', 'internet',' logiciel',
+                    'mobilite', 'tech', 'next-inpact']
         }
         for(var filterName in conf) {
             var value = filters[filterName] || 'all'
@@ -122,7 +172,6 @@ Page {
 
         complete = true
     }
-
 
     function save(filter, value) {
         if (!complete) {
