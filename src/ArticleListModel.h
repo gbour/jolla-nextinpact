@@ -75,6 +75,7 @@ public slots:
     bool addArticle(const QVariantMap values);
     bool setContent(const int row, const QVariantMap values);
     bool toggleRead(const int row, const bool read);
+    bool toggleFavorite(const int row, const bool favorite);
     QVariantMap stats();
 };
 

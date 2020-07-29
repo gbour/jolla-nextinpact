@@ -28,19 +28,23 @@ Page {
 
         // Tell SilicaFlickable the height of its content.
         contentHeight: column.height
-        contentWidth: column.width
+
+        PageHeader {
+            title: qsTr("About «NextINpact»")
+        }
 
         // Place our content in a Column.  The PageHeader is always placed at the top
         // of the page, followed by our content.
         Column {
             id: column
 
-
-            PageHeader {
-                title: qsTr("About «NextINpact»")
+            anchors {
+                top: parent.top
+                topMargin: 120 // ~PageHeader height
             }
 
             Label {
+                id: lorem
                 x: Theme.paddingLarge
                 width: about.width - 2*Theme.paddingLarge
 
@@ -57,11 +61,36 @@ Page {
 
                 textFormat: Text.RichText
                 color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeMedium
+                font.pixelSize: Theme.fontSizeSmall
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignJustify
 
                 onLinkActivated: Qt.openUrlExternally(link)
+            }
+
+            Label{
+                x: Theme.paddingLarge
+                width: about.width - 2*Theme.paddingLarge
+
+                text: qsTr("Credits")+":
+                <br/>
+                    &nbsp;&nbsp;&nbsp;<img src=\"qrc:/res/heart-m.png\" height=\"30\">&nbsp;<a href=\"https://openclipart.org/detail/183092/heart\">"+qsTr("Heart icon")+"</a> "+qsTr("by")+" crisg</li><br/>
+
+                "
+
+                textFormat: Text.RichText
+                color: Theme.secondaryHighlightColor
+                font.pixelSize: Theme.fontSizeSmall
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignJustify
+
+                onLinkActivated: Qt.openUrlExternally(link)
+
+                anchors {
+                    top: lorem.bottom
+                    topMargin: 40
+                }
+
             }
         }
     }

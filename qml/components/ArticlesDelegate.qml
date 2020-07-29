@@ -33,6 +33,10 @@ ListItem {
     ContextMenu {
         id: contextMenu
         MenuItem {
+            text: model.star ? qsTr("♡ Unmark as favorite") : qsTr("♥ Mark as favorite")
+            onClicked: articlesModel.toggleFavorite(model.index, model.star)
+        }
+        MenuItem {
             text: model.unread ? qsTr("📖 Mark as read") : qsTr("📕 Mark as unread")
             onClicked: {
                 articlesModel.toggleRead(model.index, model.unread)
@@ -51,6 +55,19 @@ ListItem {
         anchors {
             left: parent.left
             topMargin: 10
+        }
+    }
+
+    Image {
+        id: favorite
+        source: 'qrc:/res/heart-s.png'
+        visible: model.star
+
+        anchors {
+            top: icon.top
+            topMargin: 10
+            left: icon.left
+            leftMargin: 5
         }
     }
 

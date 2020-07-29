@@ -96,7 +96,6 @@ Page {
                 color: Theme.primaryColor
             }
 
-
             Label {
                 id: author
                 width: parent.width
@@ -112,7 +111,7 @@ Page {
                 Tag {
                     id: brief
                     color: "#064358"
-                    text: "brief"
+                    text: qsTr("brief")
                     visible: model.type === 1
 
                     anchors {
@@ -144,6 +143,19 @@ Page {
                     anchors {
                         left: brief.visible ? brief.right : (subscriber.visible ? subscriber.right : parent.left)
                         leftMargin: (brief.visible || subscriber.visible) ? 5 : 0
+                    }
+                }
+
+                Image {
+                    id: favorite
+                    source: 'qrc:/res/heart-s.png'
+                    visible: model.star
+
+                    anchors {
+                        bottom: tag.bottom
+                        bottomMargin: -10
+                        left: tag.right
+                        leftMargin: 5
                     }
                 }
 

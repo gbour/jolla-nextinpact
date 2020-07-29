@@ -19,6 +19,18 @@
                     If you like it, please &lt;a href=&quot;http://www.nextinpact.com/abonnement?utm_source=pcinpact&amp;utm_medium=header&amp;utm_campaign=premium&quot;&gt;subscribe to a member/premium account&lt;/a&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heart icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Article</name>
@@ -62,6 +74,14 @@
     </message>
     <message>
         <source>brief</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>♡ Unmark as favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>♥ Mark as favorite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
