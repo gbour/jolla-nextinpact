@@ -148,6 +148,10 @@ articles</source>
         <source>Read status</source>
         <translation>Status</translation>
     </message>
+    <message>
+        <source>Tag</source>
+        <translation>Étiquette</translation>
+    </message>
 </context>
 <context>
     <name>Settings</name>

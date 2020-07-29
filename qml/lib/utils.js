@@ -106,3 +106,11 @@ function html2qt(tag, attrs) {
     content += '>';
     return content;
 }
+
+/*
+    Capitalize a word.
+    foobar -> Foobar
+ */
+function capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1)
+}
