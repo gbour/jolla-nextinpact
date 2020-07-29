@@ -32,6 +32,7 @@ Page {
         topMargin: 20
 
         Column {
+            id: sets
             anchors.fill: parent
 
             ComboBox {
@@ -56,8 +57,15 @@ Page {
                     }
                 }
 
+                property string fieldName: 'type' // id not readable,
+
+                // set filter value
+                function set(value) {
+                    setItemValue(this, value)
+                }
+
                 onCurrentItemChanged: {
-                    save('type', currentItem.value)
+                    save(fieldName, currentItem.value)
                 }
             }
 
@@ -80,8 +88,15 @@ Page {
                     }
                 }
 
+                property string fieldName: 'status' // id not readable,
+
+                // set filter value
+                function set(value) {
+                    setItemValue(this, value)
+                }
+
                 onCurrentItemChanged: {
-                    save('status', currentItem.value)
+                    save(fieldName, currentItem.value)
                 }
             }
 
@@ -128,8 +143,15 @@ Page {
                     }
                 }
 
+                property string fieldName: 'tag' // id not readable,
+
+                // set filter value
+                function set(value) {
+                    setItemValue(this, value)
+                }
+
                 onCurrentItemChanged: {
-                    save('tag', currentItem.value)
+                    save(fieldName, currentItem.value)
                 }
             }
         }
@@ -139,6 +161,8 @@ Page {
     Component.onCompleted: {
         filters = db.getConfig("articles.filters")
         refresh()
+
+        complete = true
     }
 
     onStatusChanged: {
@@ -147,32 +171,23 @@ Page {
         }
     }
 
+    // refresh QML fields according to filters map (read from db).
     function refresh() {
-        //TODO: automatically generates conf from QML
-        // ie type.children[x].value
-        var conf = {
-            'type': ['all', 'articles', 'lebrief'],
-            'status': ['all', 'unread', 'read'],
-            'tag': ['all', 'culture-numerique', 'droit', 'economie', 'internet',' logiciel',
-                    'mobilite', 'tech', 'next-inpact']
+        for(var i in sets.children) {
+            sets.children[i].set(filters[sets.children[i].fieldName])
         }
-        for(var filterName in conf) {
-            var value = filters[filterName] || 'all'
-            var index = 0
-
-            for(var i in conf[filterName]) {
-                if (value === conf[filterName][i]) {
-                    index = i; break
-                }
-            }
-
-            var obj = eval('cb_'+filterName) // returns QML object, ie cb_status
-            obj.currentIndex = index
-        }
-
-        complete = true
     }
 
+    // helper function to set ComboBox active MenuItem.
+    function setItemValue(obj, value) {
+        for(var i in obj.menu.children) {
+            if (obj.menu.children[i].value === value) {
+                obj.currentIndex = i
+            }
+        }
+    }
+
+    // saving filter value into db.
     function save(filter, value) {
         if (!complete) {
             return
