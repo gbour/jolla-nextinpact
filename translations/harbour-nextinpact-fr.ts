@@ -152,6 +152,10 @@ articles</source>
         <source>Tag</source>
         <translation>Étiquette</translation>
     </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favoris</translation>
+    </message>
 </context>
 <context>
     <name>Settings</name>
