@@ -148,6 +148,18 @@ Page {
 
         VerticalScrollDecorator {}
 
+        // displayed when no results
+        Label {
+            text: qsTr("No content")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            visible: parent.count === 0
+
+            anchors {
+                fill: parent
+            }
+        }
+
         Component.onCompleted: {
             //refresh(true)
         }

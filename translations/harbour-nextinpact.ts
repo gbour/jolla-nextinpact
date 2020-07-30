@@ -65,6 +65,10 @@
         <source>Settings</source>
         <translation type="unfinished">Paramètres</translation>
     </message>
+    <message>
+        <source>No content</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArticlesDelegate</name>

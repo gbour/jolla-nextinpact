@@ -77,6 +77,10 @@
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
+    <message>
+        <source>No content</source>
+        <translation>Aucun contenu</translation>
+    </message>
 </context>
 <context>
     <name>ArticlesDelegate</name>
