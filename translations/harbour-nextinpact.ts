@@ -140,6 +140,10 @@ articles</source>
         <source>Tag</source>
         <translation>Label</translation>
     </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Settings</name>

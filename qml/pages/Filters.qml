@@ -154,6 +154,24 @@ Page {
                     save(fieldName, currentItem.value)
                 }
             }
+
+            IconTextSwitch {
+                id: favorite
+                objectName: 'favorite'
+                text: qsTr("Favorite")
+                icon.source: checked ? "qrc:/res/heart-m.png": ""
+
+                property string fieldName: 'favorite' // id not readable
+
+                // set filter value
+                function set(value) {
+                    favorite.checked = (value === 'true') // Boolean('false') returns true
+                }
+
+                onCheckedChanged: {
+                    save(fieldName, String(checked))
+                }
+            }
         }
 
     }

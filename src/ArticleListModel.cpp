@@ -50,9 +50,10 @@ void ArticleListModel::update() {
     choices["status"] = status;
 
     QMap<QString, QString> dbfields;
-    dbfields["type"] = "type";
-    dbfields["status"] = "unread";
-    dbfields["tag"] = "tag";
+    dbfields["type"]     = "type";
+    dbfields["status"]   = "unread";
+    dbfields["tag"]      = "tag";
+    dbfields["favorite"] = "star";
 
     QSqlQuery q;
     q.prepare("SELECT key, value FROM config WHERE key LIKE :key");
@@ -62,13 +63,25 @@ void ArticleListModel::update() {
         // NOTE: here we don't return. Thus we still apply basic filter
     }
     while (q.next()) {
-        QString key = q.value("key").toString().mid(keyprefix.length()+1);
+        QString key   = q.value("key").toString().mid(keyprefix.length()+1);
+        QString value = q.value("value").toString();
 
-        if (choices.contains(key)) {
+        // bool value. true == filter enabled
+        if (key == "favorite") {
+            if (value == "true") {
+                filter += QString(" AND %1 = 1").arg(dbfields[key]);
+            }
+        } else if (value == "all") {
+            // do nothing
+        } else if (choices.contains(key)) {
+            // we use value index in choices array as filter value
             QList<QString> alts = choices.value(key);
             if (alts.indexOf(q.value("value").toString()) >= 0) {
                 filter += QString(" AND %1 = %2").arg(dbfields[key]).arg(alts.indexOf(q.value("value").toString()));
             }
+        } else {
+            // we use raw value
+            filter += QString(" AND %1 = '%2'").arg(dbfields[key]).arg(value);
         }
     }
 
