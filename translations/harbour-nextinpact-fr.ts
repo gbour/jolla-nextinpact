@@ -157,6 +157,10 @@ articles</source>
         <translation>Étiquette</translation>
     </message>
     <message>
+        <source>Reset filters</source>
+        <translation>Remettre à zéro tous les filtres</translation>
+    </message>
+    <message>
         <source>Favorite</source>
         <translation>Favoris</translation>
     </message>
