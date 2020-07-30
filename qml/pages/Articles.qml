@@ -20,6 +20,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 import "../components"
+import "../lib/tags.js" as Tags
 import "../lib/utils.js" as Utils
 
 Page {
@@ -86,9 +87,43 @@ Page {
 
         spacing: Theme.paddingMedium
 
-        header: PageHeader {
-            title: qsTranslate("filters", filters['status'] + '-' + filters['type'])
-        }
+        header: Column {
+            id: header
+            height: ph.height
+            width: parent.width
+
+            PageHeader {
+                id: ph
+                title: qsTranslate("filters", '%1-%2'.arg(filters['status'] || 'all').arg(filters['type'] || 'all'))
+            } // PageHeader
+
+            Tag {
+                id: tag
+                color: Tags.color(filters['tag'])
+                text: qsTranslate("Tags", filters['tag'] || 'all')
+                visible: (filters['tag'] || 'all') !== 'all'
+
+                anchors {
+                    top: ph.bottom
+
+                    right: fav.visible ? fav.left : parent.right
+                    rightMargin: 5
+                }
+            }
+
+            Image {
+                id: fav
+                source: 'qrc:/res/heart-s.png'
+                visible: filters['favorite'] === 'true'
+
+                anchors {
+                    top: ph.bottom
+                    topMargin: -30
+                    right: parent.right
+                    rightMargin: 10
+                }
+            }
+        } // header
 
         //model: ArticleItem {}
         model: articlesModel
@@ -101,7 +136,6 @@ Page {
 
                 pageStack.push(Qt.resolvedUrl("Article.qml"), params, PageStackAction.Animated)
             }
-
         }
 
         section {
@@ -121,14 +155,7 @@ Page {
 
     onStatusChanged: {
         if (status === PageStatus.Activating) {
-            // TODO: make it better (common function to read filters ?)
-            // NOTE: this is weird: the value used for displaying are the 1st one after
-            // 1st affectation. If you change values after, UI is not updated! ?
-            var _filters = db.getConfig("articles.filters")
-            filters= {
-                'status': _filters['status'] || 'all',
-                'type': _filters['type'] || 'all'
-            }
+            filters = db.getConfig("articles.filters")
         }
     }
 
