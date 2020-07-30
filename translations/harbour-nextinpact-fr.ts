@@ -101,12 +101,12 @@
         <translation>♥ Marquer comme favori</translation>
     </message>
     <message>
-        <source>Mark as read</source>
-        <translation>Marquer comme lu</translation>
+        <source>📖 Mark as read</source>
+        <translation>📖 Marquer comme lu</translation>
     </message>
     <message>
-        <source>Mark as unread</source>
-        <translation>Marquer comme non-lu</translation>
+        <source>📕 Mark as unread</source>
+        <translation>📕 Marquer comme non-lu</translation>
     </message>
 </context>
 <context>
