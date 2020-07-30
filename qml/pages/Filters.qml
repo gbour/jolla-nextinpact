@@ -28,6 +28,14 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
+
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Reset filters")
+                onClicked: reset()
+            }
+        }
+
         leftMargin: 20
         topMargin: 20
 
@@ -213,5 +221,12 @@ Page {
 
         filters[filter] = value
         db.setConfig('articles.filters.'+filter, value.toLowerCase())
+    }
+
+    function reset() {
+        for (var f in filters) {
+            save(f, 'all')
+        }
+        refresh()
     }
 }

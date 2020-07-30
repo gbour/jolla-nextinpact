@@ -145,6 +145,10 @@ articles</source>
         <translation>Label</translation>
     </message>
     <message>
+        <source>Reset filters</source>
+        <translation>Reset all filters</translation>
+    </message>
+    <message>
         <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>
