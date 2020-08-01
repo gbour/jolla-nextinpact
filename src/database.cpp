@@ -348,7 +348,7 @@ bool Database::cleanup() const {
     }
 
     qDebug() << QString("Cleaning database:: deleting articles & comments older than %1 days").arg(freq);
-    if (!q.exec(QString("DELETE FROM articles WHERE date <= DATETIME('now', 'start of day', '-%1 month')").arg(freq))) {
+    if (!q.exec(QString("DELETE FROM articles WHERE date <= DATETIME('now', 'start of day', '-%1 days')").arg(freq))) {
         qDebug() << "Failed to clean articles:" << q.lastError().text();
         return false;
     }
