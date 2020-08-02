@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Aug 02 2020 Guillaume Bour <guillaume@bour.cc> 0.6.9-1
+- fix: missing 0.6.8-1 fields on fresh install (new database)
+
 * Tue Jul 14 2020 Guillaume Bour <guillaume@bour.cc> 0.6.8-1
 - Add labels (brief/subscriber/tags)
 
