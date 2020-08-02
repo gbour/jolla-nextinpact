@@ -17,7 +17,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 # get build date (timestamp) with: python -c 'import time; print(int(time.time()))'
 DEFINES += BUILD_DATE='1594726620'
 
-DBVERSION = 4
+DBVERSION = 5
 DBNAME = 'nextinpact.db'
 #DBNAME = 'nextinpact-pre.db'
 #DBNAME = 'nextinpact-dev.db'

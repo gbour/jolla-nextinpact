@@ -96,6 +96,10 @@ bool Database::init()
                     "new_comments INTEGER DEFAULT 1,"
                     // parent article ('brief' articles only, -1 for no parent)
                     "parent INTEGER DEFAULT -1,"
+                    "tag TEXT,"
+                    "subtag TEXT,"
+                    "star INTEGER," // boolean: 0=false, 1=true
+                    "subscriber INTEGER,"
                     "PRIMARY KEY (id, type)"
                ")");
     qDebug() << query.lastError().text();
@@ -195,6 +199,33 @@ bool Database::migrate() {
         };
         if (!updater->exec(4, queries)) {
             return false;
+        }
+    }
+
+    /* forgot to add new v4 fields (tag, subtag, ...) in full create-table query
+     * So new users that just installed the app after 0.6.8 release (no previously exist db)
+     * had not those fields
+     *
+     * To fix that:
+     * - incrementing DB VERSION from 4 to 5
+     * - creating same fields than for version 4
+     * - increase stored version number to 5 even if fields creation failed
+     */
+    if (version < 5) {
+        QStringList queries = {
+            "ALTER TABLE articles ADD COLUMN tag TEXT",
+            "ALTER TABLE articles ADD COLUMN subtag TEXT",
+            "ALTER TABLE articles ADD COLUMN star INTEGER", // boolean: 0=false, 1=true
+            "ALTER TABLE articles ADD COLUMN subscriber INTEGER" // boolean. access restricted (full access to subscribers)
+            //TODO: create index
+        };
+        if (!updater->exec(5, queries)) {
+            q.prepare("UPDATE config SET value='5' WHERE key='version'");
+            if (!q.exec()) {
+                qDebug() << "upgrade version field failed:" << q.lastError().text();
+                return false;
+            }
+            q.finish();
         }
     }
 
