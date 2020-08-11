@@ -46,3 +46,13 @@ function color(tag) {
 
     return c;
 }
+
+/*
+    'Foo Bar' -> foo-bar'
+*/
+function normalize(raw) {
+    var tag = raw.toLowerCase().replace(/\s+/g, '-')
+    tag = tag.replace(/é/g, 'e')
+
+    return tag
+}
