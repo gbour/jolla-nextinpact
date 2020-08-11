@@ -187,12 +187,18 @@ Page {
                 _scrapCounter += m.count;
                 return;
             }
+            // ignoring messages other than 'article'
+            if (m.reply !== 'article') {
+                return;
+            }
 
+            /*
             if (m.article.link.indexOf("-lebrief-") > 0) {
                 m.article.type = 99;
                 _scrapCounter += 1
                 briefScraper.sendMessage({action: 'scrape', uri: m.article.link, parent: m.article});
             }
+            */
 
             articlesModel.addArticle(m.article);
             _scrapCounter -= 1;
@@ -217,6 +223,7 @@ Page {
             }
         }
     }
+    /*
     WorkerScript {
         id: briefScraper
         source: Qt.resolvedUrl("../logic/scrapers/brief.js")
@@ -235,6 +242,7 @@ Page {
             }
         }
     }
+    */
 
     /*
       NOTE: WorkerScript cannot be invoked from outsize (eg from CoverPage) directly

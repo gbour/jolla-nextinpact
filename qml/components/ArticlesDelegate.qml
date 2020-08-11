@@ -46,7 +46,14 @@ ListItem {
 
     Image {
         id: icon
-        source: model.icon
+        source: {
+            // legacy support (< v7)
+            if (typeof(model.icon) === 'string') {
+                return model.icon
+            }
+
+            return 'https://cdnx.nextinpact.com/data-next/images/bd/square-linked-media/%1.jpg'.arg(model.icon)
+        }
         width: parent.width / 3 // 300
         height: width * 0.8     // 240
 
@@ -144,7 +151,19 @@ ListItem {
 
     Label {
         id: timestamp
-        text: model.timestamp
+        //TODO:
+        //  - compatibility mode
+        //text: model.timestamp
+        text: {
+            var d = new Date(model.date)
+            var h = d.getHours()
+            h = h < 10 ? '0'+h : h
+
+            var m = d.getHours()
+            m = m < 10 ? '0'+m : m
+
+            return "%1:%2".arg(h).arg(m)
+        }
         font.pixelSize: Theme.fontSizeTiny  - 2
         color: "#ea8211"
 

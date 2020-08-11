@@ -159,8 +159,8 @@ bool ArticleListModel::addArticle(const QVariantMap values) {
     qDebug() << "adding article id" << values["id"] << "," << values["title"];
 
     QSqlQuery q;
-    q.prepare("INSERT OR IGNORE INTO articles (id, type, date, timestamp, title, subtitle, nb_comments, icon, link, parent, content, tag, subtag, subscriber) "
-              "VALUES (:id, :type, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :parent, :content, :tag, :subtag, :subscriber)");
+    q.prepare("INSERT OR IGNORE INTO articles (id, type, date, timestamp, title, subtitle, nb_comments, icon, link, author, parent, content, tag, subtag, subscriber) "
+              "VALUES (:id, :type, :date, :timestamp, :title, :subtitle, :nb_comments, :icon, :link, :author, :parent, :content, :tag, :subtag, :subscriber)");
 
     q.bindValue(":id"         , values["id"]);
     q.bindValue(":type"       , values.value("type", 0));
@@ -171,6 +171,7 @@ bool ArticleListModel::addArticle(const QVariantMap values) {
     q.bindValue(":nb_comments", values["comments"]);
     q.bindValue(":icon"       , values.value("icon", QVariant()));
     q.bindValue(":link"       , values["link"]);
+    q.bindValue(":author"     , values["author"]);
     q.bindValue(":parent"     , values.value("parent", -1));
     q.bindValue(":content"    , values.value("content", QVariant()));
     q.bindValue(":tag"        , values.value("tag", QVariant()));
