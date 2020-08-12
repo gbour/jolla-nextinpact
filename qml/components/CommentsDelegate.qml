@@ -54,7 +54,28 @@ ListItem {
 
             Label {
                 id: date
-                text: model.date
+                //text: model.date
+                text: {
+                    var dt = new Date(model.date)
+                    // compat mode (<v7)
+                    if (isNaN(dt.getDate())) {
+                        return model.date
+                    }
+
+                    var fill = function(x) {
+                        return (x < 10 ? '0'+x : x)
+                    }
+
+                    // TODO: use translation process
+                    return "%1/%2/%3 à %4:%5:%6"
+                        .arg(fill(dt.getDay()))
+                        .arg(fill(dt.getMonth()))
+                        .arg(dt.getFullYear())
+                        .arg(fill(dt.getHours()))
+                        .arg(fill(dt.getMinutes()))
+                        .arg(fill(dt.getSeconds()))
+                }
+
                 color: Theme.primaryColor
                 font.pixelSize: Theme.fontSizeExtraSmall
                 font.italic: true

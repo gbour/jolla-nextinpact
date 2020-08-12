@@ -25,6 +25,7 @@
 Qt.include('../../lib/htmlparser2.js')
 Qt.include('../../lib/iso8859-15.js')
 Qt.include('../../lib/utils.js')
+Qt.include('../../lib/micromarkdown.js')
 
 var STATE_COMMENT = 1
 var STATE_AUTHOR  = 2
@@ -47,13 +48,13 @@ function Comments() {
 }
 
 Comments.prototype = {
-    _url: 'https://m.nextinpact.com/comment/',
+    _url: 'https://api-v1.nextinpact.com/api/v1/Commentaire/list?ArticleId=%1&Page=%2',
 
     fetch: function(newsid, type, page, callback) {
-        //console.debug('Comments.fetch', this._url, newsid, page);
+        console.debug('Comments.fetch', this._url.arg(newsid).arg(page), newsid, page);
         var http = new XMLHttpRequest();
 
-        http.open("POST", this._url, true)
+        http.open("GET", this._url.arg(newsid).arg(page), true)
         http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
         var self = this;
@@ -61,17 +62,34 @@ Comments.prototype = {
             if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
                 //console.log(http.responseText)
 
-                //NOTE: we expect max 10 comments per page (starting at page 1)
-                var comments = self.scrap(http.responseText, (page-1)*10);
+                //NOTE: expect max 10 comments per page (starting at page 1)
+                var comments = self.scrap_v7(JSON.parse(http.responseText), (page-1)*10);
                 comments.forEach(function (comment) {
                     comment.article = {id: newsid, type: type}
                 })
-                //console.debug('comments::fetch: got', comments.length, ' comments');
+                console.debug('comments::fetch: got', comments.length, ' comments');
                 callback(comments);
             }
         }
 
-        http.send('commId=0&newsId='+newsid+'&page='+page+'&type='+type);
+        http.send();
+    },
+
+    scrap_v7: function(data, commentid) {
+        var comments = []
+        data['results'].forEach(function(r) {
+            var comment = {
+                'num'    : ++commentid, //r['comment']['commentId'],
+                'author' : r['comment']['userName'],
+                'date'   : r['comment']['dateCreated'],
+                'content': micromarkdown.parse(r['comment']['content']),
+            }
+
+            console.log(r['comment']['content'], comment.content)
+            comments.push(comment)
+        })
+
+        return comments
     },
 
     scrap: function (m, commentid) {

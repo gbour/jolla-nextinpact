@@ -120,9 +120,11 @@ Page {
             var is = m.comments[0].num;
             var expected = 10* (m.page-1) + 1;
             //console.log('1st comment:', is, expected)
+            /*
             if (is !== expected) {
                 return
             }
+            */
 
             m.comments.forEach(function(comment) {
                 listview.model.addComment(comment)
