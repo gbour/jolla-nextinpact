@@ -53,8 +53,9 @@ function Article() {
 }
 
 Article.prototype = {
-    fetch: function(uri, callback) {
-        //console.debug('Article.fetch', uri);
+    fetch: function(id, callback) {
+        var uri = "https://api-v1.nextinpact.com/api/v1/SimpleContent/%1".arg(id)
+        console.debug('Article.fetch', uri);
         var http = new XMLHttpRequest();
         http.open("GET", uri, true);
         // not possible - http.setRequestHeader("User-Agent", "Jolla/NextINpact 0.1")
@@ -62,16 +63,52 @@ Article.prototype = {
         var self = this;
         http.onreadystatechange = function() {
             if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
-               //console.log(http.responseText)
-
-                var content = self.scrap(http.responseText);
-                //console.log(dump(content));
+                //console.log(http.responseText)
+                var json    = JSON.parse(http.responseText)
+                var content = self.scrap_v7(json);
+                //console.log(content);
                 callback(content);
             }
         }
 
         http.send();
     },
+
+    scrap_v7: function(data) {
+        var content = ''
+        try {
+            var raw = (data['headlines'] || '') + (data['publicText'] || '') + (data['privateText'] || '')
+        } catch(e) {
+            console.log('e=', e, dumps(data))
+        }
+
+        HTMLParser(raw, {
+                       start: function (tag, attrs, unary) {
+                           try {
+                               content += html2qt(tag, attrs);
+                           } catch(e) {
+                               console.log('e=' + e + ' (tag=' + tag + ')')
+                               console.log(dump(attrs))
+                           }
+                       },
+
+                       end: function (tag) {
+                           content += '</'+tag+'>';
+                       },
+
+                       chars: function (text) {
+                           try {
+                               content += iso_map(text, false);
+                           } catch (e) {}
+                       }
+                   })
+
+        return {
+            'content': content
+        }
+    },
+
+
 
     scrap: function (m) {
         var article  = {}
@@ -182,11 +219,12 @@ Article.prototype = {
     }
 }
 
+// NOTE: no need to keep backward compatibility, old links does not work anymore
 WorkerScript.onMessage = function (msg) {
     console.log('article::workerscript:: msg=', dump(msg));
 
     var scraper = new Article();
-    scraper.fetch(msg.uri, function(article) {
+    scraper.fetch(msg.id, function(article) {
         WorkerScript.sendMessage({reply: 'article', article: article});
     });
 }

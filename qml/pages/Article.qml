@@ -87,7 +87,15 @@ Page {
                 id: author
                 width: parent.width
 
-                text: model.author||''
+                text: {
+                    // legacy author: 'Par xx', v7: 'xx'
+                    var x = model.author
+                    // if v7 & not empty
+                    if (typeof(model.icon) !== 'string' && x !== '') {
+                        x = 'Par ' + model.author||''
+                    }
+                    return x
+                }
                 font.pixelSize: Theme.fontSizeExtraSmall
                 horizontalAlignment: Text.AlignRight
             }
@@ -201,7 +209,7 @@ Page {
         }
 
         function load() {
-            articleScraper.sendMessage({action: 'scrape', uri: model.link})
+            articleScraper.sendMessage({action: 'scrape', id: model.id})
         }
     }
 

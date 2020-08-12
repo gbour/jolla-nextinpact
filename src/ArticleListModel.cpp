@@ -192,12 +192,12 @@ bool ArticleListModel::addArticle(const QVariantMap values) {
 
 bool ArticleListModel::setContent(const int row, const QVariantMap values) {
     //NOTE: needs to set an edit strategy w/ setEditStrategy().
-    this->setData(this->index(row, ReadTimeRole), values["readtime"]);
-    this->setData(this->index(row, AuthorRole)  , values["author"]);
-    this->setData(this->index(row, PubDateRole) , values["pubdate"]);
+    //this->setData(this->index(row, ReadTimeRole), values["readtime"]);
+    //this->setData(this->index(row, AuthorRole)  , values["author"]);
+    //this->setData(this->index(row, PubDateRole) , values["pubdate"]);
     this->setData(this->index(row, ContentRole) , values["content"]);
-    this->setData(this->index(row, TagRole)     , values["tag"]);
-    this->setData(this->index(row, SubtagRole)  , values["subtag"]);
+    //this->setData(this->index(row, TagRole)     , values["tag"]);
+    //this->setData(this->index(row, SubtagRole)  , values["subtag"]);
 
     return this->submit();
 }
