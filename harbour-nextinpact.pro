@@ -53,6 +53,7 @@ OTHER_FILES += qml/NextInpact.qml \
     qml/lib/iso8859-15.js \
     qml/lib/htmlparser2.js \
     qml/lib/tags.js \
+    qml/lib/micromarkdown.js \
     res/comments.png \
     res/img1.jpg \
     res/img2.jpg \
