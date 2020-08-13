@@ -56,6 +56,10 @@
         <source>subscriber</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>brief</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -98,6 +102,17 @@ articles</source>
     </message>
     <message>
         <source>Read status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Migration</name>
+    <message>
+        <source>V7 migration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Migrating to V7. This may takes few minutes, please wait...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

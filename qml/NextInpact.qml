@@ -30,7 +30,15 @@ ApplicationWindow
 
 
     Component.onCompleted: {
-        if (db.cleanup()) {
+        var v7 = db.getConfig("v7")
+        console.log("v7=",v7['migrated'])
+
+        if (v7['migrated'] === undefined) {
+            pageStack.push(Qt.resolvedUrl("pages/Migration.qml"), undefined, PageStackAction.Immediate)
+
+            // we get list of 200 last articles
+            scraper.sendMessage({action: 'scrap', page: 1, count: 200})
+        } else if (db.cleanup()) {
             articlesModel.update()
         }
     }
@@ -45,6 +53,25 @@ ApplicationWindow
             if (db.cleanup()) {
                 articlesModel.update()
             }
+        }
+    }
+
+    WorkerScript {
+        id: scraper
+        source: Qt.resolvedUrl("logic/scrapers/articles.js")
+
+        onMessage: function(m) {
+            //console.log('articles::worker reply', Utils.dump(m));
+            if (m.reply === 'counter') {
+                return;
+            } else if (m.reply === 'complete') {
+                db.setConfig('v7.migrated', true)
+                articlesModel.update()
+                pageStack.pop()
+                return;
+            }
+
+            articlesModel.v7MigrateArticle(m.article);
         }
     }
 }

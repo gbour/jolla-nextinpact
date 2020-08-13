@@ -254,3 +254,80 @@ QVariantMap ArticleListModel::stats2() const {
 
     return stats;
 }
+
+bool ArticleListModel::v7MigrateArticle(const QVariantMap values) {
+    qDebug() << "migrate article from v6 to v7 if exists: " << values["id"] << "," << values["title"];
+
+    int count = 0;
+    QSqlQuery q, q2, q3;
+    q.exec("PRAGMA foreign_keys = OFF");
+    q.finish();
+
+    q.prepare("SELECT id FROM articles WHERE title = :title");
+    q.bindValue(":title", values["title"]);
+    if (!q.exec()) {
+        qDebug() << QString("failed searching article") << q.lastError().text();
+        q.finish();
+
+        q.exec("PRAGMA foreign_keys = ON");
+        q.finish();
+        return false;
+    }
+
+    //NOTE: q.size() not supported by sqlite
+    q2.prepare("UPDATE articles SET id=:id, nb_comments=:nb_comments, icon=:icon, tag=:tag, subtag=:subtag, subscriber=:subscriber, date=:date, author=:author, timestamp='', link='' WHERE id=:oldid");
+    q3.prepare("UPDATE comments SET article_id=:new_id WHERE article_id=:old_id");
+
+    while (q.next()) {
+        count++;
+        qDebug() << "  . updating, from id" << q.value("id") << "to" << values["id"];
+        if (q.value("id") == values["id"]) {
+            // already the same
+            qDebug() << "    - same ids, skipping";
+            continue;
+        }
+
+        // Updating article
+        q2.bindValue(":oldid", q.value("id"));
+        q2.bindValue(":id", values["id"]);
+        q2.bindValue(":nb_comments", values["comments"]);
+        q2.bindValue(":icon", values["icon"]);
+        q2.bindValue(":tag", values["tag"]);
+        q2.bindValue(":subtag", values["subtag"]);
+        q2.bindValue(":subscriber", values["subscriber"]);
+        q2.bindValue(":date", values["date"]);
+        q2.bindValue(":author", values["author"]);
+
+        if(!q2.exec()) {
+            qDebug() << "    - articles update failed:" << q2.lastError().text();
+            continue;
+        }
+        qDebug() << "    - articles rows affected:" << q2.numRowsAffected();
+
+
+        // Updating comments
+        q3.bindValue(":old_id", q.value("id"));
+        q3.bindValue(":new_id", values["id"]);
+        if(!q3.exec()) {
+            qDebug() << "    - comments update failed:" << q3.lastError().text();
+            continue;
+        }
+        qDebug() << "    - comments rows affected:" << q3.numRowsAffected();
+    }
+    q.finish();
+
+    q.exec("PRAGMA foreign_keys = ON");
+    q.finish();
+
+    switch (count) {
+    case 0:
+        qDebug() << "   . article not found, inserting";
+        return this->addArticle(values);
+    case 1:
+        break;
+    default:
+        qDebug() << "  . more than 1 matching article found, entering the twilight zone @@@";
+    }
+
+    return true;
+}
