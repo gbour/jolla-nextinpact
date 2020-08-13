@@ -56,6 +56,9 @@ public:
     Q_INVOKABLE void update();
     Q_INVOKABLE QVariantMap stats2() const;
 
+    // v7 migration - to be removed in 6 months
+    Q_INVOKABLE bool v7MigrateArticle(const QVariantMap values);
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 

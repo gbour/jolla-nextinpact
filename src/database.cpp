@@ -356,4 +356,3 @@ bool Database::cleanup() const {
 
     return true;
 }
-

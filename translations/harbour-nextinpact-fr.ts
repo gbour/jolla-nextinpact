@@ -166,6 +166,17 @@ articles</source>
     </message>
 </context>
 <context>
+    <name>Migration</name>
+    <message>
+        <source>V7 migration</source>
+        <translation>Migration NextINpact v7</translation>
+    </message>
+    <message>
+        <source>Migrating to V7. This may takes few minutes, please wait...</source>
+        <translation>Migration vers NextINpact V7. Cela peut prendre plusieurs minutes, merci de patienter...</translation>
+    </message>
+</context>
+<context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
