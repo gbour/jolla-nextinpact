@@ -77,10 +77,11 @@ Comments.prototype = {
 
     scrap_v7: function(data, commentid) {
         var comments = []
+        var self = this;
         data['results'].forEach(function(r) {
             var content
             try {
-                content = micromarkdown.parse(r['comment']['content'])
+                content = micromarkdown.parse(self.preprocess(r['comment']['content']))
             } catch(e) {
                 console.log('comment: failed to parse content.\ncontent= ', r['comment']['content'], '\ne= ', e)
                 content = r['comment']['content'] +
@@ -92,10 +93,10 @@ Comments.prototype = {
                     'num'    : ++commentid, //r['comment']['commentId'],
                     'author' : r['comment']['userName'],
                     'date'   : r['comment']['dateCreated'],
-                    'content': content
+                    'content': self.postprocess(content)
                 }
 
-                console.log(r['comment']['content'], comment.content)
+                console.log(comment['num'],':',r['comment']['content'], '\n::', comment.content)
                 comments.push(comment)
             } catch(e) {
                 console.log('comments.scrap.e=', e)
@@ -103,6 +104,59 @@ Comments.prototype = {
         })
 
         return comments
+    },
+
+
+    preprocess: function(src) {
+        var res = src
+
+        // citation
+        // > foo
+        // >bar
+        // baz
+        // > plop
+        //
+        // blabla
+        //
+        // rendered as:
+        //   <div>foo\nbar\nbaz\nplop</div><br/>blablabla
+
+        var rx = />(([^\n]*\n)(>?[^\n]*\n)*?)\n/gm
+        res = res.replace(rx, function(match, m1, m2, m3, shift, str) {
+            return '<div style="margin-left: 20px">'+m1.replace(/\n>?/g, '<br/>')+'</div><br/> '
+        })
+
+        // linefeeds
+        res = res.replace(/\n/g, '<br/>\n')
+
+        return res
+    },
+
+    postprocess: function(src) {
+        var res = src
+
+        // links
+        var rx = /<a[^>]*href="([^"]*)"[^>]*>/g
+        res = res.replace(rx, '<a href="$1" style="text-decoration: none; color: orange; font-weight: bold">')
+
+        // unmatched links
+
+        // reply
+        rx = /\(reply:\d+:([^)]+)\)/g
+        res = res.replace(rx, '<em style="text-decoration: none; color: orange; font-weight: bold">en réponse à $1</em>')
+
+        // quote
+        rx = /\(quote:\d+:([^)]+)\)/g
+        res = res.replace(rx, '<em style="text-decoration: none; color: orange; font-weight: bold">$1 a écrit:</em>')
+
+        // remove extra linefeeds before/after divs or at the end
+        res = res.replace(/(<br\/>)*<\/div>/, '</div>')
+        res = res.replace(/<br\/>\n?<\/div>\n?<br\/>/, '</div><br/>')
+        res = res.replace(/(<br\/>)?\n?<\/div>\n?<br\/>\n?(<br\/>)?/, '</div><br/>')
+        res = res.replace(/<br\/>\n?<br\/>\n?<div/, '<br/><div')
+        res = res.replace(/(<br\/>)+$/, '')
+
+        return res
     },
 
     scrap: function (m, commentid) {
