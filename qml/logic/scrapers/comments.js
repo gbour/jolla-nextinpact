@@ -78,15 +78,28 @@ Comments.prototype = {
     scrap_v7: function(data, commentid) {
         var comments = []
         data['results'].forEach(function(r) {
-            var comment = {
-                'num'    : ++commentid, //r['comment']['commentId'],
-                'author' : r['comment']['userName'],
-                'date'   : r['comment']['dateCreated'],
-                'content': micromarkdown.parse(r['comment']['content']),
+            var content
+            try {
+                content = micromarkdown.parse(r['comment']['content'])
+            } catch(e) {
+                console.log('comment: failed to parse content.\ncontent= ', r['comment']['content'], '\ne= ', e)
+                content = r['comment']['content'] +
+                    '<br/><br/><i>AppNote: FAILED TO PARSE CONTENT. PLEASE OPEN AN ISSUE AT <a href="https://github.com/gbour/jolla-nextinpact/issues">https://github.com/gbour/jolla-nextinpact/issues</a></i>'
             }
 
-            console.log(r['comment']['content'], comment.content)
-            comments.push(comment)
+            try {
+                var comment = {
+                    'num'    : ++commentid, //r['comment']['commentId'],
+                    'author' : r['comment']['userName'],
+                    'date'   : r['comment']['dateCreated'],
+                    'content': content
+                }
+
+                console.log(r['comment']['content'], comment.content)
+                comments.push(comment)
+            } catch(e) {
+                console.log('comments.scrap.e=', e)
+            }
         })
 
         return comments
