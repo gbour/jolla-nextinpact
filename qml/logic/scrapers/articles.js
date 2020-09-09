@@ -54,7 +54,7 @@ Articles.prototype = {
     url: function(params) {
         // default number of results
         if (params['count'] === undefined) {
-            params['count'] = 20;
+            params['count'] = 200;
         }
 
         var tmp = this._url;
