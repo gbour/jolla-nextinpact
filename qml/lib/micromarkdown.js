@@ -20,7 +20,8 @@ var micromarkdown = {
     code: /\s\`\`\`\n?([^`]+)\`\`\`/g,
     hr: /^(?:([\*\-_] ?)+)\1\1$/gm,
     lists: /^((\s*((\*|\-)|\d(\.|\))) [^\n]+)\n)+/gm,
-    bolditalic: /(?:([\*_~]{1,3}))([^\*_~\n]+[^\*_~\s])\1/g,
+    bolditalic: /(?:([\*~]{1,3}))([^\*~\n]+[^\*~\s])\1/g, // NOTE: should be splitted: bold can contains '~" and vice-versa
+    //crossed: /[^a-zA-Z0-9]_[^_]+_
     links: /!?\[([^\]<>]+)\]\(([^ \)<>]+)( "[^\(\)\"]+")?\)/g,
     reflinks: /\[([^\]]+)\]\[([^\]]+)\]/g,
     smlinks: /\@([a-z0-9]{3,})\@(t|gh|fb|gp|adn)/gi,
