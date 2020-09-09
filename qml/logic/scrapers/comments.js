@@ -26,6 +26,7 @@ Qt.include('../../lib/htmlparser2.js')
 Qt.include('../../lib/iso8859-15.js')
 Qt.include('../../lib/utils.js')
 Qt.include('../../lib/micromarkdown.js')
+Qt.include('../../lib/smileys.js')
 
 var STATE_COMMENT = 1
 var STATE_AUTHOR  = 2
@@ -148,6 +149,21 @@ Comments.prototype = {
         // quote
         rx = /\(quote:\d+:([^)]+)\)/g
         res = res.replace(rx, '<em style="text-decoration: none; color: orange; font-weight: bold">$1 a écrit:</em>')
+
+        // smileys
+        rx = /(:[a-zA-Z0-9\-]+:)/g
+
+        var repl = function(match, m1, shift, str) {
+            console.log('match=', m1)
+
+            var s = smiley(m1)
+            if (s === undefined) {
+                return ' ' + m1 + ' NOT FOUND '
+            }
+
+            return '<img height="45" src="' + s + '" />'
+        }
+        res = res.replace(rx, repl)
 
         // remove extra linefeeds before/after divs or at the end
         res = res.replace(/(<br\/>)*<\/div>/, '</div>')

@@ -86,6 +86,7 @@ DISTFILES += \
     icons/172x172/harbour-nextinpact.png \
     icons/128x128/harbour-nextinpact.png \
     icons/108x108/harbour-nextinpact.png \
+    qml/lib/smileys.js \
     qml/pages/Migration.qml \
     rpm/harbour-nextinpact.yaml \
     rpm/harbour-nextinpact.changes
