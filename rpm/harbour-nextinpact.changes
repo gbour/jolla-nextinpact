@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Wed Nov 18 2020 Guillaume Bour <guillaume@bour.cc> 0.7.1-1
+- improve comments markdown parsing
+- display comments smileys
+
 * Fri Aug 14 2020 Guillaume Bour <guillaume@bour.cc> 0.7.0-1
 - feat: migrate to NextINpact v7 API
 
